@@ -1,8 +1,8 @@
 import React, {Component}   from 'react'
+import PropTypes                from 'prop-types'
 import Radium from 'radium'
 import Hammer             from 'react-hammerjs'
 
-import DB                 from 'app/DB'
 import Day                from 'app/components/Day'
 import Visualization      from 'app/components/Visualization'
 import EntryAdd           from 'app/components/EntryAdd'
@@ -10,89 +10,15 @@ import EntryEdit          from 'app/components/EntryEdit'
 import SlidePosition      from 'app/components/SlidePosition/SlidePosition'
 import CategoryDetail     from 'app/components/CategoryDetail'
 
-import { max } from "d3-array"
+import style from './style'
 
-const categoryOptions = () => (
-  ["instacart", "gym", "project", "friends", "relationships", "family", "social"].reduce((memo, d, index) => {
-    memo[d] = {
-      name: d,
-      color: "#616161",
-    }
-    return memo
-  }, {})
-)
-
-const API_ENDPOINT = (
-  process.env.NODE_ENV === 'production'
-    ? "https://www.getdamon.com"
-    : "http://localhost:4000"
-)
-const TrendsDB = DB(API_ENDPOINT)
-
-const style={
-  chartToggle: {
-    position: "fixed",
-    lineHeight: "40px",
-    height: 40,
-    width: 60,
-    bottom: 10,
-    left: 0,
-    fontSize: 20,
-    display: "block",
-    textAlign: "center",
-    zIndex: 12,
-    backgroundColor: "#212121",
-    borderRadius: "0 20px 20px 0",
-  },
-  addIcon: {
-    position: "fixed",
-    bottom: 10,
-    right: 10,
-    margin: "auto",
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-    lineHeight: "55px",
-    fontSize: 30,
-    display: "block",
-    textAlign: "center",
-    zIndex: 5,
-  },
-  closeIcon: {
-    position: "fixed",
-    bottom: 10,
-    right: 10,
-    fontSize: 30,
-    display: "block",
-    textAlign: "center",
-    zIndex: 3,
-  },
-  container: {
-
-  },
-  days: {
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },
-  trends: {
-    position: "fixed",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    transition: "all 200ms ease",
-    transform: "translateX(350px)",
-    boxShadow: "1px 1px 30px #424242",
-  },
-  shouldShowTrends: {
-    position: "absolute",
-    transform: "translateX(0)",
-  },
-}
 class Trend extends Component {
+  static propTypes = {
+    getPayload: PropTypes.func.isRequired,
+    persist: PropTypes.func.isRequired,
+    remove: PropTypes.func.isRequired,
+  }
+
   state = {
     days: [],
     shouldShowTrends: true,
@@ -112,18 +38,8 @@ class Trend extends Component {
     })
   }
 
-
   refreshData() {
-    TrendsDB.days().then((rsp) => {
-      const aggregrate = rsp.trends.reduce((memo, d) => (memo.concat(d.data)),[])
-      this.setState({
-        days: rsp.days,
-        trends: rsp.trends,
-        categories: rsp.categories,
-        categoryOptions: categoryOptions(),
-        maxHealth: max(aggregrate, d => (d.health))
-      })
-    })
+    this.props.getPayload().then((rsp) => { this.setState(rsp) })
   }
 
   entryEdit = (entry) => {
@@ -133,7 +49,7 @@ class Trend extends Component {
   persist = (body) => {
     if (!body.ordinal || body.ordinal.trim() === "") { return }
 
-    TrendsDB.persist(body).then(() => {
+    this.props.persist(body).then(() => {
       this.refreshData()
       this.closeModals()
       this.showVizualization()
@@ -141,7 +57,7 @@ class Trend extends Component {
   }
 
   remove = (id) => {
-    TrendsDB.remove(id).then(() => {
+    this.props.remove(id).then(() => {
       this.refreshData()
       // this.closeModals()
     })
