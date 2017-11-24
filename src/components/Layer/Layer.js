@@ -1,21 +1,22 @@
+import React, { PureComponent }   from 'react'
+import PropTypes                from 'prop-types'
 import Radium from 'radium'
-import React from 'react'
 
 import style from './Style'
 
-const Layer = (props) => {
-  return (
-    <div
-      style={[
-        style.default,
-        props.style,
-        props.isHidden && style.hidden
-      ]}
-      onClick={props.onClick}
-    >
-      {React.Children.only(props.children)}
-    </div>
-  )
+class Layer extends PureComponent {
+  render() {
+    return (
+      <div
+        style={[
+          style.layer,
+          this.props.isActive && style.isActive
+        ]}
+      >
+        {React.Children.only(this.props.children)}
+      </div>
+    )
+  }
 }
 
 export default Radium(Layer)

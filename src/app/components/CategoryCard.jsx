@@ -5,15 +5,26 @@ import Chart              from 'app/components/Chart'
 
 const style = {
   default: {
-    fontSize: 16,
-    lineHeight: "1.4em",
     minHeight: 100,
     padding: 5,
     boxSizing: "border-box",
+
   },
+  name: {
+    fontSize: 16,
+    lineHeight: "1.4em",
+    fontWeight: 400,
+    marginTop: 5,
+    color: "#424242"
+  }
 }
 
 class CategoryCard extends PureComponent {
+
+  handleClick = () => {
+    this.props.showDetail(this.props.name)
+  }
+
   render() {
     return (
       <div

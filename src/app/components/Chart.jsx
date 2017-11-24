@@ -8,8 +8,6 @@ import React, { PureComponent }   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
 
-import CategoryCard from 'app/components/CategoryCard'
-
 import * as d3 from "d3"
 
 const WIDTH = 1200
@@ -30,7 +28,6 @@ const style = {
 
 class Chart extends PureComponent {
   static propTypes = {
-    color: PropTypes.string.isRequired,
     data: PropTypes.array.isRequired,
     maxHealth: PropTypes.number.isRequired,
   }
@@ -40,6 +37,12 @@ class Chart extends PureComponent {
   }
 
   componentDidMount() {
+    // const xGrid = d3.scaleLinear().rangeRound([0, WIDTH])
+    // const yGrid = d3.scaleLinear().rangeRound([HEIGHT, 0])
+    // xGrid.domain([-28, 0])
+    // yGrid.domain([0, maxHealth])
+
+
     const svg = d3.select(this.refNode)
     const g = svg.append("g")
     const x = d3.scaleLinear().rangeRound([0, WIDTH])
@@ -58,7 +61,7 @@ class Chart extends PureComponent {
     )
 
     const tickValues = Array(28).fill(1).map((_, i) => (28 - i))
-    const xAxis = d3.axisBottom(x).tickValues([-28, -21, -14, -7, 0, 7])
+    const xAxis = d3.axisBottom(x).tickValues([-28, -21, -14, -7, 0])
     const yAxis = d3.axisRight(y)
     yAxis.tickValues([0])
 
@@ -79,14 +82,10 @@ class Chart extends PureComponent {
     this.update = (data, maxHealth) => {
       const lineData = data[0].data
       const dotData = lineData.filter(d => (d.ordinal !== 0))
-      x.domain([-28, 7])
+      x.domain([-28, 0])
       y.domain([0, maxHealth])
       yAxis.tickValues([maxHealth])
       area.y0(y(0))
-
-      if (this.props.name === "gym") {
-        console.log(lineData)
-      }
 
       const nodeDotLines = g.selectAll("g.dotLine").data(dotData, d => (d.date))
       const nodeDots = g.selectAll("circle").data(dotData, d => (d.date))
@@ -95,9 +94,32 @@ class Chart extends PureComponent {
       // TODO:
       const totalLength = 2500 // nodeLine.node().getTotalLength()
 
+      const gridLinesY = g.selectAll("g.gridLinesY").data(lineData, d => (d.date))
+      gridLinesY.enter().append("g").attr("class", "gridLinesY")
+        .append("line")
+          .attr("stroke", "rgba(66, 66, 66, 0.4)")
+          .attr("stroke-width", "1")
+          .attr("fill", "none")
+          .attr("y1", d => (y(0)))
+          .attr("y2", d => (y(maxHealth)))
+          .attr("x1", d => (x(d.date)))
+          .attr("x2", d => (x(d.date)))
+
+      const lineD = Array(Math.ceil(maxHealth + 1)).fill(1).map((_, i) => (i))
+      const gridLinesX = g.selectAll("g.gridLinesX").data(lineD)
+      gridLinesX.enter().append("g").attr("class", "gridLinesX")
+        .append("line")
+          .attr("stroke", "rgba(66, 66, 66, 0.4)")
+          .attr("stroke-width", "1")
+          .attr("fill", "none")
+          .attr("x1", d => (x(-28)))
+          .attr("x2", d => (x(0)))
+          .attr("y1", (i) => (y(i)))
+          .attr("y2", (i) => (y(i)))
+
       if (this.props.showAxis) {
         g.select("g.yAxis")
-          .attr("transform", "translate(" + x(0) + ",0)")
+          .attr("transform", "translate(" + x(-10) + ",0)")
           .style("opacity", 0)
           .transition()
           .duration(800)
@@ -110,41 +132,41 @@ class Chart extends PureComponent {
           .call(xAxis)
       }
 
-      // Data dots
-      nodeDots.enter().append("circle")
-        .attr("fill", "#212121")
-        // .attr("stroke", "#212121")
-        // .attr("stroke-width", "2")
-        .attr("r", 0)
-        .attr("cx", d => (x(d.date)) )
-        .attr("cy", d => (y(0)))
-        .transition()
-        .duration(2000)
-          .attr("r", 6)
+      if (this.props.showPoints) {
+        // Data dots
+        nodeDots.enter().append("circle")
+          .attr("fill", "#111")
+          .attr("r", 0)
           .attr("cx", d => (x(d.date)) )
-          .attr("cy", d => (y(d.health) - 30) )
-
-      // dot markers
-      nodeDotLines.enter().append("g").attr("class", "dotLine")
-        .append("line")
-          .attr("stroke", "#212121")
-          .attr("stroke-width", "2")
-          .attr("fill", "none")
-            .attr("y1", d => (y(0)))
-            .attr("y2", d => (y(0)))
-            .attr("x1", d => (x(d.date)))
-            .attr("x2", d => (x(d.date)))
+          .attr("cy", d => (y(0)))
           .transition()
           .duration(2000)
-            .attr("y1", d => (y(d.health) + 10) )
-            .attr("y2", d => (y(d.health) - 30) )
-            .attr("x1", d => (x(d.date)))
-            .attr("x2", d => (x(d.date)))
+            .attr("r", 6)
+            .attr("cx", d => (x(d.date)) )
+            .attr("cy", d => (y(d.health) - 30) )
+
+        // dot markers
+        nodeDotLines.enter().append("g").attr("class", "dotLine")
+          .append("line")
+            .attr("stroke", "#111")
+            .attr("stroke-width", "2")
+            .attr("fill", "none")
+              .attr("y1", d => (y(0)))
+              .attr("y2", d => (y(0)))
+              .attr("x1", d => (x(d.date)))
+              .attr("x2", d => (x(d.date)))
+            .transition()
+            .duration(2000)
+              .attr("y1", d => (y(d.health) + 10) )
+              .attr("y2", d => (y(d.health) - 30) )
+              .attr("x1", d => (x(d.date)))
+              .attr("x2", d => (x(d.date)))
+      }
 
       // area
       node.enter().append("g").attr("class", "area")
         .append("path")
-          .attr("fill", this.props.color)
+          .attr("fill", "rgba(66, 66, 66, 0.3)")
           .attr("d", d => (areaStart(d.data)))
           .transition()
             .delay(1000)
@@ -161,7 +183,7 @@ class Chart extends PureComponent {
       nodeLine.enter().append("g").attr("class", "line")
         .append("path")
           .attr("d", line(lineData))
-          .attr("stroke", "#212121")
+          .attr("stroke", "#424242")
           .attr("stroke-width", "2")
           .attr("fill", "none")
           .attr("stroke-dasharray", `${totalLength} ${totalLength}`)

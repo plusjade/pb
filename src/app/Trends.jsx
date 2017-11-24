@@ -1,16 +1,13 @@
 import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
-import Hammer             from 'react-hammerjs'
 
-import Day                from 'app/components/Day'
+import Close              from 'app/components/Close'
+import Days               from 'app/components/Days'
 import Visualization      from 'app/components/Visualization'
-import EntryAdd           from 'app/components/EntryAdd'
-import EntryEdit          from 'app/components/EntryEdit'
+import EntryAdd           from 'app/components/EntryAdd/EntryAdd'
 import SlidePosition      from 'app/components/SlidePosition/SlidePosition'
 import CategoryDetail     from 'app/components/CategoryDetail'
-
-import style from './style'
 
 class Trend extends Component {
   static propTypes = {
@@ -21,29 +18,19 @@ class Trend extends Component {
 
   state = {
     days: [],
-    shouldShowTrends: true,
-    showVizualization: true,
+    shouldShowVizIndex: true,
+    shouldShowDetail: false,
     categoryOptions: [],
-    width: 0,
-    height: 0,
     maxHealth: 0,
+    trends: [],
   }
 
   componentWillMount() {
-    const dim = document.getElementById("root").getBoundingClientRect()
     this.refreshData()
-    this.setState({
-      width: window.parseInt(dim.width * 0.93),
-      height: dim.height,
-    })
   }
 
   refreshData() {
     this.props.getPayload().then((rsp) => { this.setState(rsp) })
-  }
-
-  entryEdit = (entry) => {
-    this.setState({showEditEntry: entry})
   }
 
   persist = (body) => {
@@ -52,7 +39,6 @@ class Trend extends Component {
     this.props.persist(body).then(() => {
       this.refreshData()
       this.closeModals()
-      this.showVizualization()
     })
   }
 
@@ -63,29 +49,37 @@ class Trend extends Component {
     })
   }
 
-  toggleChart = () => {
+  showVizIndex = () => {
     window.scroll(0,0)
     this.setState({
-      showVizualization: !this.state.showVizualization,
-      shouldShowTrends: !this.state.shouldShowTrends,
+      shouldShowVizIndex: !this.state.shouldShowVizIndex,
     })
   }
 
-  showVizualization = () => {
-    window.scroll(0,0)
-    this.setState({showVizualization: true})
-  }
-
-  handleAddEntry = (ordinal) => {
+  showAddEntry = (ordinal) => {
     this.setState({showAddEntry: ordinal})
   }
 
   closeModals = () => {
-    this.setState({showAddEntry: false, showEditEntry: false})
+    this.setState({
+      showAddEntry: false,
+      shouldShowDetail: false,
+    })
   }
 
+  showDetail = (categoryName) => {
+    this.setState({shouldShowDetail: categoryName})
+  }
+
+  getCategoryDetail = () => (
+    this.state.trends.find(d => (this.state.shouldShowDetail === d.category))
+  )
+
   shouldShowClose() {
-    return this.state.showAddEntry || this.state.showEditEntry
+    return (
+      this.state.showAddEntry
+      || this.state.shouldShowDetail
+    )
   }
 
   shouldShowAdd() {
@@ -98,84 +92,49 @@ class Trend extends Component {
 
   render() {
     return(
-      <Hammer onSwipe={this.toggleChart}>
-        <div style={style.container}>
-          {this.state.showAddEntry && (
-            <EntryAdd
-              persist={this.persist}
-              ordinal={this.state.showAddEntry}
-              categoryOptions={this.state.categoryOptions}
-            />
-          )}
+      <div>
+        <Days
+          days={this.state.days}
+          remove={this.remove}
+          categoryOptions={this.state.categoryOptions}
+          persist={this.persist}
+          showAddEntry={this.showAddEntry}
+          showVizIndex={this.showVizIndex}
+          isActive={!this.state.shouldShowVizIndex}
+        />
 
-          {this.state.showEditEntry && (
-            <EntryEdit
-              entry={this.state.showEditEntry}
-              remove={this.remove}
-            />
-          )}
+        <Visualization
+          data={this.state.trends}
+          categories={this.state.categories}
+          maxHealth={this.state.maxHealth}
+          categoryOptions={this.state.categoryOptions}
+          showDetail={this.showDetail}
+          showVizIndex={this.showVizIndex}
+          isActive={this.state.shouldShowVizIndex}
+        />
 
-          {this.state.trends && (
-            <CategoryDetail
-              data={this.state.trends[0]}
-            />
-          )}
+        {this.state.shouldShowDetail && (
+          <CategoryDetail
+            data={this.getCategoryDetail()}
+          />
+        )}
 
-          <div style={[
-            style.days,
-            this.state.shouldShowTrends && ({height: this.state.height, overflow: "hidden"}),
-          ]}
-          >
-            {this.state.days.map((day, i) => (
-              <Day
-                key={day.ordinal}
-                name={day.occurred_at}
-                entries={day.entries}
-                ordinal={day.ordinal}
-                isToday={day.isToday}
-                remove={this.remove}
-                entryEdit={this.entryEdit}
-                categoryOptions={this.state.categoryOptions}
-                persist={this.persist}
-                handleAddEntry={this.handleAddEntry}
-              />
-            ))}
-          </div>
+        {this.state.showAddEntry && (
+          <EntryAdd
+            persist={this.persist}
+            ordinal={this.state.showAddEntry}
+            categoryOptions={this.state.categoryOptions}
+          />
+        )}
 
-
-          <div
-            style={[
-              style.trends,
-              {transform: `translateX(${this.state.width}px)`},
-              this.state.shouldShowTrends && style.shouldShowTrends,
-              {display: "_none"}
-            ]}
-          >
-            {this.state.trends && (
-              <Visualization
-                data={this.state.trends}
-                categories={this.state.categories}
-                maxHealth={this.state.maxHealth}
-                categoryOptions={this.state.categoryOptions}
-              />
-            )}
-          </div>
-
-          {this.shouldShowClose() && (
-            <Hammer onTap={this.closeModals}>
-              <div style={style.closeIcon}>
-                <span>{"❌"}</span>
-              </div>
-            </Hammer>
-          )}
-
-          {!this.shouldShowClose() && (
-            <SlidePosition
-              activeIndex={this.state.shouldShowTrends ? 1 : 0}
-            />
-          )}
-        </div>
-      </Hammer>
+        {this.shouldShowClose() ? (
+          <Close onClick={this.closeModals} />
+        ) : (
+          <SlidePosition
+            activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
+          />
+        )}
+      </div>
     )
   }
 }

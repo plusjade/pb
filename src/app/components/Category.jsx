@@ -10,18 +10,20 @@ const style = {
     borderRadius: 60,
     lineHeight: "60px",
     textAlign: "center",
-    border: 0,
-    backgroundColor: "#FFF",
+    backgroundColor: "#fefefe",
     margin: 5,
-    color: "#BDBDBD",
+    color: "#757575",
+    border: "1px solid rgba(48, 48, 48, 0.8)"
   },
+  active: {
+    backgroundColor: "rgba(48, 48, 48, 0.5)",
+  }
 }
 
 class Category extends Component {
   static propTypes = {
-    days: PropTypes.array.isRequired,
-    persist: PropTypes.func.isRequired,
-    categoryOptions: PropTypes.object.isRequired,
+    name: PropTypes.string.isRequired,
+    onClick: PropTypes.func.isRequired,
   }
 
   handleClick = (e) => {
@@ -38,7 +40,7 @@ class Category extends Component {
         style={[
           style.categoryButton,
           this.props.style,
-          {backgroundColor: this.props.isActive ? this.props.color : "#fefefe"},
+          this.props.isActive && style.active,
         ]}
         onClick={this.handleClick}
       >

@@ -1,59 +1,15 @@
 import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
-import Layer                from 'components/Layer/Layer'
-import Category                from './Category'
+import Category                from 'app/components/Category'
 
-const style = {
-  layer: {
-    backgroundColor: "rgba(0, 0, 0, 0.8)",
-    zIndex: 1,
-  },
-  categoryButton: {
-    display: "inline-block",
-    width: 100,
-    height: 100,
-    borderRadius: 100,
-    lineHeight: "100px",
-    textAlign: "center",
-    border: 0,
-    backgroundColor: "#FFF",
-    margin: 5,
-  },
-  button: {
-    padding: "10px 20px",
-    borderRadius: 8,
-    fontSize: 20,
-    backgroundColor: "#FFF",
-    border: "1px solid #333",
-    display: "block",
-    width: "100%",
-    boxSizing: "border-box",
-    margin: "5px 0",
-  },
-  select: {
-    fontSize: 20,
-    border: "1px solid #333",
-  },
-  textarea: {
-    padding: "10px 20px",
-    borderRadius: 8,
-    fontSize: 20,
-    backgroundColor: "#FFF",
-    border: "1px solid #333",
-    display: "block",
-    width: "100%",
-    boxSizing: "border-box",
-    margin: "5px 0",
-    minHeight: 100,
-  }
-}
+import style from './style'
 
 class EntryAdd extends Component {
   static propTypes = {
-    days: PropTypes.array.isRequired,
-    persist: PropTypes.func.isRequired,
     categoryOptions: PropTypes.object.isRequired,
+    ordinal: PropTypes.string.isRequired,
+    persist: PropTypes.func.isRequired,
   }
 
   state = {
@@ -63,11 +19,6 @@ class EntryAdd extends Component {
 
   componentWillMount() {
     this.setDefaults()
-    document.getElementById("root").style.position = "fixed"
-  }
-
-  componentWillUnmount() {
-    document.getElementById("root").style.position = "static"
   }
 
   componentWillReceiveProps() {
@@ -103,7 +54,7 @@ class EntryAdd extends Component {
 
   render() {
     return(
-      <Layer style={style.layer}>
+      <div style={style.layer}>
         <div>
           {Object.keys(this.props.categoryOptions).map((key) => (
             <Category
@@ -115,7 +66,7 @@ class EntryAdd extends Component {
             />
           ))}
         </div>
-      </Layer>
+      </div>
     )
   }
 }

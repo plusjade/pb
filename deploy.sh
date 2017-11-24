@@ -1,6 +1,6 @@
 #!/bin/sh
 
-local BUCKET="www.positivebuddy.com"
+BUCKET="www.positivebuddy.com"
 
 echo "Trying yarn build..."
 yarn build
