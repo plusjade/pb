@@ -61,6 +61,7 @@ class Trend extends Component {
   }
 
   closeModals = () => {
+    window.scroll(0,0)
     this.setState({
       showAddEntry: false,
       shouldShowDetail: false,
@@ -77,10 +78,7 @@ class Trend extends Component {
   )
 
   shouldShowClose() {
-    return (
-      this.state.showAddEntry
-      || this.state.shouldShowDetail
-    )
+    return this.state.showAddEntry
   }
 
   shouldShowAdd() {
@@ -110,13 +108,15 @@ class Trend extends Component {
           showDetail={this.showDetail}
           showVizIndex={this.showVizIndex}
           isActive={this.state.shouldShowVizIndex && !this.state.shouldShowDetail}
+          day={this.state.days[0]}
+          persist={this.persist}
         />
 
-        {this.state.shouldShowDetail && (
-          <CategoryDetail
-            data={this.getCategoryDetail()}
-          />
-        )}
+        <CategoryDetail
+          data={this.getCategoryDetail()}
+          onSwipeRight={this.closeModals}
+          isActive={this.state.shouldShowDetail}
+        />
 
         {this.state.showAddEntry && (
           <EntryAdd

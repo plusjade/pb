@@ -73,6 +73,8 @@ class Visualization extends PureComponent {
                   data={d.data}
                   maxHealth={this.props.maxHealth}
                   showDetail={this.props.showDetail}
+                  day={this.props.day}
+                  persist={this.props.persist}
                 />
               ))}
             </div>
