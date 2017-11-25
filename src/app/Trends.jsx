@@ -9,6 +9,17 @@ import EntryAdd           from 'app/components/EntryAdd/EntryAdd'
 import SlidePosition      from 'app/components/SlidePosition/SlidePosition'
 import CategoryDetail     from 'app/components/CategoryDetail'
 
+const style = {
+  container: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    overflowX: "hidden",
+    WebkitOverflowScrolling: "touch",
+  }
+}
 class Trend extends Component {
   static propTypes = {
     getPayload: PropTypes.func.isRequired,
@@ -87,7 +98,7 @@ class Trend extends Component {
 
   render() {
     return(
-      <div>
+      <div id="CONTAINER" style={style.container}>
         {!this.state.shouldShowVizIndex && (
           <Days
             days={this.state.days}
@@ -107,7 +118,7 @@ class Trend extends Component {
           categoryOptions={this.state.categoryOptions}
           showDetail={this.showDetail}
           showVizIndex={this.showVizIndex}
-          isActive={this.state.shouldShowVizIndex && !this.state.shouldShowDetail}
+          isActive={this.state.shouldShowVizIndex || this.state.shouldShowDetail}
           day={this.state.days[0]}
           persist={this.persist}
         />

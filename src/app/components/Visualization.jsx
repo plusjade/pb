@@ -17,8 +17,21 @@ const style = {
     overflow: "auto",
   },
   heading: {
-    padding: "15px 0 15px 5px",
-    fontSize: 22,
+    textAlign: "center",
+    textDecoration: "underline",
+  },
+  top: {
+    display: "flex",
+    marginBottom: 10,
+  },
+  topUnit: {
+    flex: 1,
+    padding: "15px 0 10px 0",
+    margin: "0 10px",
+    textAlign: "center",
+  },
+  topUnitActive: {
+    borderBottom: "1px solid #616161",
   },
   visualization: {
     position: "fixed",
@@ -61,9 +74,13 @@ class Visualization extends PureComponent {
             }}
           >
             <div style={style.default}>
-              <h1 style={style.heading}>
-                Last 14 days
-              </h1>
+              <div style={style.top}>
+                <h5 style={style.topUnit} />
+                <h5 style={[style.topUnit, style.topUnitActive]}>
+                  Last 14 days
+                </h5>
+                <h5 style={style.topUnit} />
+              </div>
               {this.props.data.map(d => (
                 <CategoryCard
                   key={d.category}
