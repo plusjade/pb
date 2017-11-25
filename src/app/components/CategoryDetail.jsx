@@ -10,10 +10,9 @@ import Layer                from 'components/Layer/Layer'
 const style = {
   layer: {
     backgroundColor: "#212121",
-    zIndex: 1,
-    position: "fixed",
+    zIndex: 2,
+    position: "absolute",
     top: 0,
-    bottom: 0,
     left: 0,
     right: 0,
   },
@@ -25,13 +24,22 @@ const style = {
     textAlign: "center",
   },
   chartWrap: {
-    marginBottom: 40,
+
   },
   detail: {
-    overflow: "auto",
-    height: 300,
-    color: "#424242",
+    // color: "#424242",
+    padding: 10,
   },
+  glance: {
+    display: "flex",
+    marginTop: 20,
+    marginBottom: 40,
+  },
+  glanceUnit: {
+    flex: 1,
+    textAlign: "center",
+
+  }
 }
 
 class CategoryDetail extends PureComponent {
@@ -48,6 +56,7 @@ class CategoryDetail extends PureComponent {
           </h1>
           <div style={style.chartWrap}>
             <Chart
+              ratio={2}
               data={this.props.data.data}
               maxHealth={20}
               index={0}
@@ -56,10 +65,29 @@ class CategoryDetail extends PureComponent {
               showPoints={true}
             />
           </div>
+          <div style={style.glance}>
+            <div style={style.glanceUnit}>
+              <h2>{this.props.data.occurrences}</h2>
+              <h5>occurrences</h5>
+            </div>
+            <div style={style.glanceUnit}>
+              <h2>3</h2>
+              <h5>since last</h5>
+            </div>
+            <div style={style.glanceUnit}>
+              <h2>{20}</h2>
+              <h5>health</h5>
+            </div>
+          </div>
           <div style={style.detail}>
-            <h3>{`occurrences: ${this.props.data.occurrences}`}</h3>
-            {this.props.data.data.reverse().map((d) => (
-              <div>{d.ordinal}</div>
+            {this.props.data.data.slice(0).reverse().map((d) => (
+              <div
+                style={[
+                  !d.occurred_at && ({color: "#757575"})
+                ]}
+              >
+                {d.occurred_at ? d.occurred_at : "-"}
+              </div>
             ))}
           </div>
         </div>

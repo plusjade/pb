@@ -11,7 +11,6 @@ import Radium from 'radium'
 import * as d3 from "d3"
 
 const WIDTH = 1200
-const HEIGHT = WIDTH / 3
 
 const style = {
   default: {
@@ -31,12 +30,17 @@ class Chart extends PureComponent {
     data: PropTypes.array.isRequired,
     maxHealth: PropTypes.number.isRequired,
   }
+  static defaultProps = {
+    ratio: 3
+  }
 
   componentWillReceiveProps(nextProps) {
     this.update([{id: Math.random(), data: nextProps.data}], nextProps.maxHealth)
   }
 
   componentDidMount() {
+    const HEIGHT = WIDTH / this.props.ratio
+
     // const xGrid = d3.scaleLinear().rangeRound([0, WIDTH])
     // const yGrid = d3.scaleLinear().rangeRound([HEIGHT, 0])
     // xGrid.domain([-28, 0])
@@ -97,7 +101,7 @@ class Chart extends PureComponent {
       const gridLinesY = g.selectAll("g.gridLinesY").data(lineData, d => (d.date))
       gridLinesY.enter().append("g").attr("class", "gridLinesY")
         .append("line")
-          .attr("stroke", "rgba(66, 66, 66, 0.4)")
+          .attr("stroke", "rgba(66, 66, 66, 0.5)")
           .attr("stroke-width", "1")
           .attr("fill", "none")
           .attr("y1", d => (y(0)))
@@ -109,7 +113,7 @@ class Chart extends PureComponent {
       const gridLinesX = g.selectAll("g.gridLinesX").data(lineD)
       gridLinesX.enter().append("g").attr("class", "gridLinesX")
         .append("line")
-          .attr("stroke", "rgba(66, 66, 66, 0.4)")
+          .attr("stroke", "rgba(66, 66, 66, 0.5)")
           .attr("stroke-width", "1")
           .attr("fill", "none")
           .attr("x1", d => (x(-28)))
@@ -135,28 +139,30 @@ class Chart extends PureComponent {
       if (this.props.showPoints) {
         // Data dots
         nodeDots.enter().append("circle")
-          .attr("fill", "#111")
+          .attr("fill", "#E0E0E0")
           .attr("r", 0)
           .attr("cx", d => (x(d.date)) )
-          .attr("cy", d => (y(0)))
+          .attr("cy", d => (y(maxHealth)))
           .transition()
-          .duration(2000)
+          .delay(1600)
+          .duration(800)
             .attr("r", 6)
             .attr("cx", d => (x(d.date)) )
             .attr("cy", d => (y(d.health) - 30) )
 
-        // dot markers
+        // dot-lines
         nodeDotLines.enter().append("g").attr("class", "dotLine")
           .append("line")
-            .attr("stroke", "#111")
+            .attr("stroke", "#E0E0E0")
             .attr("stroke-width", "2")
             .attr("fill", "none")
-              .attr("y1", d => (y(0)))
-              .attr("y2", d => (y(0)))
+              .attr("y1", d => (y(maxHealth)))
+              .attr("y2", d => (y(maxHealth)))
               .attr("x1", d => (x(d.date)))
               .attr("x2", d => (x(d.date)))
             .transition()
-            .duration(2000)
+            .delay(1600)
+            .duration(800)
               .attr("y1", d => (y(d.health) + 10) )
               .attr("y2", d => (y(d.health) - 30) )
               .attr("x1", d => (x(d.date)))
@@ -166,7 +172,7 @@ class Chart extends PureComponent {
       // area
       node.enter().append("g").attr("class", "area")
         .append("path")
-          .attr("fill", "rgba(66, 66, 66, 0.3)")
+          .attr("fill", "rgba(66, 66, 66, 0.5)")
           .attr("d", d => (areaStart(d.data)))
           .transition()
             .delay(1000)
@@ -183,7 +189,7 @@ class Chart extends PureComponent {
       nodeLine.enter().append("g").attr("class", "line")
         .append("path")
           .attr("d", line(lineData))
-          .attr("stroke", "#424242")
+          .attr("stroke", "#9E9E9E")
           .attr("stroke-width", "2")
           .attr("fill", "none")
           .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
@@ -206,7 +212,7 @@ class Chart extends PureComponent {
     return(
       <div style={style.default}>
         <svg
-          viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+          viewBox={`0 0 ${WIDTH} ${WIDTH / this.props.ratio}`}
           style={style.svg}
           ref={this.getRef}
         />

@@ -12,7 +12,7 @@ const style = {
     textAlign: "center",
     backgroundColor: "#fefefe",
     margin: 5,
-    color: "#757575",
+    color: "#9E9E9E",
     border: "1px solid rgba(48, 48, 48, 0.8)"
   },
   active: {

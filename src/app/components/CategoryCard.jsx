@@ -8,14 +8,13 @@ const style = {
     minHeight: 100,
     padding: 5,
     boxSizing: "border-box",
+    marginBottom: 10,
 
   },
   name: {
-    fontSize: 16,
-    lineHeight: "1.4em",
-    fontWeight: 400,
-    marginTop: 5,
-    color: "#424242"
+    fontSize: 20,
+    lineHeight: "1.8em",
+    textAlign: "center",
   }
 }
 
@@ -34,6 +33,9 @@ class CategoryCard extends PureComponent {
           {color: this.props.color},
         ]}
       >
+        <h2 style={style.name}>
+          <span>{this.props.name}</span>
+        </h2>
         <Chart
           data={this.props.data}
           color={this.props.color}
@@ -41,9 +43,6 @@ class CategoryCard extends PureComponent {
           index={this.props.index}
           name={this.props.name}
         />
-        <div style={style.name}>
-          <span>{this.props.name}</span>
-        </div>
       </div>
     )
   }

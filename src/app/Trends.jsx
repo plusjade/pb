@@ -68,6 +68,7 @@ class Trend extends Component {
   }
 
   showDetail = (categoryName) => {
+    window.scroll(0,0)
     this.setState({shouldShowDetail: categoryName})
   }
 
@@ -86,22 +87,20 @@ class Trend extends Component {
     return !this.shouldShowClose()
   }
 
-  shouldShowChartToggle() {
-    return !this.shouldShowClose()
-  }
-
   render() {
     return(
       <div>
-        <Days
-          days={this.state.days}
-          remove={this.remove}
-          categoryOptions={this.state.categoryOptions}
-          persist={this.persist}
-          showAddEntry={this.showAddEntry}
-          showVizIndex={this.showVizIndex}
-          isActive={!this.state.shouldShowVizIndex}
-        />
+        {!this.state.shouldShowVizIndex && (
+          <Days
+            days={this.state.days}
+            remove={this.remove}
+            categoryOptions={this.state.categoryOptions}
+            persist={this.persist}
+            showAddEntry={this.showAddEntry}
+            showVizIndex={this.showVizIndex}
+            isActive={!this.state.shouldShowVizIndex}
+          />
+        )}
 
         <Visualization
           data={this.state.trends}
@@ -110,7 +109,7 @@ class Trend extends Component {
           categoryOptions={this.state.categoryOptions}
           showDetail={this.showDetail}
           showVizIndex={this.showVizIndex}
-          isActive={this.state.shouldShowVizIndex}
+          isActive={this.state.shouldShowVizIndex && !this.state.shouldShowDetail}
         />
 
         {this.state.shouldShowDetail && (

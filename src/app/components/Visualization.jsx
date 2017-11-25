@@ -18,7 +18,7 @@ const style = {
   },
   heading: {
     padding: "15px 0 15px 5px",
-    color: "#424242",
+    fontSize: 22,
   },
   visualization: {
     position: "fixed",
