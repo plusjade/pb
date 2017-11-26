@@ -20,17 +20,30 @@ const style = {
     // height: "100%",
     transition: "all 200ms ease",
     transform: "translateX(100%)",
-    backgroundColor: "#212121",
+    backgroundColor: "#121212",
   },
   isActive: {
     transform: "translateX(0)",
   },
+  glance: {
+    display: "flex",
+    marginTop: 10,
+    marginBottom: 25,
+  },
+  glanceUnit: {
+    flex: 1,
+    textAlign: "center",
+  },
   top: {
-    flex: 4,
+    flex: 5,
+  },
+  topActive: {
+    // boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
   },
   bottom: {
-    flex: 6,
+    flex: 5,
     overflow: "auto",
+    paddingTop: 10,
   },
   heading: {
     padding: "15px 0",
@@ -53,16 +66,41 @@ const style = {
   },
   detail: {
     // color: "#424242",
-    padding: 10,
-  },
-  glance: {
+    // padding: 10,
     display: "flex",
-    marginTop: 20,
-    marginBottom: 40,
+    width: "100%",
+    overflow: "auto",
+    padding: "20px 0",
+    //backgroundColor: "#111",
+    boxShadow: "inset 0 0 25px #090909",
+    marginTop: 40,
   },
-  glanceUnit: {
+  detailUnit: {
     flex: 1,
+    padding: 15,
     textAlign: "center",
+    borderRadius: 10,
+    backgroundColor: "#191919",
+    margin: "0 5px",
+  },
+  detailUnitOff: {
+    color: "#757575",
+    backgroundColor: "transparent",
+  },
+
+  addIcon: {
+    border: 0,
+    backgroundColor: "transparent",
+    position: "absolute",
+    top: 0,
+    right: 0,
+    padding: "2px 10px 0 10px",
+    color: "inherit",
+    fontSize: 38,
+    outline: "none",
+  },
+  timelineHeading: {
+    padding: "10px 0 0 10px",
   },
 }
 
@@ -75,6 +113,16 @@ class CategoryDetail extends Component {
     data: {data: []}
   }
 
+  handleAdd = () => {
+    if (this.props.showAddEntry) {
+      this.props.closeAddEntry()
+    } else {
+      this.props.persist({
+        category: this.props.data.category,
+      })
+    }
+  }
+
   render() {
     return (
       <div
@@ -83,11 +131,24 @@ class CategoryDetail extends Component {
           this.props.isActive && style.isActive,
         ]}
       >
-        <div style={style.top}>
+        <div
+          style={[
+            style.top,
+            this.props.isActive && style.topActive,
+          ]}
+        >
           <h1 style={style.heading}>
-            <Hammer
-              onTap={this.props.onSwipeRight}
-            >
+            <Hammer onTap={this.handleAdd}>
+              <button style={style.addIcon}>
+                {this.props.showAddEntry ? (
+                  "✕"
+                ) : (
+                  "+"
+                )}
+              </button>
+            </Hammer>
+
+            <Hammer onTap={this.props.onSwipeRight}>
               <button style={style.backButton}>
                 ←
               </button>
@@ -95,27 +156,6 @@ class CategoryDetail extends Component {
             {this.props.data.category}
           </h1>
 
-          <Hammer
-            onSwipe={this.props.onSwipeRight}
-            direction={"DIRECTION_RIGHT"}
-          >
-            <div style={style.chartWrap}>
-              <Chart
-                key={this.props.data.category}
-                ratio={2}
-                data={this.props.data.data}
-                maxHealth={20}
-                index={0}
-                name={this.props.data.category}
-                showAxis={true}
-                showPoints={true}
-              />
-            </div>
-          </Hammer>
-        </div>
-
-
-        <div style={style.bottom}>
           <Hammer
             onSwipe={this.props.onSwipeRight}
             direction={"DIRECTION_RIGHT"}
@@ -135,23 +175,41 @@ class CategoryDetail extends Component {
               </div>
             </div>
           </Hammer>
+
           <Hammer
             onSwipe={this.props.onSwipeRight}
             direction={"DIRECTION_RIGHT"}
           >
-            <div style={style.detail}>
-              {this.props.data.data.slice(0).reverse().map((d, i) => (
-                <div
-                  key={i}
-                  style={[
-                    !d.occurred_at && ({color: "#757575"})
-                  ]}
-                >
-                  {d.occurred_at ? d.occurred_at : "-"}
-                </div>
-              ))}
+            <div style={style.chartWrap}>
+              <Chart
+                key={this.props.data.category}
+                ratio={2}
+                data={this.props.data.data}
+                maxHealth={20}
+                index={0}
+                name={this.props.data.category}
+                showAxis={true}
+                showPoints={true}
+              />
             </div>
           </Hammer>
+
+        </div>
+
+        <div style={style.bottom}>
+          <div style={style.detail}>
+            {this.props.data.data.map((d, i) => (
+              <div
+                key={i}
+                style={[
+                  style.detailUnit,
+                  !d.occurred_at && style.detailUnitOff
+                ]}
+              >
+                {d.occurred_at ? d.occurred_at : "-"}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     )

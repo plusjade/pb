@@ -18,8 +18,34 @@ const style = {
     bottom: 0,
     overflowX: "hidden",
     WebkitOverflowScrolling: "touch",
-  }
+  },
+  dateSelector: {
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    textAlign: "center",
+    zIndex: 9999999,
+    backgroundColor: "#121212",
+    boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
+    transition: "all 200ms ease",
+    transform: "translateY(100%)",
+  },
+  dateSelectorIsActive: {
+    transform: "translateY(0%)",
+  },
+  selectDropdown: {
+    width: "80%",
+    margin: "auto",
+    padding: "20px 0",
+    margin: "40px 0",
+    textAlign: "center",
+    fontSize: 20,
+    textAlignLast:"center",
+    border: "1px solid #222",
+  },
 }
+
 class Trend extends Component {
   static propTypes = {
     getPayload: PropTypes.func.isRequired,
@@ -45,18 +71,35 @@ class Trend extends Component {
   }
 
   persist = (body) => {
-    if (!body.ordinal || body.ordinal.trim() === "") { return }
+    // if (!body.ordinal || body.ordinal.trim() === "") { return }
+    this.setState({showAddEntry: body})
+  }
 
+  handleSelect = (e) => {
+    e.preventDefault()
+    this.persistReally(
+      Object.assign(
+        {},
+        this.state.showAddEntry,
+        {ordinal: e.target.value, value: ""}
+      )
+    )
+  }
+
+  persistReally = (body) => {
     this.props.persist(body).then(() => {
+      this.closeAddEntry()
       this.refreshData()
-      this.closeModals()
     })
+  }
+
+  closeAddEntry = () => {
+    this.setState({showAddEntry: false})
   }
 
   remove = (id) => {
     this.props.remove(id).then(() => {
       this.refreshData()
-      // this.closeModals()
     })
   }
 
@@ -88,13 +131,9 @@ class Trend extends Component {
     this.state.trends.find(d => (this.state.shouldShowDetail === d.category))
   )
 
-  shouldShowClose() {
-    return this.state.showAddEntry
-  }
-
-  shouldShowAdd() {
-    return !this.shouldShowClose()
-  }
+  shouldShowSlidePosition =() => (
+    !this.state.shouldShowDetail
+  )
 
   render() {
     return(
@@ -127,23 +166,36 @@ class Trend extends Component {
           data={this.getCategoryDetail()}
           onSwipeRight={this.closeModals}
           isActive={this.state.shouldShowDetail}
+          persist={this.persist}
+          showAddEntry={this.state.showAddEntry}
+          closeAddEntry={this.closeAddEntry}
         />
 
-        {this.state.showAddEntry && (
-          <EntryAdd
-            persist={this.persist}
-            ordinal={this.state.showAddEntry}
-            categoryOptions={this.state.categoryOptions}
-          />
-        )}
-
-        {this.shouldShowClose() ? (
-          <Close onClick={this.closeModals} />
-        ) : (
+        {this.shouldShowSlidePosition() && (
           <SlidePosition
             activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
           />
         )}
+
+        <div
+          onChange={this.handleSelect}
+          style={[
+            style.dateSelector,
+            this.state.showAddEntry && style.dateSelectorIsActive,
+          ]}
+        >
+          <select
+            key={Math.random()}
+            style={style.selectDropdown}
+          >
+            <option value="">{"Add to…"}</option>
+            {this.state.days.map(d => (
+              <option value={d.ordinal} key={d.ordinal}>
+                {d.occurred_at}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
     )
   }

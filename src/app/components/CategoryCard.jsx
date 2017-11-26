@@ -12,12 +12,7 @@ const style = {
     marginBottom: 10,
     position: "relative",
   },
-  addIcon: {
-    position: "absolute",
-    top: 5,
-    left: 0,
-    padding: 5,
-  },
+
   name: {
     fontSize: 20,
     lineHeight: "1.8em",
@@ -31,14 +26,6 @@ class CategoryCard extends PureComponent {
     this.props.showDetail(this.props.name)
   }
 
-  handleAdd = () => {
-    this.props.persist({
-      ordinal: this.props.day.ordinal,
-      value: "",
-      category: this.props.name,
-    })
-  }
-
   render() {
     return (
       <div
@@ -47,9 +34,6 @@ class CategoryCard extends PureComponent {
           {color: this.props.color},
         ]}
       >
-        <Hammer onTap={this.handleAdd}>
-          <h2 style={style.addIcon}>+</h2>
-        </Hammer>
         <Hammer onTap={this.handleSelect}>
           <h2 style={style.name}>
             <span>{this.props.name}</span>
@@ -70,6 +54,5 @@ class CategoryCard extends PureComponent {
     )
   }
 }
-
 
 export default Radium(CategoryCard)

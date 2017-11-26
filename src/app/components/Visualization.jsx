@@ -13,7 +13,7 @@ const style = {
   default: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#212121",
+    backgroundColor: "#121212",
     overflow: "auto",
   },
   heading: {
