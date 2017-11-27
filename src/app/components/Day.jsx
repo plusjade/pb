@@ -52,7 +52,6 @@ class Day extends Component {
     return(
       <div style={[
         style.default,
-        this.props.isToday && style.isToday,
       ]}>
         <h2
           onClick={this.toggleExpand}
@@ -65,14 +64,7 @@ class Day extends Component {
         <div style={style.entriesWrap}>
           <div style={{marginTop: 10}}>
             {categories.sort().map((key) => (
-              <Category
-                key={key}
-                name={key}
-                color={this.props.categoryOptions[key] && this.props.categoryOptions[key].color}
-                isActive={true}
-                onClick={this.handleToggle}
-                id={entries[key]}
-              />
+              <div key={key}>{`- ${key}`}</div>
             ))}
           </div>
         </div>

@@ -28,7 +28,6 @@ class Days extends PureComponent {
 
                 remove={this.props.remove}
                 entryEdit={this.props.entryEdit}
-                categoryOptions={this.props.categoryOptions}
                 persist={this.props.persist}
                 showAddEntry={this.props.showAddEntry}
               />

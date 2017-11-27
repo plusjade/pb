@@ -86,7 +86,6 @@ class Visualization extends PureComponent {
                   key={d.category}
                   name={d.category}
                   occurrences={d.occurrences}
-                  color={this.props.categoryOptions[d.category] && this.props.categoryOptions[d.category].color}
                   data={d.data}
                   maxHealth={this.props.maxHealth}
                   showDetail={this.props.showDetail}

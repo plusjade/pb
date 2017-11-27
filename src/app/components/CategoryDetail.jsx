@@ -166,12 +166,12 @@ class CategoryDetail extends Component {
                 <h5>occurrences</h5>
               </div>
               <div style={style.glanceUnit}>
-                <h2>3</h2>
+                <h2>{this.props.data.days_since_last}</h2>
                 <h5>since last</h5>
               </div>
               <div style={style.glanceUnit}>
-                <h2>{20}</h2>
-                <h5>health</h5>
+                <h2>{this.props.data.maxHealth}</h2>
+                <h5>max health</h5>
               </div>
             </div>
           </Hammer>

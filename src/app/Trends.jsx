@@ -2,10 +2,8 @@ import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
 
-import Close              from 'app/components/Close'
 import Days               from 'app/components/Days'
 import Visualization      from 'app/components/Visualization'
-import EntryAdd           from 'app/components/EntryAdd/EntryAdd'
 import SlidePosition      from 'app/components/SlidePosition/SlidePosition'
 import CategoryDetail     from 'app/components/CategoryDetail'
 
@@ -21,17 +19,18 @@ const style = {
   },
   dateSelector: {
     position: "fixed",
+    top: 80,
     bottom: 0,
     left: 0,
     right: 0,
     textAlign: "center",
     zIndex: 9999999,
     backgroundColor: "#121212",
-    boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
     transition: "all 200ms ease",
     transform: "translateY(100%)",
   },
   dateSelectorIsActive: {
+    boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
     transform: "translateY(0%)",
   },
   selectDropdown: {
@@ -57,7 +56,6 @@ class Trend extends Component {
     days: [],
     shouldShowVizIndex: true,
     shouldShowDetail: false,
-    categoryOptions: [],
     maxHealth: 0,
     trends: [],
   }
@@ -142,7 +140,6 @@ class Trend extends Component {
           <Days
             days={this.state.days}
             remove={this.remove}
-            categoryOptions={this.state.categoryOptions}
             persist={this.persist}
             showAddEntry={this.showAddEntry}
             showVizIndex={this.showVizIndex}
@@ -154,7 +151,6 @@ class Trend extends Component {
           data={this.state.trends}
           categories={this.state.categories}
           maxHealth={this.state.maxHealth}
-          categoryOptions={this.state.categoryOptions}
           showDetail={this.showDetail}
           showVizIndex={this.showVizIndex}
           isActive={this.state.shouldShowVizIndex || this.state.shouldShowDetail}

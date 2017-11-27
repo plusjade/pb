@@ -5,16 +5,6 @@ const API_ENDPOINT = (
     ? "https://www.getdamon.com"
     : "http://localhost:4000"
 )
-const HARDCODED_CATEGORIES = ["instacart", "gym", "project", "friends", "relationships", "family", "social"]
-const categoryOptions = () => (
-  HARDCODED_CATEGORIES.reduce((memo, d, index) => {
-    memo[d] = {
-      name: d,
-      color: "#616161",
-    }
-    return memo
-  }, {})
-)
 function checkStatus(response) {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -39,7 +29,6 @@ export const getPayload = () => (
       days: rsp.days,
       trends: rsp.trends,
       categories: rsp.categories,
-      categoryOptions: categoryOptions(),
       maxHealth: max(aggregrate, d => (d.health))
     })
   })
