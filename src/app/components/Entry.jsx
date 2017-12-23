@@ -1,5 +1,6 @@
 import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
+import Radium from 'radium'
 import Hammer             from 'react-hammerjs'
 import colors from 'app/colors'
 
@@ -47,7 +48,9 @@ class Entry extends Component {
 
   render() {
     return(
-      <div style={style.default}>
+      <div style={[
+          style.default,
+      ]}>
         <div style={{flex: 1}}>
           <span>{this.props.value || "-"}</span>
         </div>
@@ -61,4 +64,4 @@ class Entry extends Component {
   }
 }
 
-export default Entry
+export default Radium(Entry)

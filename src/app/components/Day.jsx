@@ -2,6 +2,7 @@ import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
 import Hammer             from 'react-hammerjs'
+import stickybits from 'stickybits'
 
 import Category                from 'app/components/Category'
 import Entry                   from 'app/components/Entry'
@@ -10,15 +11,25 @@ import colors from 'app/colors'
 
 const style = {
   default: {
-    padding: "20px 10px",
-    position: "relative",
+    padding: "0 10px 20px 0",
   },
   isToday: {
     height: 300,
   },
   heading: {
+    display: "inline-block",
     fontSize: 22,
-    marginLeft: 5,
+    zIndex: 3,
+    position: "-webkit-sticky",
+    position: "-moz-sticky",
+    position: "-ms-sticky",
+    position: "-o-sticky",
+    position: "sticky",
+    top: 4,
+    left: 0,
+    right: 0,
+    paddingTop: 20,
+    color: "#FFF",
   },
   entriesWrap: {
     marginTop: 20,
@@ -28,15 +39,24 @@ const style = {
   addIcon: {
     border: 0,
     backgroundColor: "transparent",
-    position: "absolute",
     top: 10,
     right: 5,
     padding: "2px 10px 0 10px",
-    color: "inherit",
+    color: "#FFF",
     fontSize: 38,
     outline: "none",
+    position: "absolute",
+    top: 0,
+    right: 0,
   },
-
+  date: {
+    display: "inline-block",
+    width: 60,
+    padding: "5px 10px 5px 0",
+    textAlign: "center",
+    borderRadius: "0 15px 15px 0",
+    fontSize: 14,
+  }
 }
 
 class Day extends Component {
@@ -46,21 +66,10 @@ class Day extends Component {
     showDetail: PropTypes.func.isRequired,
   }
 
-  handleToggle = (category) => {
-    const categories = this.props.entries.map((e) => (e.category))
-    if (categories.includes(category.name)) {
-      this.props.remove(category.id)
-    } else {
-      this.props.persist({
-        ordinal: this.props.ordinal,
-        value: "",
-        category: category.name,
-      })
-    }
-  }
-
-  toggleExpand = () => {
-    this.props.showAddEntry(this.props.ordinal)
+  componentDidMount() {
+    setTimeout(() => {
+      stickybits('.stickyDate')
+    }, 300)
   }
 
   handleAdd = () => {
@@ -84,30 +93,23 @@ class Day extends Component {
       <div style={[
         style.default
       ]}>
-        <Hammer onTap={this.handleAdd}>
-          <button style={style.addIcon}>
-            {this.props.showAddEntry ? (
-              "✕"
-            ) : (
-              "+"
-            )}
-          </button>
-        </Hammer>
-
         <h2
-          onClick={this.toggleExpand}
+          className="stickyDate"
+          data-ordinal={this.props.ordinal}
           style={[
             style.heading,
           ]}
         >
-          <div>
-            {`${date}`}
+          <div style={
+            [
+              style.date,
+              {backgroundColor: this.props.color}
+            ]
+          }>
+            <Hammer onTap={this.handleAdd}>
+              <span>{`${this.props.name} +`}</span>
+            </Hammer>
           </div>
-          {weekday && (
-            <div style={{fontSize: 14}}>
-              {`${weekday}`}
-            </div>
-          )}
         </h2>
         <div style={style.entriesWrap}>
           <div style={{marginTop: 10}}>
@@ -116,6 +118,7 @@ class Day extends Component {
                 {...entry}
                 key={entry.id}
                 showDetail={this.props.showDetail}
+                color={this.props.color}
               />
             ))}
           </div>

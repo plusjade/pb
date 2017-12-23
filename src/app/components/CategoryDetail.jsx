@@ -22,6 +22,7 @@ const style = {
     transition: "all 200ms ease",
     transform: "translateX(100%)",
     backgroundColor: colors.background,
+    zIndex: 4,
   },
   isActive: {
     transform: "translateX(0)",
@@ -151,7 +152,7 @@ class CategoryDetail extends Component {
             <div style={style.glance}>
               <div style={style.glanceUnit}>
                 <h2>{this.props.data.occurrences}</h2>
-                <h5>occurrences</h5>
+                <h5>entries</h5>
               </div>
               <div style={style.glanceUnit}>
                 <h2>{this.props.data.days_since_last}</h2>
@@ -159,7 +160,7 @@ class CategoryDetail extends Component {
               </div>
               <div style={style.glanceUnit}>
                 <h2>{this.props.data.maxHealth}</h2>
-                <h5>max health</h5>
+                <h5>best health</h5>
               </div>
             </div>
           </Hammer>
