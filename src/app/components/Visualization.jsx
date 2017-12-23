@@ -9,11 +9,13 @@ import Hammer             from 'react-hammerjs'
 import Layer                from 'components/Layer/Layer'
 import CategoryCard                from 'app/components/CategoryCard'
 
+import colors from 'app/colors'
+
 const style = {
   default: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: "#121212",
+    backgroundColor: colors.background,
     overflow: "auto",
   },
   heading: {
@@ -33,20 +35,7 @@ const style = {
   topUnitActive: {
     borderBottom: "1px solid #616161",
   },
-  visualization: {
-    position: "fixed",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-    transition: "all 200ms ease",
-    transform: "translateX(93%)",
-    boxShadow: "1px 1px 30px #121212",
-  },
-  isActive: {
-    position: "absolute",
-    transform: "translateX(0)",
-  },
+
 }
 
 class Visualization extends PureComponent {
@@ -59,14 +48,12 @@ class Visualization extends PureComponent {
     return(
       <div
         style={[
-          style.visualization,
-          this.props.isActive && style.isActive,
         ]}
       >
         <Layer isActive={this.props.isActive}>
           <Hammer
             onSwipe={this.props.showVizIndex}
-            direction={"DIRECTION_RIGHT"}
+            direction={"DIRECTION_LEFT"}
             onTap={(e) => {
               if (this.props.isActive) { return }
               e.preventDefault()

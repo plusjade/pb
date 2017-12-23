@@ -8,6 +8,8 @@ import React, { PureComponent }   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
 
+import colors from 'app/colors'
+
 import * as d3 from "d3"
 
 const WIDTH = 1200
@@ -63,9 +65,9 @@ class Chart extends PureComponent {
     const areaStart = data => (
       area(data.map(d => ({date: d.date, health: 0})))
     )
-
-    const tickValues = Array(28).fill(1).map((_, i) => (28 - i))
-    const xAxis = d3.axisBottom(x).tickValues([-28, -21, -14, -7, 0])
+    const LAST_NUMBER_DAYS = 56// 28
+    const tickValues = Array(LAST_NUMBER_DAYS).fill(1).map((_, i) => (LAST_NUMBER_DAYS - i))
+    const xAxis = d3.axisBottom(x).tickValues([-LAST_NUMBER_DAYS, -21, -14, -7, 0])
     const yAxis = d3.axisRight(y)
     yAxis.tickValues([0])
 
@@ -86,9 +88,9 @@ class Chart extends PureComponent {
     this.update = (data, maxHealth) => {
       const lineData = data[0].data
       const dotData = lineData.filter(d => (d.ordinal !== 0))
-      x.domain([-28, 0])
+      x.domain([-LAST_NUMBER_DAYS, 0])
       y.domain([0, maxHealth])
-      yAxis.tickValues([maxHealth])
+      yAxis.tickValues([maxHealth/2, maxHealth])
       area.y0(y(0))
 
       const nodeDotLines = g.selectAll("g.dotLine").data(dotData, d => (d.date))
@@ -116,7 +118,7 @@ class Chart extends PureComponent {
           .attr("stroke", "rgba(66, 66, 66, 0.5)")
           .attr("stroke-width", "1")
           .attr("fill", "none")
-          .attr("x1", d => (x(-28)))
+          .attr("x1", d => (x(-LAST_NUMBER_DAYS)))
           .attr("x2", d => (x(0)))
           .attr("y1", (i) => (y(i)))
           .attr("y2", (i) => (y(i)))
@@ -139,7 +141,7 @@ class Chart extends PureComponent {
       if (this.props.showPoints) {
         // Data dots
         nodeDots.enter().append("circle")
-          .attr("fill", "#E0E0E0")
+          .attr("fill", colors.pins)
           .attr("r", 0)
           .attr("cx", d => (x(d.date)) )
           .attr("cy", d => (y(maxHealth)))
@@ -153,7 +155,7 @@ class Chart extends PureComponent {
         // dot-lines
         nodeDotLines.enter().append("g").attr("class", "dotLine")
           .append("line")
-            .attr("stroke", "#E0E0E0")
+            .attr("stroke", colors.pins)
             .attr("stroke-width", "2")
             .attr("fill", "none")
               .attr("y1", d => (y(maxHealth)))
@@ -172,7 +174,7 @@ class Chart extends PureComponent {
       // area
       node.enter().append("g").attr("class", "area")
         .append("path")
-          .attr("fill", "rgba(66, 66, 66, 0.5)")
+          .attr("fill", colors.area)
           .attr("d", d => (areaStart(d.data)))
           .transition()
             .delay(1000)
@@ -189,7 +191,7 @@ class Chart extends PureComponent {
       nodeLine.enter().append("g").attr("class", "line")
         .append("path")
           .attr("d", line(lineData))
-          .attr("stroke", "#9E9E9E")
+          .attr("stroke", colors.graphLine)
           .attr("stroke-width", "2")
           .attr("fill", "none")
           .attr("stroke-dasharray", `${totalLength} ${totalLength}`)

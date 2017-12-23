@@ -1,20 +1,31 @@
 import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
+import Hammer             from 'react-hammerjs'
+import colors from 'app/colors'
 
 const style = {
   default: {
     margin: "10px 0",
+    boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
     color: "#424242",
+    padding: 20,
+    borderRadius: 20,
+    position: "relative",
+    backgroundColor: "#FFF",
   },
   dot: {
     fontSize: 20,
     padding: "0 3px 0 5px",
   },
-  small: {
+  hashtag: {
     color: "#AAA",
-  }
+    position: "absolute",
+    top: 5,
+    right: 15,
+    fontSize: 12,
+  },
 }
 
 class Entry extends Component {
@@ -29,28 +40,22 @@ class Entry extends Component {
     this.props.entryEdit(this.props.entry)
   }
 
+  handleSelect = () => {
+    this.props.showDetail(this.props.category)
+  }
+
+
   render() {
     return(
       <div style={style.default}>
-        <div style={style.dot}>
-          <span>·</span>
-        </div>
         <div style={{flex: 1}}>
-          <span>{this.props.category}</span>
-          <br/>
-          <small style={style.small}>
-            {` ${this.props.value} `}
-          </small>
+          <span>{this.props.value || "-"}</span>
         </div>
-        <div>
-          <a
-            href=""
-            onClick={this.handleEdit}
-            style={{textDecoration: "none"}}
-          >
-            {"✎"}
-          </a>
-        </div>
+        <Hammer onTap={this.handleSelect}>
+          <div style={style.hashtag}>
+            {`#${this.props.category}`}
+          </div>
+        </Hammer>
       </div>
     )
   }

@@ -6,6 +6,7 @@ import Hammer             from 'react-hammerjs'
 import Chart                from 'app/components/Chart'
 import Layer                from 'components/Layer/Layer'
 
+import colors from 'app/colors'
 // import style from './style'
 
 const style = {
@@ -20,7 +21,7 @@ const style = {
     // height: "100%",
     transition: "all 200ms ease",
     transform: "translateX(100%)",
-    backgroundColor: "#121212",
+    backgroundColor: colors.background,
   },
   isActive: {
     transform: "translateX(0)",
@@ -65,22 +66,19 @@ const style = {
 
   },
   detail: {
-    // color: "#424242",
-    // padding: 10,
     display: "flex",
     width: "100%",
     overflow: "auto",
     padding: "20px 0",
-    //backgroundColor: "#111",
-    boxShadow: "inset 0 0 25px #090909",
+    boxShadow: colors.boxShadow,
     marginTop: 40,
   },
   detailUnit: {
     flex: 1,
     padding: 15,
     textAlign: "center",
-    borderRadius: 10,
-    backgroundColor: "#191919",
+    borderRadius: 100,
+    backgroundColor: colors.secondary,
     margin: "0 5px",
   },
   detailUnitOff: {
@@ -138,16 +136,6 @@ class CategoryDetail extends Component {
           ]}
         >
           <h1 style={style.heading}>
-            <Hammer onTap={this.handleAdd}>
-              <button style={style.addIcon}>
-                {this.props.showAddEntry ? (
-                  "✕"
-                ) : (
-                  "+"
-                )}
-              </button>
-            </Hammer>
-
             <Hammer onTap={this.props.onSwipeRight}>
               <button style={style.backButton}>
                 ←

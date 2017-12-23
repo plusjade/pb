@@ -2,6 +2,8 @@ import React, {Component}   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
 
+import colors from 'app/colors'
+
 const style = {
   categoryButton: {
     display: "inline-block",
@@ -12,7 +14,7 @@ const style = {
     textAlign: "center",
     backgroundColor: "#fefefe",
     margin: 5,
-    color: "#9E9E9E",
+    color: colors.text,
     border: "1px solid rgba(48, 48, 48, 0.8)"
   },
   active: {

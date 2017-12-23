@@ -7,6 +7,8 @@ import Visualization      from 'app/components/Visualization'
 import SlidePosition      from 'app/components/SlidePosition/SlidePosition'
 import CategoryDetail     from 'app/components/CategoryDetail'
 
+import colors from 'app/colors'
+
 const style = {
   container: {
     position: "absolute",
@@ -25,7 +27,7 @@ const style = {
     right: 0,
     textAlign: "center",
     zIndex: 9999999,
-    backgroundColor: "#121212",
+    backgroundColor: colors.background,
     transition: "all 200ms ease",
     transform: "translateY(100%)",
   },
@@ -41,8 +43,26 @@ const style = {
     textAlign: "center",
     fontSize: 20,
     textAlignLast:"center",
-    border: "1px solid #222",
+    border: `1px solid ${colors.borderColor}`,
   },
+  textarea: {
+    marginTop: 10,
+    width: "90%",
+    height: "50%",
+    background: "#FFF",
+    border: "1px solid",
+  },
+  button: {
+    padding: 10,
+    backgroundColor: "#FFF",
+    display: "block",
+    borderRadius: 10,
+    width: "90%",
+    margin: "auto",
+    fontSize: 22,
+    textAlign: "center",
+    border: 0,
+  }
 }
 
 class Trend extends Component {
@@ -69,22 +89,27 @@ class Trend extends Component {
   }
 
   persist = (body) => {
-    // if (!body.ordinal || body.ordinal.trim() === "") { return }
     this.setState({showAddEntry: body})
   }
 
-  handleSelect = (e) => {
+  handleSubmit = (e) => {
     e.preventDefault()
     this.persistReally(
       Object.assign(
         {},
         this.state.showAddEntry,
-        {ordinal: e.target.value, value: ""}
+        {value: this.textAreaRef && this.textAreaRef.value}
       )
     )
   }
 
   persistReally = (body) => {
+    if (
+      !body.ordinal
+      || body.ordinal.trim() === ""
+      || !body.value
+      || !body.value.trim() === ""
+    ) { return }
     this.props.persist(body).then(() => {
       this.closeAddEntry()
       this.refreshData()
@@ -133,29 +158,36 @@ class Trend extends Component {
     !this.state.shouldShowDetail
   )
 
+  refTextarea = (node) => {
+    if (node) { this.textAreaRef = node}
+  }
+
   render() {
     return(
       <div id="CONTAINER" style={style.container}>
         {!this.state.shouldShowVizIndex && (
-          <Days
-            days={this.state.days}
-            remove={this.remove}
-            persist={this.persist}
-            showAddEntry={this.showAddEntry}
+          <Visualization
+            data={this.state.trends}
+            categories={this.state.categories}
+            maxHealth={this.state.maxHealth}
+            showDetail={this.showDetail}
             showVizIndex={this.showVizIndex}
-            isActive={!this.state.shouldShowVizIndex}
+            day={this.state.days[0]}
+            persist={this.persist}
           />
         )}
 
-        <Visualization
-          data={this.state.trends}
-          categories={this.state.categories}
-          maxHealth={this.state.maxHealth}
-          showDetail={this.showDetail}
-          showVizIndex={this.showVizIndex}
-          isActive={this.state.shouldShowVizIndex || this.state.shouldShowDetail}
-          day={this.state.days[0]}
+        <Days
+          days={this.state.days}
+          remove={this.remove}
           persist={this.persist}
+          showAddEntry={this.state.showAddEntry}
+          showVizIndex={this.showVizIndex}
+          isActive={!this.state.shouldShowVizIndex}
+          showDetail={this.showDetail}
+          isActive={this.state.shouldShowVizIndex || this.state.shouldShowDetail}
+
+          closeAddEntry={this.closeAddEntry}
         />
 
         <CategoryDetail
@@ -173,25 +205,26 @@ class Trend extends Component {
           />
         )}
 
-        <div
-          onChange={this.handleSelect}
+        <form
+          onSubmit={this.handleSubmit}
           style={[
             style.dateSelector,
             this.state.showAddEntry && style.dateSelectorIsActive,
           ]}
         >
-          <select
-            key={Math.random()}
-            style={style.selectDropdown}
+          <textarea
+            style={style.textarea}
+            ref={this.refTextarea}
+            defaultValue=""
+          />
+
+          <button
+            style={style.button}
+            type="submit"
           >
-            <option value="">{"Add to…"}</option>
-            {this.state.days.map(d => (
-              <option value={d.ordinal} key={d.ordinal}>
-                {d.occurred_at}
-              </option>
-            ))}
-          </select>
-        </div>
+            Add entry
+          </button>
+        </form>
       </div>
     )
   }
