@@ -50,7 +50,7 @@ class Visualization extends PureComponent {
         style={[
         ]}
       >
-        <Layer isActive={this.props.isActive}>
+        <Layer isActive={this.props.isActive} style={{zIndex: 5}}>
           <Hammer
             onSwipe={this.props.showVizIndex}
             direction={"DIRECTION_LEFT"}
@@ -76,7 +76,6 @@ class Visualization extends PureComponent {
                   data={d.data}
                   maxHealth={this.props.maxHealth}
                   showDetail={this.props.showDetail}
-                  day={this.props.day}
                   persist={this.props.persist}
                 />
               ))}

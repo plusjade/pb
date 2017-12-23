@@ -28,7 +28,7 @@ class Trend extends Component {
   }
 
   state = {
-    days: [],
+    feed: [],
     shouldShowVizIndex: true,
     shouldShowDetail: false,
     maxHealth: 0,
@@ -112,13 +112,12 @@ class Trend extends Component {
             maxHealth={this.state.maxHealth}
             showDetail={this.showDetail}
             showVizIndex={this.showVizIndex}
-            day={this.state.days[0]}
             persist={this.persist}
           />
         )}
 
         <Feed
-          days={this.state.days}
+          feed={this.state.feed}
           remove={this.remove}
           persist={this.persist}
           showAddEntry={this.state.showAddEntry}

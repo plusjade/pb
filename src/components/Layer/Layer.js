@@ -10,6 +10,7 @@ class Layer extends PureComponent {
       <div
         style={[
           style.layer,
+          this.props.style,
           this.props.isActive && style.isActive
         ]}
       >

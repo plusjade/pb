@@ -6,7 +6,7 @@ import colors from 'app/colors'
 
 const style = {
   default: {
-    margin: "10px 0",
+    margin: "10px 10px 10px 50px",
     boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
@@ -15,10 +15,6 @@ const style = {
     borderRadius: 20,
     position: "relative",
     backgroundColor: "#FFF",
-  },
-  dot: {
-    fontSize: 20,
-    padding: "0 3px 0 5px",
   },
   hashtag: {
     color: "#AAA",

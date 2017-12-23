@@ -26,7 +26,7 @@ export const getPayload = () => (
   .then((rsp) => {
     const aggregrate = rsp.trends.reduce((memo, d) => (memo.concat(d.data)),[])
     return ({
-      days: rsp.days,
+      feed: rsp.feed,
       trends: rsp.trends,
       categories: rsp.categories,
       maxHealth: max(aggregrate, d => (d.health))

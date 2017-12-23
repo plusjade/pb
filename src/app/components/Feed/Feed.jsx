@@ -4,6 +4,8 @@ import Radium from 'radium'
 
 import Banner from 'app/components/Banner'
 import Day from 'app/components/Day'
+import Entry from 'app/components/Entry'
+
 import style from './style'
 
 class Feed extends PureComponent {
@@ -21,26 +23,25 @@ class Feed extends PureComponent {
           )}
         </button>
 
-        {this.props.days.map((day) => {
-          switch (day.type) {
+        {this.props.feed.map((unit) => {
+          switch (unit.type) {
             case "banner": {
               return (
                 <Banner
-                  key={day.value}
-                  color={day.color}
-                  value={day.value}
+                  key={unit.value}
+                  color={unit.color}
+                  value={unit.value}
                 />
               )
             }
-            default: {
+            case "day": {
               return (
                 <Day
-                  key={day.ordinal}
-                  name={day.occurred_at}
-                  color={day.color}
-                  entries={day.entries}
-                  ordinal={day.ordinal}
-                  isToday={day.isToday}
+                  key={unit.ordinal}
+                  value={unit.value}
+                  color={unit.color}
+                  entries={unit.entries}
+                  ordinal={unit.ordinal}
 
                   remove={this.props.remove}
                   entryEdit={this.props.entryEdit}
@@ -50,6 +51,18 @@ class Feed extends PureComponent {
                   closeAddEntry={this.props.closeAddEntry}
                 />
               )
+            }
+            case "entry": {
+              return (
+                <Entry
+                  {...unit}
+                  key={unit.id}
+                  showDetail={this.props.showDetail}
+                />
+              )
+            }
+            default: {
+              return (null)
             }
           }
         })}
