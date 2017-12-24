@@ -13,7 +13,7 @@ export default {
     transform: "translateY(100%)",
   },
   dateSelectorIsActive: {
-    boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
+    // boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
     transform: "translateY(0%)",
   },
   selectDropdown: {
@@ -29,13 +29,13 @@ export default {
   input: {
     width: "100%",
     background: "#FFF",
-    border: "1px solid",
+    border: "1px solid #E0E0E0",
     fontSize: 16,
     padding: "15px 60px 15px 10px",
   },
   button: {
     position: "absolute",
-    top: 0,
+    top: 1,
     bottom: 0,
     right: 0,
     padding: "0 15px",

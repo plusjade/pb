@@ -182,23 +182,6 @@ class CategoryDetail extends Component {
               />
             </div>
           </Hammer>
-
-        </div>
-
-        <div style={style.bottom}>
-          <div style={style.detail}>
-            {this.props.data.data.map((d, i) => (
-              <div
-                key={i}
-                style={[
-                  style.detailUnit,
-                  !d.occurred_at && style.detailUnitOff
-                ]}
-              >
-                {d.occurred_at ? d.occurred_at : "-"}
-              </div>
-            ))}
-          </div>
         </div>
       </div>
     )

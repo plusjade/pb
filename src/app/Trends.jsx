@@ -10,13 +10,13 @@ import EntryAdd     from 'app/components/EntryAdd/EntryAdd'
 
 const style = {
   container: {
-    position: "absolute",
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    overflowX: "hidden",
-    WebkitOverflowScrolling: "touch",
+    // position: "absolute",
+    // top: 0,
+    // left: 0,
+    // right: 0,
+    // bottom: 0,
+    // overflowX: "hidden",
+    // WebkitOverflowScrolling: "touch",
   },
 }
 
@@ -71,7 +71,8 @@ class Trend extends Component {
   }
 
   showVizIndex = () => {
-    window.scroll(0,0)
+    // window.scroll(0,0)
+    console.log("showVizIndex")
     this.setState({
       shouldShowVizIndex: !this.state.shouldShowVizIndex,
     })
@@ -82,7 +83,8 @@ class Trend extends Component {
   }
 
   closeModals = () => {
-    window.scroll(0,0)
+    // window.scroll(0,0)
+    console.log("closeModals")
     this.setState({
       showAddEntry: false,
       shouldShowDetail: false,
@@ -90,7 +92,8 @@ class Trend extends Component {
   }
 
   showDetail = (categoryName) => {
-    window.scroll(0,0)
+    console.log("showDetail")
+    // window.scroll(0,0)
     this.setState({shouldShowDetail: categoryName})
   }
 
@@ -138,7 +141,7 @@ class Trend extends Component {
           closeAddEntry={this.closeAddEntry}
         />
 
-        {this.shouldShowSlidePosition() && (
+        {false && this.shouldShowSlidePosition() && (
           <SlidePosition
             activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
           />

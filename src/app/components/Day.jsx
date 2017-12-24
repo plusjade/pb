@@ -36,8 +36,8 @@ const style = {
   date: {
     display: "inline-block",
     width: 60,
-    padding: "3px 10px 3px 0",
-    textAlign: "center",
+    padding: "3px 10px 3px 5px",
+    textAlign: "left",
     borderRadius: "0 15px 15px 0",
     fontSize: 14,
     color: "inherit",
@@ -77,11 +77,11 @@ class Day extends Component {
           <div
             style={[
               style.date,
-              {backgroundColor: this.props.color}
+              {color: this.props.color}
             ]}
           >
             <Hammer onTap={this.handleAdd}>
-              <span>{`${this.props.value} +`}</span>
+              <span>{`${this.props.value}`}</span>
             </Hammer>
           </div>
         </h2>

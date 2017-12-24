@@ -6,20 +6,20 @@ import colors from 'app/colors'
 
 const style = {
   default: {
-    margin: "10px 10px 10px 50px",
+    margin: "10px 10px 30px 60px",
     boxSizing: "border-box",
     display: "flex",
     alignItems: "center",
-    color: "#424242",
-    padding: 20,
-    borderRadius: 20,
+    color: "#616161",
+    padding: "15px 20px",
+    borderRadius: 10,
     position: "relative",
     backgroundColor: "#FFF",
   },
   hashtag: {
-    color: "#AAA",
+    color: "#424242",
     position: "absolute",
-    top: 5,
+    bottom: -18,
     right: 15,
     fontSize: 12,
   },
@@ -52,7 +52,7 @@ class Entry extends Component {
         </div>
         <Hammer onTap={this.handleSelect}>
           <div style={style.hashtag}>
-            {`#${this.props.category}`}
+            {`${this.props.category.toUpperCase()}`}
           </div>
         </Hammer>
       </div>

@@ -35,7 +35,6 @@ const style = {
   topUnitActive: {
     borderBottom: "1px solid #616161",
   },
-
 }
 
 class Visualization extends PureComponent {
