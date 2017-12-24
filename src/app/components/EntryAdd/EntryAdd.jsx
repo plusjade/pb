@@ -11,13 +11,13 @@ class EntryAdd extends PureComponent {
       Object.assign(
         {},
         this.props.showAddEntry,
-        {value: this.textAreaRef && this.textAreaRef.value}
+        {value: this.inputRef && this.inputRef.value}
       )
     )
   }
 
-  refTextarea = (node) => {
-    if (node) { this.textAreaRef = node}
+  refInput = (node) => {
+    if (node) { this.inputRef = node}
   }
 
   render() {
@@ -29,9 +29,9 @@ class EntryAdd extends PureComponent {
           this.props.showAddEntry && style.dateSelectorIsActive,
         ]}
       >
-        <textarea
-          style={style.textarea}
-          ref={this.refTextarea}
+        <input
+          style={style.input}
+          ref={this.refInput}
           defaultValue=""
         />
 
@@ -39,7 +39,7 @@ class EntryAdd extends PureComponent {
           style={style.button}
           type="submit"
         >
-          Add entry
+          {"+"}
         </button>
       </form>
     )

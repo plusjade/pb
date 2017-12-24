@@ -17,12 +17,6 @@ class Feed extends PureComponent {
           this.props.isActive && style.isActive,
         ]}
       >
-        <button style={style.addIcon}>
-          {this.props.showAddEntry && (
-            "✕"
-          )}
-        </button>
-
         {this.props.feed.map((unit) => {
           switch (unit.type) {
             case "banner": {
