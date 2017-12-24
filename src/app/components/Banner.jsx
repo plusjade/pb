@@ -16,9 +16,9 @@ const style = {
     right: 0,
     color: "#FFF",
     padding: "0 10px",
-    height: 80,
-    lineHeight: "80px",
-    fontSize: 28,
+    height: 60,
+    lineHeight: "60px",
+    fontSize: 26,
     textAlign: "center",
     zIndex: 2,
   }
