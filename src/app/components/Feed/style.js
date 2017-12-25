@@ -5,7 +5,7 @@ export default {
     // transform: "translateX(93%)",
     // boxShadow: `1px 1px 30px ${colors.borderColor}`,
     backgroundColor: "#F5F5F5",
-    marginBottom: 50,
+    marginBottom: 70,
   },
   isActive: {
     // position: "absolute",

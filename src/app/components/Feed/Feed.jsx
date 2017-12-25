@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
 
@@ -8,10 +8,35 @@ import Entry from 'app/components/Entry'
 
 import style from './style'
 
-class Feed extends PureComponent {
+class Feed extends Component {
+  componentDidMount() {
+    this.scrollBottom()
+  }
+
+  componentDidUpdate(prevProps) {
+    if (this.props.feed.length > prevProps.feed.length) {
+      this.scrollBottom()
+    }
+  }
+
+  getRefNode = (node) => {
+    if (!node) { return }
+    window.refNode = this.refNode = node
+  }
+
+  scrollBottom() {
+    if (!this.refNode) { return }
+    const height = this.refNode.scrollHeight
+    setTimeout(() => {
+      window.scroll(0, height)
+    }, 1)
+  }
+
   render() {
     return (
       <div
+        id="FEED"
+        ref={this.getRefNode}
         style={[
           style.default,
           this.props.isActive && style.isActive,

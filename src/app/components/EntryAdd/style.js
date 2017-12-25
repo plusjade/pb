@@ -31,7 +31,7 @@ export default {
     background: "#FFF",
     border: "1px solid #E0E0E0",
     fontSize: 16,
-    padding: "15px 60px 15px 10px",
+    padding: "25px 60px 25px 10px",
   },
   button: {
     position: "absolute",
