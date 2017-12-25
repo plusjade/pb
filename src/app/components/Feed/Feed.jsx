@@ -5,6 +5,7 @@ import Radium from 'radium'
 import Banner from 'app/components/Banner'
 import Day from 'app/components/Day'
 import Entry from 'app/components/Entry'
+import BuddyMessage from 'app/components/BuddyMessage'
 
 import style from './style'
 
@@ -59,14 +60,11 @@ class Feed extends Component {
                   key={unit.ordinal}
                   value={unit.value}
                   color={unit.color}
-                  entries={unit.entries}
                   ordinal={unit.ordinal}
 
                   remove={this.props.remove}
-                  entryEdit={this.props.entryEdit}
                   persist={this.props.persist}
                   showAddEntry={this.props.showAddEntry}
-                  showDetail={this.props.showDetail}
                   closeAddEntry={this.props.closeAddEntry}
                 />
               )
@@ -74,8 +72,9 @@ class Feed extends Component {
             case "entry": {
               return (
                 <Entry
-                  {...unit}
                   key={unit.id}
+                  value={unit.value}
+                  category={unit.category}
                   showDetail={this.props.showDetail}
                 />
               )
@@ -85,6 +84,9 @@ class Feed extends Component {
             }
           }
         })}
+        <BuddyMessage
+          value={"What did you do today?"}
+        />
       </div>
     )
   }

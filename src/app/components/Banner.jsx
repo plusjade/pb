@@ -21,6 +21,8 @@ const style = {
     fontSize: 26,
     textAlign: "center",
     zIndex: 2,
+    backgroundColor: "#F5F5F5",
+    margin: "20px 0",
   }
 }
 
@@ -34,7 +36,9 @@ class Banner extends PureComponent {
     return (
       <div className="sticky" style={[
         style.default,
-        {backgroundColor: this.props.color}
+        {
+          color: this.props.color,
+        }
       ]}>
         {this.props.value}
       </div>

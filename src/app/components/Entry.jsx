@@ -6,55 +6,59 @@ import colors from 'app/colors'
 
 const style = {
   default: {
-    margin: "10px 10px 30px 60px",
-    boxSizing: "border-box",
     display: "flex",
-    alignItems: "center",
-    color: "#616161",
-    padding: "15px 20px",
+    alignItems: "end",
+    margin: "20px 0",
+  },
+  major: {
+    flex: 9,
+    marginRight: 15,
+    padding: "12px 20px",
+    boxSizing: "border-box",
     borderRadius: 10,
-    position: "relative",
     backgroundColor: "#FFF",
+    color: "#616161",
   },
-  hashtag: {
-    color: "#424242",
-    position: "absolute",
-    bottom: -18,
-    right: 15,
+  minor: {
+    flex: 1
+  },
+  icon: {
+    padding: "5px 10px",
+    margin: "0 15px",
+    borderRadius: 10,
+    textAlign: "center",
     fontSize: 12,
-  },
+    backgroundColor: "#EEE",
+  }
 }
 
 class Entry extends Component {
   static propTypes = {
     id: PropTypes.number.isRequired,
     value: PropTypes.string.isRequired,
-    entryEdit: PropTypes.func.isRequired,
-  }
-
-  handleEdit = (e) => {
-    e.preventDefault()
-    this.props.entryEdit(this.props.entry)
+    category: PropTypes.string.isRequired,
+    showDetail: PropTypes.func.isRequired,
   }
 
   handleSelect = () => {
     this.props.showDetail(this.props.category)
   }
 
-
   render() {
     return(
       <div style={[
           style.default,
       ]}>
-        <div style={{flex: 1}}>
-          <span>{this.props.value || "-"}</span>
+        <div style={style.minor}>
+          <Hammer onTap={this.handleSelect}>
+            <div style={style.icon}>
+              {`#${this.props.category.substring(0, 3).toUpperCase()}`}
+            </div>
+          </Hammer>
         </div>
-        <Hammer onTap={this.handleSelect}>
-          <div style={style.hashtag}>
-            {`${this.props.category.toUpperCase()}`}
-          </div>
-        </Hammer>
+        <div style={style.major}>
+          <span>{this.props.value}</span>
+        </div>
       </div>
     )
   }
