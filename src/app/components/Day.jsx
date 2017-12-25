@@ -18,16 +18,11 @@ class Day extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     ordinal: PropTypes.string.isRequired,
+    style:PropTypes.object,
   }
 
   handleAdd = () => {
-    if (this.props.showAddEntry) {
-      this.props.closeAddEntry()
-    } else {
-      this.props.persist({
-        ordinal: this.props.ordinal,
-      })
-    }
+    this.props.onTap(this.props.ordinal)
   }
 
   render() {
@@ -37,7 +32,7 @@ class Day extends Component {
           <h2
             style={[
               style.heading,
-              {color: this.props.color}
+              this.props.style
             ]}
           >
             {`${this.props.value}`}

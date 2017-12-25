@@ -22,7 +22,7 @@ class Feed extends Component {
 
   getRefNode = (node) => {
     if (!node) { return }
-    window.refNode = this.refNode = node
+    this.refNode = node
   }
 
   scrollBottom() {
@@ -31,6 +31,12 @@ class Feed extends Component {
     setTimeout(() => {
       window.scroll(0, height)
     }, 1)
+  }
+
+  handleDayTap = (ordinal) => {
+    this.props.persist({
+      ordinal: ordinal,
+    })
   }
 
   render() {
@@ -59,13 +65,9 @@ class Feed extends Component {
                 <Day
                   key={unit.ordinal}
                   value={unit.value}
-                  color={unit.color}
+                  style={{color: unit.color}}
                   ordinal={unit.ordinal}
-
-                  remove={this.props.remove}
-                  persist={this.props.persist}
-                  showAddEntry={this.props.showAddEntry}
-                  closeAddEntry={this.props.closeAddEntry}
+                  onTap={this.handleDayTap}
                 />
               )
             }
