@@ -1,8 +1,6 @@
-import React, {Component}   from 'react'
-import PropTypes                from 'prop-types'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import Radium from 'radium'
-import Hammer             from 'react-hammerjs'
-import colors from 'app/colors'
 
 const style = {
   default: {

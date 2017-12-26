@@ -9,6 +9,13 @@ import BuddyMessage from 'app/components/BuddyMessage'
 import style from './style'
 
 class Feed extends Component {
+  static propTypes = {
+    feed: PropTypes.array,
+    shouldShowDetail: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    persist: PropTypes.func,
+    isActive: PropTypes.bool,
+  }
+
   componentDidMount() {
     this.scrollBottom()
   }
@@ -57,6 +64,8 @@ class Feed extends Component {
             if (day.type === "day" && day.categories.hasOwnProperty(this.props.shouldShowDetail)) {
               foundIndex = i
               return true
+            } else {
+              return false
             }
           })
         }

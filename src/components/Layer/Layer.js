@@ -5,6 +5,11 @@ import Radium from 'radium'
 import style from './Style'
 
 class Layer extends PureComponent {
+  static propTypes = {
+    style: PropTypes.object,
+    isActive: PropTypes.bool,
+  }
+
   render() {
     return (
       <div

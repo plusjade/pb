@@ -17,6 +17,11 @@ const style = {
 }
 
 class Banner extends PureComponent {
+  static propTypes = {
+    color: PropTypes.string,
+    value: PropTypes.string.isRequired,
+  }
+
   render() {
     return (
       <div

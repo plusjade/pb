@@ -21,6 +21,10 @@ const style = {
 }
 
 class CategoryCard extends PureComponent {
+  static propTypes = {
+    style: PropTypes.object,
+    isActive: PropTypes.bool,
+  }
 
   handleSelect = () => {
     this.props.showDetail(this.props.name)

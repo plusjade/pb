@@ -132,14 +132,11 @@ class Trend extends Component {
           persist={this.persist}
           showAddEntry={this.state.showAddEntry}
           showVizIndex={this.showVizIndex}
-          isActive={!this.state.shouldShowVizIndex}
+          isActive={true || !this.state.shouldShowVizIndex}
           showDetail={this.showDetail}
-          isActive={true}
           closeAddEntry={this.closeAddEntry}
           shouldShowDetail={this.state.shouldShowDetail}
         />
-
-
 
         {false && this.shouldShowSlidePosition() && (
           <SlidePosition

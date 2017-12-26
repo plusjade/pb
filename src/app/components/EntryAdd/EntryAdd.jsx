@@ -7,6 +7,10 @@ import style from './style'
 const MAX_HEIGHT = 200 // Maximum height: 200px
 
 class EntryAdd extends PureComponent {
+  static propTypes = {
+    persistReally: PropTypes.func,
+    showAddEntry: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+  }
 
   state = {
     value: ""

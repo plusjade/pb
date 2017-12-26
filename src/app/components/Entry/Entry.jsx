@@ -1,17 +1,20 @@
 import React, {Component}   from 'react'
-import PropTypes                from 'prop-types'
+import PropTypes from 'prop-types'
 import Radium from 'radium'
-import Hammer             from 'react-hammerjs'
-import colors from 'app/colors'
+import Hammer from 'react-hammerjs'
 
 import style from './style'
 
 class Entry extends Component {
   static propTypes = {
-    id: PropTypes.number.isRequired,
-    value: PropTypes.string.isRequired,
-    category: PropTypes.string.isRequired,
-    showDetail: PropTypes.func.isRequired,
+    actionData: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    isVisible: PropTypes.bool,
+    minorValue: PropTypes.string,
+    onTagTap: PropTypes.func,
+    style: PropTypes.object,
+    styleMajor: PropTypes.object,
+    tag: PropTypes.string,
+    value: PropTypes.string,
   }
 
   handleTagTap = () => {
@@ -47,7 +50,6 @@ class Entry extends Component {
               {this.props.value}
             </span>
           </div>
-
         </div>
       </div>
     )
