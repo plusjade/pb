@@ -48,7 +48,7 @@ class EntryAdd extends PureComponent {
         onSubmit={this.handleSubmit}
         style={[
           style.dateSelector,
-          this.props.showAddEntry && style.dateSelectorIsActive,
+          style.dateSelectorIsActive,
         ]}
       >
         <div style={style.level1}>
