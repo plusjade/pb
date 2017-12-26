@@ -17,30 +17,48 @@ const style = {
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
-    // height: "100%",
-    transition: "all 200ms ease",
-    transform: "translateX(100%)",
     backgroundColor: colors.background,
     zIndex: 4,
+    // borderBottom: "1px solid #BDBDBD",
+
+  },
+  placeholder: {
+    transition: "all 900ms ease 1s",
+    height: 102,
   },
   isActive: {
-    transform: "translateX(0)",
+    height: 300,
+  },
+  expandable: {
+    transition: "all 900ms ease 1s",
+    maxHeight: 0,
+    overflow: "hidden",
+  },
+  isExpanded: {
+    maxHeight: 1000,
+  },
+  topHeading: {
+    textAlign: "center",
+    lineHeight: "32px",
+    fontSize: 12,
+  },
+  glanceWrap: {
+    width: "100%",
+    overflow: "auto",
   },
   glance: {
     display: "flex",
-    marginTop: 10,
-    marginBottom: 25,
+    // width: 500,
+    alignItems: "center",
+    borderTop: "1px solid #CCC",
+    borderBottom: "1px solid #CCC",
   },
   glanceUnit: {
     flex: 1,
     textAlign: "center",
-  },
-  top: {
-    flex: 5,
-  },
-  topActive: {
-    // boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
+    borderLeft: "1px solid #CCC",
+    borderRight: 0,
+    padding: "10px 0",
   },
   bottom: {
     flex: 5,
@@ -64,7 +82,8 @@ const style = {
     outline: "none",
   },
   chartWrap: {
-
+    display: "none",
+    // marginBottom: 20,
   },
   detail: {
     display: "flex",
@@ -124,64 +143,71 @@ class CategoryDetail extends Component {
 
   render() {
     return (
-      <div
-        style={[
-          style.layer,
-          this.props.isActive && style.isActive,
-        ]}
-      >
+      <div>
+        <div style={style.placeholder} />
         <div
           style={[
-            style.top,
-            this.props.isActive && style.topActive,
+            style.layer,
           ]}
         >
-          <h1 style={style.heading}>
-            <Hammer onTap={this.props.onSwipeRight}>
-              <button style={style.backButton}>
-                ←
-              </button>
+
+          <div
+            style={[
+              style.expandable,
+              this.props.isActive && style.isExpanded
+            ]}
+          >
+
+
+            <Hammer
+              onSwipe={this.props.onSwipeRight}
+              direction={"DIRECTION_RIGHT"}
+            >
+              <div style={style.chartWrap}>
+                <Chart
+                  key={this.props.data.category}
+                  ratio={2}
+                  data={this.props.data.data}
+                  maxHealth={20}
+                  index={0}
+                  name={this.props.data.category}
+                  showAxis={true}
+                  showPoints={true}
+                />
+              </div>
             </Hammer>
-            {this.props.data.category}
-          </h1>
 
-          <Hammer
-            onSwipe={this.props.onSwipeRight}
-            direction={"DIRECTION_RIGHT"}
-          >
-            <div style={style.glance}>
-              <div style={style.glanceUnit}>
-                <h2>{this.props.data.occurrences}</h2>
-                <h5>entries</h5>
-              </div>
-              <div style={style.glanceUnit}>
-                <h2>{this.props.data.days_since_last}</h2>
-                <h5>since last</h5>
-              </div>
-              <div style={style.glanceUnit}>
-                <h2>{this.props.data.maxHealth}</h2>
-                <h5>best health</h5>
-              </div>
-            </div>
-          </Hammer>
 
-          <Hammer
-            onSwipe={this.props.onSwipeRight}
-            direction={"DIRECTION_RIGHT"}
-          >
-            <div style={style.chartWrap}>
-              <Chart
-                key={this.props.data.category}
-                ratio={2}
-                data={this.props.data.data}
-                maxHealth={20}
-                index={0}
-                name={this.props.data.category}
-                showAxis={true}
-                showPoints={true}
-              />
-            </div>
-          </Hammer>
+
+            <Hammer onTap={this.props.onSwipeRight}>
+              <h2 style={style.topHeading}>
+                {this.props.data.category
+                    ? `${this.props.data.category.toUpperCase()} ❌`
+                    : "All"
+                }
+              </h2>
+            </Hammer>
+
+              <div style={style.glanceWrap}>
+                <div style={style.glance}>
+                  <div style={style.glanceUnit}>
+                    <h2>{this.props.data.occurrences || 0}</h2>
+                    <h5>entries</h5>
+                  </div>
+                  <div style={style.glanceUnit}>
+                    <h2>{this.props.data.days_since_last  || 0}</h2>
+                    <h5>since last</h5>
+                  </div>
+                  <div style={style.glanceUnit}>
+                    <h2>{this.props.data.maxHealth  || 0}</h2>
+                    <h5>best health</h5>
+                  </div>
+                </div>
+              </div>
+
+
+
+          </div>
         </div>
       </div>
     )

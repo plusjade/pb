@@ -92,8 +92,6 @@ class Trend extends Component {
   }
 
   showDetail = (categoryName) => {
-    console.log("showDetail")
-    // window.scroll(0,0)
     this.setState({shouldShowDetail: categoryName})
   }
 
@@ -119,6 +117,15 @@ class Trend extends Component {
           />
         )}
 
+        <CategoryDetail
+          data={this.getCategoryDetail()}
+          onSwipeRight={this.closeModals}
+          isActive={true || this.state.shouldShowDetail}
+          persist={this.persist}
+          showAddEntry={this.state.showAddEntry}
+          closeAddEntry={this.closeAddEntry}
+        />
+
         <Feed
           feed={this.state.feed}
           remove={this.remove}
@@ -127,19 +134,12 @@ class Trend extends Component {
           showVizIndex={this.showVizIndex}
           isActive={!this.state.shouldShowVizIndex}
           showDetail={this.showDetail}
-          isActive={this.state.shouldShowVizIndex || this.state.shouldShowDetail}
-
+          isActive={true}
           closeAddEntry={this.closeAddEntry}
+          shouldShowDetail={this.state.shouldShowDetail}
         />
 
-        <CategoryDetail
-          data={this.getCategoryDetail()}
-          onSwipeRight={this.closeModals}
-          isActive={this.state.shouldShowDetail}
-          persist={this.persist}
-          showAddEntry={this.state.showAddEntry}
-          closeAddEntry={this.closeAddEntry}
-        />
+
 
         {false && this.shouldShowSlidePosition() && (
           <SlidePosition
