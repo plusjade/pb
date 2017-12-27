@@ -1,19 +1,21 @@
 import colors from 'app/colors'
 
 export default {
-  dateSelector: {
+  wrap: {
     position: "fixed",
     bottom: 0,
     left: 0,
     right: 0,
     textAlign: "center",
     zIndex: 9999999,
-    backgroundColor: colors.background,
     transition: "all 200ms ease",
     transform: "translateY(100%)",
+    paddingBottom: 20,
+    borderTop: `1px solid ${colors.secondaryBorder}`,
+    backgroundColor: colors.secondaryBackground,
   },
-  dateSelectorIsActive: {
-    // boxShadow: "rgb(0, 0, 0) 1px 1px 20px",
+  isActive: {
+    // backgroundColor: "#FFF",
     transform: "translateY(0%)",
   },
   selectDropdown: {
@@ -27,11 +29,8 @@ export default {
   },
   input: {
     width: "100%",
-    background: "#FFF",
-    borderBottom: 0,
-    borderLeft: 0,
-    borderRight: 0,
-    borderTop: "1px solid #E0E0E0",
+    backgroundColor: "inherit",
+    border: 0,
     fontSize: 16,
     fontFamily: "inherit",
     padding: "20px 100px 20px 10px",
@@ -50,6 +49,8 @@ export default {
     textAlign: "center",
     border: 0,
     borderRadius: 5,
+    backgroundColor: "#F5F5F5",
+    color: "#9E9E9E",
   },
   buttonActive: {
     backgroundColor: "#4CAF50",

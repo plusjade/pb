@@ -119,63 +119,62 @@ class Trend extends Component {
   render() {
     return(
       <div id="CONTAINER" style={style.container}>
-        <div style={style.primary}>
-          {!this.state.shouldShowVizIndex && (
-            <Visualization
-              data={this.state.trends}
-              categories={this.state.categories}
-              maxHealth={this.state.maxHealth}
-              showDetail={this.showDetail}
-              showVizIndex={this.showVizIndex}
-              persist={this.persist}
-            />
-          )}
 
-          <div style={{height: 50}}/>
-          <Heading
-            value={this.getCategoryDetail() && this.getCategoryDetail().category}
-            onTap={this.closeModals}
+        {!this.state.shouldShowVizIndex && (
+          <Visualization
+            data={this.state.trends}
+            categories={this.state.categories}
+            maxHealth={this.state.maxHealth}
+            showDetail={this.showDetail}
+            showVizIndex={this.showVizIndex}
+            persist={this.persist}
           />
+        )}
 
-          <CategoryList
-            categories={["All"].concat(this.state.categories || [])}
-            onTap={this.showDetail}
-          />
+        <div style={{height: 50}}/>
+        <Heading
+          value={this.getCategoryDetail() && this.getCategoryDetail().category}
+          onTap={this.closeModals}
+        />
 
-          {false && (
-            <CategoryDetail
-              data={this.getCategoryDetail()}
-              onSwipeRight={this.closeModals}
-              persist={this.persist}
-              showAddEntry={this.state.showAddEntry}
-              closeAddEntry={this.closeAddEntry}
-            />
-          )}
+        <CategoryList
+          categories={["All"].concat(this.state.categories || [])}
+          onTap={this.showDetail}
+        />
 
-          <Feed
-            feed={this.state.feed}
-            remove={this.remove}
+        {false && (
+          <CategoryDetail
+            data={this.getCategoryDetail()}
+            onSwipeRight={this.closeModals}
             persist={this.persist}
             showAddEntry={this.state.showAddEntry}
-            showVizIndex={this.showVizIndex}
-            isSlid={this.state.shouldShowCategories}
-            showDetail={this.showDetail}
             closeAddEntry={this.closeAddEntry}
-            shouldShowDetail={this.state.shouldShowDetail}
-            onSwipeRight={this.closeModals}
           />
+        )}
 
-          {false && this.shouldShowSlidePosition() && (
-            <SlidePosition
-              activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
-            />
-          )}
+        <Feed
+          feed={this.state.feed}
+          remove={this.remove}
+          persist={this.persist}
+          showAddEntry={this.state.showAddEntry}
+          showVizIndex={this.showVizIndex}
+          isSlid={this.state.shouldShowCategories}
+          showDetail={this.showDetail}
+          closeAddEntry={this.closeAddEntry}
+          shouldShowDetail={this.state.shouldShowDetail}
+          onSwipeRight={this.closeModals}
+        />
 
-          <EntryAdd
-            persistReally={this.persistReally}
-            entry={this.state.showAddEntry}
+        {false && this.shouldShowSlidePosition() && (
+          <SlidePosition
+            activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
           />
-        </div>
+        )}
+
+        <EntryAdd
+          persistReally={this.persistReally}
+          entry={this.state.showAddEntry}
+        />
       </div>
     )
   }

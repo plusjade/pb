@@ -18,7 +18,7 @@ const style = {
     left: 0,
     right: 0,
     paddingTop: 15,
-    backgroundColor: colors.background,
+    backgroundColor: colors.primaryBackground,
     zIndex: 4,
     transition: "all 200ms ease",
     transform: "translateY(-84%)",

@@ -47,8 +47,8 @@ class EntryAdd extends PureComponent {
       <form
         onSubmit={this.handleSubmit}
         style={[
-          style.dateSelector,
-          style.dateSelectorIsActive,
+          style.wrap,
+          style.isActive,
         ]}
       >
         <div style={style.level1}>

@@ -1,3 +1,4 @@
+import colors from 'app/colors'
 export default {
   wrap: {
     position: "fixed",
@@ -6,6 +7,7 @@ export default {
     right: 0,
     bottom: 62,
     overflow: "auto",
+    backgroundColor: colors.secondaryBackground,
   },
   category: {
     padding: "10px 20px",

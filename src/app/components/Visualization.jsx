@@ -15,7 +15,7 @@ const style = {
   default: {
     display: "flex",
     flexDirection: "column",
-    backgroundColor: colors.background,
+    backgroundColor: colors.primaryBackground,
     overflow: "auto",
   },
   heading: {

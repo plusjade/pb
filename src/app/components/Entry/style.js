@@ -20,7 +20,7 @@ export default {
     padding: "12px 55px 12px 20px",
     boxSizing: "border-box",
     borderRadius: 10,
-    backgroundColor: "#FFF",
+    backgroundColor: "#F5F5F5",
     color: "#616161",
     position: "relative",
     fontSize: 15,

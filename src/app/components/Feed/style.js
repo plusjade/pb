@@ -1,10 +1,13 @@
+import colors from 'app/colors'
+
 export default {
   default: {
     width: "100%",
+    minHeight: 500,
     transition: "all 200ms ease",
     transform: "translateX(0)",
     boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.primaryBackground,
     paddingBottom: 72, // EntryAdd height
   },
   isSlid: {
