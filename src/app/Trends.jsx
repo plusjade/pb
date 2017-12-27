@@ -14,8 +14,39 @@ const style = {
   container: {
     flex: 1,
     display: "flex",
-    flexDirection: "column",
+    flexDirection: "row", // allows for horizontal (swipe) panes
     WebkitOverflowScrolling: "touch",
+    overflow: "hidden",
+  },
+  primaryWrap: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    transition: "all 200ms ease",
+    boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
+  },
+  primary: {
+    width: 375,
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+  },
+  secondaryWrap: {
+    flex: 0,
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    transition: "all 200ms ease",
+  },
+  secondaryIsActive: {
+    flex: 8,
+  },
+  secondary: {
+    width: 375,
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
   },
 }
 
@@ -84,11 +115,9 @@ class Trend extends Component {
     this.setState({showAddEntry: ordinal})
   }
 
-  closeModals = () => {
+  toggleCategoryList = () => {
     this.setState({
-      shouldShowCategories: !this.state.shouldShowCategories,
-      // showAddEntry: false,
-      // shouldShowDetail: false,
+      shouldShowCategoryList: !this.state.shouldShowCategoryList,
     })
   }
 
@@ -98,7 +127,7 @@ class Trend extends Component {
     }
     this.setState({
       shouldShowDetail: categoryName,
-      shouldShowCategories: false,
+      shouldShowCategoryList: false,
     })
   }
 
@@ -113,61 +142,73 @@ class Trend extends Component {
   render() {
     return(
       <div id="CONTAINER" style={style.container}>
+        <div
+          style={[
+            style.secondaryWrap,
+            this.state.shouldShowCategoryList && style.secondaryIsActive
+          ]}
+        >
+          <div style={style.secondary}>
+            <CategoryList
+              categories={["All"].concat(this.state.categories || [])}
+              onTap={this.showDetail}
+              onSwipe={this.toggleCategoryList}
+            />
+          </div>
+        </div>
+        <div style={style.primaryWrap}>
+          <div style={style.primary}>
+          {!this.state.shouldShowVizIndex && (
+            <Visualization
+              data={this.state.trends}
+              categories={this.state.categories}
+              maxHealth={this.state.maxHealth}
+              showDetail={this.showDetail}
+              showVizIndex={this.showVizIndex}
+              persist={this.persist}
+            />
+          )}
 
-        {!this.state.shouldShowVizIndex && (
-          <Visualization
-            data={this.state.trends}
-            categories={this.state.categories}
-            maxHealth={this.state.maxHealth}
-            showDetail={this.showDetail}
-            showVizIndex={this.showVizIndex}
-            persist={this.persist}
+          <Heading
+            value={this.getCategoryDetail() && this.getCategoryDetail().category}
+            onTap={this.toggleCategoryList}
           />
-        )}
 
-        <Heading
-          value={this.getCategoryDetail() && this.getCategoryDetail().category}
-          onTap={this.closeModals}
-        />
+          {false && (
+            <CategoryDetail
+              data={this.getCategoryDetail()}
+              onSwipeRight={this.toggleCategoryList}
+              persist={this.persist}
+              showAddEntry={this.state.showAddEntry}
+              closeAddEntry={this.closeAddEntry}
+            />
+          )}
 
-        <CategoryList
-          categories={["All"].concat(this.state.categories || [])}
-          onTap={this.showDetail}
-        />
-
-        {false && (
-          <CategoryDetail
-            data={this.getCategoryDetail()}
-            onSwipeRight={this.closeModals}
+          <Feed
+            feed={this.state.feed}
+            remove={this.remove}
             persist={this.persist}
             showAddEntry={this.state.showAddEntry}
+            showVizIndex={this.showVizIndex}
+            isSlid={false}
+            showDetail={this.showDetail}
             closeAddEntry={this.closeAddEntry}
+            shouldShowDetail={this.state.shouldShowDetail}
+            onSwipeRight={this.toggleCategoryList}
           />
-        )}
 
-        <Feed
-          feed={this.state.feed}
-          remove={this.remove}
-          persist={this.persist}
-          showAddEntry={this.state.showAddEntry}
-          showVizIndex={this.showVizIndex}
-          isSlid={this.state.shouldShowCategories}
-          showDetail={this.showDetail}
-          closeAddEntry={this.closeAddEntry}
-          shouldShowDetail={this.state.shouldShowDetail}
-          onSwipeRight={this.closeModals}
-        />
+          {false && this.shouldShowSlidePosition() && (
+            <SlidePosition
+              activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
+            />
+          )}
 
-        {false && this.shouldShowSlidePosition() && (
-          <SlidePosition
-            activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
+          <EntryAdd
+            persistReally={this.persistReally}
+            entry={this.state.showAddEntry}
           />
-        )}
-
-        <EntryAdd
-          persistReally={this.persistReally}
-          entry={this.state.showAddEntry}
-        />
+        </div>
+        </div>
       </div>
     )
   }

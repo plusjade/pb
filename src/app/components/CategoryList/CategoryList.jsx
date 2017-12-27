@@ -17,18 +17,24 @@ class CategoryList extends Component {
 
   render() {
     return(
-      <div style={style.wrap}>
-        {this.props.categories.map((name) => (
-          <Hammer
-            key={name}
-            onTap={this.handleTap.bind(this, name)}
-          >
-            <div style={style.category} >
-              {`${name}`}
-            </div>
-          </Hammer>
-        ))}
-      </div>
+        <Hammer
+          onSwipe={this.props.onSwipe}
+          direction={"DIRECTION_LEFT"}
+        >
+
+        <div style={style.wrap}>
+          {this.props.categories.map((name) => (
+            <Hammer
+              key={name}
+              onTap={this.handleTap.bind(this, name)}
+            >
+              <div style={style.category} >
+                {`${name}`}
+              </div>
+            </Hammer>
+          ))}
+        </div>
+      </Hammer>
     )
   }
 }

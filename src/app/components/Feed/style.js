@@ -5,9 +5,8 @@ export default {
     flex: 8,
     overflow: "auto",
     width: "100%",
-    transition: "all 200ms ease",
-    transform: "translateX(0)",
-    boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
+    // transition: "all 200ms ease",
+    // transform: "translateX(0)",
     backgroundColor: colors.primaryBackground,
     WebkitOverflowScrolling: "touch",
 
