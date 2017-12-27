@@ -6,16 +6,12 @@ import colors from 'app/colors'
 
 const style = {
   topHeading: {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 9999,
+    flex: 1,
+    zIndex: 2,
     backgroundColor: colors.secondaryBackground,
     textAlign: "center",
     lineHeight: "50px",
     fontSize: 20,
-    // boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
     borderBottom: `1px solid ${colors.secondaryBorder}`,
   },
 }

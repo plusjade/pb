@@ -2,12 +2,9 @@ import colors from 'app/colors'
 
 export default {
   wrap: {
-    position: "fixed",
-    bottom: 0,
-    left: 0,
-    right: 0,
+    flex: 1,
     textAlign: "center",
-    zIndex: 9999999,
+    zIndex: 2,
     transition: "all 200ms ease",
     transform: "translateY(100%)",
     paddingBottom: 20,
@@ -15,17 +12,7 @@ export default {
     backgroundColor: colors.secondaryBackground,
   },
   isActive: {
-    // backgroundColor: "#FFF",
     transform: "translateY(0%)",
-  },
-  selectDropdown: {
-    width: "80%",
-    padding: "20px 0",
-    margin: "40px 0",
-    textAlign: "center",
-    fontSize: 20,
-    textAlignLast:"center",
-    border: `1px solid ${colors.borderColor}`,
   },
   input: {
     width: "100%",

@@ -12,13 +12,10 @@ import CategoryList from 'app/components/CategoryList/CategoryList'
 
 const style = {
   container: {
-    // position: "absolute",
-    // top: 0,
-    // left: 0,
-    // right: 0,
-    // bottom: 0,
-    overflowX: "hidden",
-    // WebkitOverflowScrolling: "touch",
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    WebkitOverflowScrolling: "touch",
   },
 }
 
@@ -88,9 +85,6 @@ class Trend extends Component {
   }
 
   closeModals = () => {
-    // window.scroll(0,0)
-    console.log("closeModals")
-
     this.setState({
       shouldShowCategories: !this.state.shouldShowCategories,
       // showAddEntry: false,
@@ -131,7 +125,6 @@ class Trend extends Component {
           />
         )}
 
-        <div style={{height: 50}}/>
         <Heading
           value={this.getCategoryDetail() && this.getCategoryDetail().category}
           onTap={this.closeModals}

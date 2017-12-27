@@ -4,7 +4,7 @@ import Radium from 'radium'
 
 import style from './style'
 
-const MAX_HEIGHT = 200 // Maximum height: 200px
+const MAX_HEIGHT = 200
 
 class EntryAdd extends PureComponent {
   static propTypes = {
