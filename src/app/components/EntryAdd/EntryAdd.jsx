@@ -9,7 +9,7 @@ const MAX_HEIGHT = 200 // Maximum height: 200px
 class EntryAdd extends PureComponent {
   static propTypes = {
     persistReally: PropTypes.func,
-    showAddEntry: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    entry: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
   }
 
   state = {
@@ -22,7 +22,7 @@ class EntryAdd extends PureComponent {
     this.props.persistReally(
       Object.assign(
         {},
-        this.props.showAddEntry,
+        this.props.entry,
         {value: this.state.value}
       )
     )
@@ -56,7 +56,7 @@ class EntryAdd extends PureComponent {
             style={style.input}
             rows={1}
             value={this.state.value}
-            placeholder="What did you do today?"
+            placeholder={`What did you do ${this.props.entry ? this.props.entry.ordinal : "today"}?`}
             onChange={this.handleChange}
             ref={this.refInput}
           />

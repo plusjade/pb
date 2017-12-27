@@ -1,7 +1,7 @@
 export default {
   wrap: {
     overflow: "hidden",
-    transition: "opacity 900ms ease 500ms, max-height 900ms ease 500ms",
+    transition: "opacity 900ms ease, max-height 900ms ease",
     maxHeight: 0,
     opacity: 0,
   },
@@ -36,12 +36,12 @@ export default {
   },
   tag: {
     padding: "5px 10px",
-    borderRadius: 10,
+    borderRadius: "0 10px 0",
     textAlign: "center",
-    fontSize: 12,
+    fontSize: 11,
     backgroundColor: "#EEE",
     position: "absolute",
-    top: 10,
-    right: 5,
+    top: 0,
+    right: 0,
   }
 }

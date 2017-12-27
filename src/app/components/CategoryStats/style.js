@@ -2,10 +2,10 @@ export default {
   wrap: {
     width: "100%",
     overflow: "auto",
+    boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
   },
   default: {
     display: "flex",
-    // width: 500,
     alignItems: "center",
     borderTop: "1px solid #CCC",
     borderBottom: "1px solid #CCC",

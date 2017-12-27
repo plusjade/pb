@@ -1,12 +1,14 @@
-import React, {Component}   from 'react'
-import PropTypes                from 'prop-types'
+import React, {Component} from 'react'
+import PropTypes from 'prop-types'
 import Radium from 'radium'
 
-import Feed               from 'app/components/Feed/Feed'
-import Visualization      from 'app/components/Visualization'
-import SlidePosition      from 'app/components/SlidePosition/SlidePosition'
-import CategoryDetail     from 'app/components/CategoryDetail'
-import EntryAdd     from 'app/components/EntryAdd/EntryAdd'
+import Feed from 'app/components/Feed/Feed'
+import Visualization from 'app/components/Visualization'
+import SlidePosition from 'app/components/SlidePosition/SlidePosition'
+import CategoryDetail from 'app/components/CategoryDetail'
+import EntryAdd from 'app/components/EntryAdd/EntryAdd'
+import Heading from 'app/components/Heading'
+import CategoryList from 'app/components/CategoryList/CategoryList'
 
 const style = {
   container: {
@@ -15,7 +17,7 @@ const style = {
     // left: 0,
     // right: 0,
     // bottom: 0,
-    // overflowX: "hidden",
+    overflowX: "hidden",
     // WebkitOverflowScrolling: "touch",
   },
 }
@@ -48,6 +50,9 @@ class Trend extends Component {
   }
 
   persistReally = (body) => {
+    if (!body.ordinal) {
+      body.ordinal = this.state.today.ordinal
+    }
     if (
       !body.ordinal
       || body.ordinal.trim() === ""
@@ -85,14 +90,22 @@ class Trend extends Component {
   closeModals = () => {
     // window.scroll(0,0)
     console.log("closeModals")
+
     this.setState({
-      showAddEntry: false,
-      shouldShowDetail: false,
+      shouldShowCategories: !this.state.shouldShowCategories,
+      // showAddEntry: false,
+      // shouldShowDetail: false,
     })
   }
 
   showDetail = (categoryName) => {
-    this.setState({shouldShowDetail: categoryName})
+    if (categoryName == "All") {
+      categoryName = false
+    }
+    this.setState({
+      shouldShowDetail: categoryName,
+      shouldShowCategories: false,
+    })
   }
 
   getCategoryDetail = () => (
@@ -106,48 +119,63 @@ class Trend extends Component {
   render() {
     return(
       <div id="CONTAINER" style={style.container}>
-        {!this.state.shouldShowVizIndex && (
-          <Visualization
-            data={this.state.trends}
-            categories={this.state.categories}
-            maxHealth={this.state.maxHealth}
-            showDetail={this.showDetail}
-            showVizIndex={this.showVizIndex}
+        <div style={style.primary}>
+          {!this.state.shouldShowVizIndex && (
+            <Visualization
+              data={this.state.trends}
+              categories={this.state.categories}
+              maxHealth={this.state.maxHealth}
+              showDetail={this.showDetail}
+              showVizIndex={this.showVizIndex}
+              persist={this.persist}
+            />
+          )}
+
+          <div style={{height: 50}}/>
+          <Heading
+            value={this.getCategoryDetail() && this.getCategoryDetail().category}
+            onTap={this.closeModals}
+          />
+
+          <CategoryList
+            categories={["All"].concat(this.state.categories || [])}
+            onTap={this.showDetail}
+          />
+
+          {false && (
+            <CategoryDetail
+              data={this.getCategoryDetail()}
+              onSwipeRight={this.closeModals}
+              persist={this.persist}
+              showAddEntry={this.state.showAddEntry}
+              closeAddEntry={this.closeAddEntry}
+            />
+          )}
+
+          <Feed
+            feed={this.state.feed}
+            remove={this.remove}
             persist={this.persist}
+            showAddEntry={this.state.showAddEntry}
+            showVizIndex={this.showVizIndex}
+            isSlid={this.state.shouldShowCategories}
+            showDetail={this.showDetail}
+            closeAddEntry={this.closeAddEntry}
+            shouldShowDetail={this.state.shouldShowDetail}
+            onSwipeRight={this.closeModals}
           />
-        )}
 
-        <CategoryDetail
-          data={this.getCategoryDetail()}
-          onSwipeRight={this.closeModals}
-          isActive={true || this.state.shouldShowDetail}
-          persist={this.persist}
-          showAddEntry={this.state.showAddEntry}
-          closeAddEntry={this.closeAddEntry}
-        />
+          {false && this.shouldShowSlidePosition() && (
+            <SlidePosition
+              activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
+            />
+          )}
 
-        <Feed
-          feed={this.state.feed}
-          remove={this.remove}
-          persist={this.persist}
-          showAddEntry={this.state.showAddEntry}
-          showVizIndex={this.showVizIndex}
-          isActive={true || !this.state.shouldShowVizIndex}
-          showDetail={this.showDetail}
-          closeAddEntry={this.closeAddEntry}
-          shouldShowDetail={this.state.shouldShowDetail}
-        />
-
-        {false && this.shouldShowSlidePosition() && (
-          <SlidePosition
-            activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
+          <EntryAdd
+            persistReally={this.persistReally}
+            entry={this.state.showAddEntry}
           />
-        )}
-
-        <EntryAdd
-          persistReally={this.persistReally}
-          showAddEntry={this.state.showAddEntry}
-        />
+        </div>
       </div>
     )
   }

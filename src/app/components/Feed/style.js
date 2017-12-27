@@ -1,17 +1,15 @@
 export default {
   default: {
     width: "100%",
-    // transition: "all 200ms ease",
-    // transform: "translateX(93%)",
-    // boxShadow: `1px 1px 30px ${colors.borderColor}`,
+    transition: "all 200ms ease",
+    transform: "translateX(0)",
+    boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
     backgroundColor: "#F5F5F5",
-    marginBottom: 72, // EntryAdd height
+    paddingBottom: 72, // EntryAdd height
   },
-  isActive: {
-    // position: "absolute",
-    // transform: "translateX(0)",
+  isSlid: {
+    transform: "translateX(80%)",
   },
-
   heading: {
     padding: "15px 0",
     textAlign: "center",

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
+import Hammer from 'react-hammerjs'
 
 import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
@@ -14,6 +15,7 @@ class Feed extends Component {
     shouldShowDetail: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     persist: PropTypes.func,
     isActive: PropTypes.bool,
+    onSwipeRight: PropTypes.func,
   }
 
   componentDidMount() {
@@ -43,7 +45,7 @@ class Feed extends Component {
     }, 1)
   }
 
-  handleDayTap = (ordinal) => {
+  onMinorTap = (ordinal) => {
     this.props.persist({
       ordinal: ordinal,
     })
@@ -108,72 +110,79 @@ class Feed extends Component {
     })
 
     return (
-      <div
-        id="FEED"
-        ref={this.getRefNode}
-        style={[
-          style.default,
-          this.props.isActive && style.isActive,
-        ]}
+      <Hammer
+        onSwipe={this.props.onSwipeRight}
+        direction={"DIRECTION_HORIZONTAL"}
       >
-        {feed.map((unit, index) => {
-          switch (unit.type) {
-            case "banner": {
-              return (
-                <Banner
-                  key={unit.value}
-                  color={unit.color}
-                  value={unit.value}
-                  isVisible={true}
-                />
-              )
-            }
-            case "day": {
-              return ([
-                  unit.emptyDaysBatchTotal > 3 && unit.emptyDaysBatch === unit.emptyDaysBatchTotal && (
-                    <div style={{paddingTop: (5 * unit.emptyDaysBatchTotal), paddingBottom: (5 * unit.emptyDaysBatchTotal), paddingLeft: 20}}>
-                      <h2 style={{color: "#BDBDBD", fontSize: 16, width: 36, textAlign: "center"}}>
-                        {`${unit.emptyDaysBatchTotal} days`}
-                      </h2>
-                    </div>
-                  ),
-                  <Entry
-                    key={unit.ordinal}
-                    minorValue={unit.value}
-                    style={{color: "#E0E0E0"}}
-                    styleMajor={{backgroundColor: "transparent"}}
-                    isVisible={unit.isVisible && !unit.hasEntries}
+        <div
+          id="FEED"
+          ref={this.getRefNode}
+          style={[
+            style.default,
+            this.props.isSlid && style.isSlid,
+          ]}
+        >
+          {feed.map((unit, index) => {
+            switch (unit.type) {
+              case "banner": {
+                return (
+                  <Banner
+                    key={unit.value}
+                    color={unit.color}
+                    value={unit.value}
+                    isVisible={true}
                   />
-              ])
+                )
+              }
+              case "day": {
+                return ([
+                    unit.emptyDaysBatchTotal > 3 && unit.emptyDaysBatch === unit.emptyDaysBatchTotal && (
+                      <div style={{paddingTop: (5 * unit.emptyDaysBatchTotal), paddingBottom: (5 * unit.emptyDaysBatchTotal), paddingLeft: 20}}>
+                        <h2 style={{color: "#9E9E9E", fontSize: 16, width: 36, textAlign: "center"}}>
+                          {`${unit.emptyDaysBatchTotal} days`}
+                        </h2>
+                      </div>
+                    ),
+                    <Entry
+                      key={unit.ordinal}
+                      minorValue={unit.value}
+                      style={{color: "#9E9E9E"}}
+                      styleMajor={{backgroundColor: "transparent"}}
+                      isVisible={unit.isVisible && !unit.hasEntries}
+                      onMinorTap={this.onMinorTap}
+                      actionData={unit.ordinal}
+                    />
+                ])
+              }
+              case "entry": {
+                return (
+                  <Entry
+                    key={unit.id}
+                    value={unit.value}
+                    minorValue={unit.day}
+                    style={{color: unit.color}}
+                    isVisible={
+                      !this.props.shouldShowDetail || this.props.shouldShowDetail === unit.category
+                    }
+                    tag={`#${unit.category.substring(0, 3).toUpperCase()}`}
+                    onTagTap={this.props.showDetail}
+                    actionData={unit.category}
+                  />
+                )
+              }
+              default: {
+                return (null)
+              }
             }
-            case "entry": {
-              return (
-                <Entry
-                  key={unit.id}
-                  value={unit.value}
-                  minorValue={unit.day}
-                  style={{color: unit.color}}
-                  isVisible={
-                    !this.props.shouldShowDetail || this.props.shouldShowDetail === unit.category
-                  }
-                  tag={`#${unit.category.substring(0, 3).toUpperCase()}`}
-                  onTagTap={this.props.showDetail}
-                  actionData={unit.category}
-                />
-              )
-            }
-            default: {
-              return (null)
-            }
-          }
-        })}
-        {false && (
-          <BuddyMessage
-            value={"What did you do today?"}
-            isVisible={true}
-          />
-        )}
-      </div>
+          })}
+          {false && (
+            <BuddyMessage
+              value={"What did you do today?"}
+              isVisible={true}
+            />
+          )}
+        </div>
+      </Hammer>
     )
   }
 }

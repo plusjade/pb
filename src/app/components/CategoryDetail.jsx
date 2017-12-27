@@ -14,33 +14,31 @@ const style = {
     position: "fixed",
     display: "flex",
     flexDirection: "column",
-    top: 0,
+    top: 32, // height of the Header
     left: 0,
     right: 0,
+    paddingTop: 15,
     backgroundColor: colors.background,
     zIndex: 4,
-    // borderBottom: "1px solid #BDBDBD",
-
+    transition: "all 200ms ease",
+    transform: "translateY(-84%)",
+    color: "rgba(33,33,33, 0.5)"
+  },
+  isExpanded: {
+    transform: "translateY(0)",
+    color: "inherit",
   },
   placeholder: {
-    transition: "all 900ms ease 1s",
-    height: 102,
+    // transition: "all 900ms ease",
+    height: 80,
   },
   expandable: {
     transition: "all 900ms ease 1s",
     maxHeight: 0,
     overflow: "hidden",
   },
-  isExpanded: {
-    maxHeight: 1000,
-  },
-  topHeading: {
-    textAlign: "center",
-    lineHeight: "32px",
-    fontSize: 12,
-  },
   chartWrap: {
-    display: "none",
+
   },
 }
 
@@ -53,6 +51,10 @@ class CategoryDetail extends Component {
     data: {data: []}
   }
 
+  state = {
+    isExpanded: false,
+  }
+
   handleAdd = () => {
     if (this.props.showAddEntry) {
       this.props.closeAddEntry()
@@ -63,57 +65,43 @@ class CategoryDetail extends Component {
     }
   }
 
+  handleTap = () => {
+    this.setState({isExpanded: !this.state.isExpanded})
+  }
+
   render() {
     return (
       <div>
         <div style={style.placeholder} />
-        <div
-          style={[
-            style.wrap,
-          ]}
+        <Hammer
+          onTap={this.handleTap}
+          onSwipe={this.handleTap}
+          direction={"DIRECTION_UP"}
         >
+          <div style={[
+            style.wrap,
+            this.state.isExpanded && style.isExpanded
+          ]}>
+            <div>
+              <Chart
+                key={this.props.data.category}
+                ratio={2}
+                data={this.props.data.data}
+                maxHealth={20}
+                index={0}
+                name={this.props.data.category}
+                showAxis={true}
+                showPoints={true}
+              />
 
-          <div
-            style={[
-              style.expandable,
-              this.props.isActive && style.isExpanded
-            ]}
-          >
-
-            <Hammer
-              onSwipe={this.props.onSwipeRight}
-              direction={"DIRECTION_RIGHT"}
-            >
-              <div style={style.chartWrap}>
-                <Chart
-                  key={this.props.data.category}
-                  ratio={2}
-                  data={this.props.data.data}
-                  maxHealth={20}
-                  index={0}
-                  name={this.props.data.category}
-                  showAxis={true}
-                  showPoints={true}
-                />
-              </div>
-            </Hammer>
-
-            <Hammer onTap={this.props.onSwipeRight}>
-              <h2 style={style.topHeading}>
-                {this.props.data.category
-                    ? `${this.props.data.category.toUpperCase()} ❌`
-                    : "All"
-                }
-              </h2>
-            </Hammer>
-
-            <CategoryStats
-              occurrences={this.props.data.occurrences || 0}
-              days_since_last={this.props.data.days_since_last || 0}
-              maxHealth={this.props.data.maxHealth || 0}
-            />
+              <CategoryStats
+                occurrences={this.props.data.occurrences || 0}
+                days_since_last={this.props.data.days_since_last || 0}
+                maxHealth={this.props.data.maxHealth || 0}
+              />
+            </div>
           </div>
-        </div>
+        </Hammer>
       </div>
     )
   }

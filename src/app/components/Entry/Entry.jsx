@@ -11,10 +11,17 @@ class Entry extends Component {
     isVisible: PropTypes.bool,
     minorValue: PropTypes.string,
     onTagTap: PropTypes.func,
+    onMinorTap: PropTypes.func,
     style: PropTypes.object,
     styleMajor: PropTypes.object,
     tag: PropTypes.string,
     value: PropTypes.string,
+  }
+
+  handleMinorTap = () => {
+    if (typeof this.props.onMinorTap === "function") {
+      this.props.onMinorTap(this.props.actionData)
+    }
   }
 
   handleTagTap = () => {
@@ -29,15 +36,16 @@ class Entry extends Component {
           this.props.isVisible && style.isVisible
       ]}>
         <div style={style.inner}>
-          <div style={style.minor}>
-            <div style={[
-              style.date,
-              this.props.style
-            ]}>
-              {this.props.minorValue}
+          <Hammer onTap={this.handleMinorTap}>
+            <div style={style.minor}>
+              <div style={[
+                style.date,
+                this.props.style
+              ]}>
+                {this.props.minorValue}
+              </div>
             </div>
-          </div>
-
+          </Hammer>
           <div style={[style.major, this.props.styleMajor]}>
             {this.props.tag && (
               <Hammer onTap={this.handleTagTap}>
