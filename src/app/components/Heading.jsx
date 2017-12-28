@@ -11,7 +11,7 @@ const style = {
     backgroundColor: colors.secondaryBackground,
     textAlign: "center",
     lineHeight: "46px",
-    fontSize: 20,
+    fontSize: 18,
     borderBottom: `1px solid ${colors.secondaryBorder}`,
   },
 }
@@ -27,7 +27,7 @@ class Heading extends Component {
         <h2 style={style.topHeading}>
           {this.props.value
               ? this.props.value.toUpperCase()
-              : "All"
+              : "HOME"
           }
         </h2>
       </Hammer>
