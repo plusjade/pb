@@ -35,7 +35,12 @@ class Entry extends Component {
           style.wrap,
           this.props.isVisible && style.isVisible
       ]}>
-        <div style={style.inner}>
+        <div
+          style={[
+            style.inner,
+            this.props.reverse && style.reverse
+          ]}
+        >
           <Hammer onTap={this.handleMinorTap}>
             <div style={style.minor}>
               <div style={[
@@ -46,7 +51,14 @@ class Entry extends Component {
               </div>
             </div>
           </Hammer>
-          <div style={[style.major, this.props.styleMajor]}>
+          <div style={style.spacer} />
+          <div
+            style={[
+              style.major,
+              this.props.reverse && style.majorReverse,
+              this.props.styleMajor
+            ]}
+          >
             {this.props.tag && (
               <Hammer onTap={this.handleTagTap}>
                 <div style={style.tag}>
@@ -54,9 +66,7 @@ class Entry extends Component {
                 </div>
               </Hammer>
             )}
-            <span>
-              {this.props.value}
-            </span>
+            {React.Children.map(this.props.children, (c) => (c))}
           </div>
         </div>
       </div>

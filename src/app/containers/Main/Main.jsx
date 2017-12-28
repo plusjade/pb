@@ -2,58 +2,15 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
 
-import Feed from 'app/components/Feed/Feed'
-import Visualization from 'app/components/Visualization'
-import SlidePosition from 'app/components/SlidePosition/SlidePosition'
 import CategoryDetail from 'app/components/CategoryDetail'
-import EntryAdd from 'app/components/EntryAdd/EntryAdd'
-import Heading from 'app/components/Heading'
 import CategoryList from 'app/components/CategoryList/CategoryList'
+import EntryAdd from 'app/components/EntryAdd/EntryAdd'
+import Feed from 'app/components/Feed/Feed'
+import Heading from 'app/components/Heading'
 
-const style = {
-  container: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "row", // allows for horizontal (swipe) panes
-    WebkitOverflowScrolling: "touch",
-    overflow: "hidden",
-  },
-  primaryWrap: {
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-    transition: "all 200ms ease",
-    // boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
-  },
-  primary: {
-    minWidth: 375,
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-  primaryWrapIsInactive: {
-    borderLeft: "1px solid #E0E0E0",
-  },
-  secondaryWrap: {
-    flex: 0,
-    display: "flex",
-    flexDirection: "column",
-    overflow: "hidden",
-    transition: "flex 200ms ease",
-  },
-  secondaryIsActive: {
-    flex: 8,
-  },
-  secondary: {
-    minWidth: 375,
-    flex: 1,
-    display: "flex",
-    flexDirection: "column",
-  },
-}
+import style from './style'
 
-class Trend extends Component {
+class Main extends Component {
   static propTypes = {
     getPayload: PropTypes.func.isRequired,
     persist: PropTypes.func.isRequired,
@@ -146,8 +103,9 @@ class Trend extends Component {
   )
 
   render() {
+    const activeCategory = this.getCategoryDetail()
     return(
-      <div id="CONTAINER" style={style.container}>
+      <div id="Main" style={style.container}>
         <div
           style={[
             style.secondaryWrap,
@@ -163,6 +121,7 @@ class Trend extends Component {
             />
           </div>
         </div>
+
         <div
           style={[
             style.primaryWrap,
@@ -170,61 +129,37 @@ class Trend extends Component {
           ]}
         >
           <div style={style.primary}>
-          {!this.state.shouldShowVizIndex && (
-            <Visualization
-              data={this.state.categories}
-              maxHealth={this.state.maxHealth}
+            <Heading
+              value={
+                this.getCategoryDetail() && this.getCategoryDetail().name
+              }
+              onTap={this.toggleCategoryList}
+            />
+
+            <Feed
+              feed={this.props.parseFeed(this.state.feed, this.state.activeCategory)}
+              persist={this.persist}
               activateCategory={this.activateCategory}
-              showVizIndex={this.showVizIndex}
-              persist={this.persist}
-            />
-          )}
-
-          <Heading
-            value={this.getCategoryDetail() && this.getCategoryDetail().name}
-            onTap={this.toggleCategoryList}
-          />
-
-          <Feed
-            feed={this.state.feed}
-            remove={this.remove}
-            persist={this.persist}
-            showAddEntry={this.state.showAddEntry}
-            showVizIndex={this.showVizIndex}
-            isSlid={false}
-            activateCategory={this.activateCategory}
-            closeAddEntry={this.closeAddEntry}
-            activeCategory={this.state.activeCategory}
-            onSwipeRight={this.toggleCategoryList}
-            data={this.getCategoryDetail()}
-          />
-
-          {false && (
-            <CategoryDetail
-              data={this.getCategoryDetail()}
+              activeCategory={this.state.activeCategory}
               onSwipeRight={this.toggleCategoryList}
-              persist={this.persist}
-              showAddEntry={this.state.showAddEntry}
-              closeAddEntry={this.closeAddEntry}
-            />
-          )}
+            >
+              {activeCategory && (
+                <CategoryDetail
+                  data={activeCategory}
+                />
+              )}
+            </Feed>
 
-          {false && this.shouldShowSlidePosition() && (
-            <SlidePosition
-              activeIndex={this.state.shouldShowVizIndex ? 1 : 0}
+            <EntryAdd
+              persistReally={this.persistReally}
+              entry={this.state.showAddEntry}
+              isActive={!this.state.activeCategory}
             />
-          )}
-
-          <EntryAdd
-            persistReally={this.persistReally}
-            entry={this.state.showAddEntry}
-            isActive={!this.state.activeCategory}
-          />
-        </div>
+          </div>
         </div>
       </div>
     )
   }
 }
 
-export default Radium(Trend)
+export default Radium(Main)

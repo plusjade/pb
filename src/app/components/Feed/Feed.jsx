@@ -5,7 +5,6 @@ import Hammer from 'react-hammerjs'
 
 import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
-import BuddyMessage from 'app/components/BuddyMessage'
 import CategoryDetail from 'app/components/CategoryDetail'
 
 import style from './style'
@@ -157,7 +156,6 @@ class Feed extends Component {
                   return (
                     <Entry
                       key={unit.id}
-                      value={unit.value}
                       minorValue={unit.day}
                       style={{color: unit.color}}
                       isVisible={
@@ -166,7 +164,9 @@ class Feed extends Component {
                       tag={`#${unit.category.substring(0, 3).toUpperCase()}`}
                       onTagTap={this.props.activateCategory}
                       actionData={unit.category}
-                    />
+                    >
+                      <span>{unit.value}</span>
+                    </Entry>
                   )
                 }
                 default: {
@@ -174,12 +174,43 @@ class Feed extends Component {
                 }
               }
             })}
-            {false && (
-              <BuddyMessage
-                value={"What did you do today?"}
+
+            {[
+              <span>{"Hello there!"}</span>,
+              <span>
+                {
+                  "Every day I'm going to ask you 'What did you do today?' \
+                  I'll keep track of all your answers and help you build positive habits."
+                }
+              </span>,
+              <div>
+                <strong>{"Here are some example answers:"}</strong>
+                <ul>
+                  <li>{"I read a book"}</li>
+                  <li>{"went to the gym"}</li>
+                  <li>{"hung out with my friends"}</li>
+                  <li>{"called my mom family"}</li>
+                </ul>
+              </div>,
+              <span>{"I'm still training, so you'll have to help me group your answers by using hashtags."}</span>,
+              <span>
+                {"I'm not yet smart enough to give you advice on how to achieve specific goals. \
+                  But there's one thing I know everyone has to do if they want to get better at anything."}
+              </span>,
+              <span>{"show up"}</span>,
+              <span>{"Achieving anything is applying sustained effort over time. The more you show up, the more progress you'll make."}</span>
+            ].map((content, i) => (
+              <Entry
+                minorValue={i === 0 && (
+                  <span style={{fontSize: 26}}>{"🤖"}</span>
+                )}
                 isVisible={true}
-              />
-            )}
+                reverse={true}
+              >
+                {content}
+              </Entry>
+            ))}
+
             {this.props.data && (
               <CategoryDetail
                 data={this.props.data}

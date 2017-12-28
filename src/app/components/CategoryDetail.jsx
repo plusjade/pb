@@ -6,9 +6,6 @@ import Hammer             from 'react-hammerjs'
 import Chart                from 'app/components/Chart'
 import CategoryStats        from 'app/components/CategoryStats/CategoryStats'
 
-import colors from 'app/colors'
-// import style from './style'
-
 const style = {
   wrap: {
     paddingBottom: 10,

@@ -7,7 +7,7 @@ export default {
   primaryBackground: "#FFF",
   secondaryBackground: "#F5F5F5",
   secondaryBorder: "#E0E0E0",
-  text: "#333",
+  text: "#424242",
   graphLine: "#555",
   pins: "#444",
   area: "rgba(66, 66, 66, 0.2)",

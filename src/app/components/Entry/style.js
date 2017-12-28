@@ -1,3 +1,5 @@
+import colors from 'app/colors'
+
 export default {
   wrap: {
     overflow: "hidden",
@@ -12,22 +14,31 @@ export default {
   inner: {
     display: "flex",
     alignItems: "end",
-    margin: "10px 0",
+    margin: "10px 15px",
+  },
+  reverse: {
+    flexDirection: "row-reverse",
   },
   major: {
-    flex: 9,
-    marginRight: 15,
+    flex: 12,
     padding: "12px 55px 12px 20px",
     boxSizing: "border-box",
     borderRadius: 10,
     backgroundColor: "#F5F5F5",
-    color: "#616161",
+    color: colors.text,
     position: "relative",
     fontSize: 15,
   },
-  minor: {
+  majorReverse: {
+    backgroundColor: "#C5E1A5",
+    // border: "1px solid #E0E0E0",
+  },
+  spacer: {
     flex: 1,
-    margin: "0 20px",
+  },
+  minor: {
+    flex: 2,
+    // margin: "0 20px",
   },
   date: {
     fontSize: 14,
