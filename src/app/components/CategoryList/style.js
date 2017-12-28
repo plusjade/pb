@@ -21,4 +21,7 @@ export default {
     float: "right",
     marginRight: 60,
   },
+  summary: {
+    fontSize: 12,
+  },
 }

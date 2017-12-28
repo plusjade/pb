@@ -47,7 +47,7 @@ class CategoryList extends Component {
                   )}
                 </div>
                 {category.summary && (
-                  <div style={style.daysAgo}>
+                  <div style={style.summary}>
                     {category.summary}
                   </div>
                 )}
