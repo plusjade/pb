@@ -2,16 +2,17 @@ import colors from 'app/colors'
 
 export default {
   wrap: {
-    flex: 1,
-    textAlign: "center",
+    flex: 0,
+    overflow: "hidden",
     zIndex: 2,
     transition: "all 200ms ease",
-    transform: "translateY(100%)",
     borderTop: `1px solid ${colors.secondaryBorder}`,
     backgroundColor: colors.secondaryBackground,
+    textAlign: "center",
   },
   isActive: {
-    transform: "translateY(0%)",
+    transition: "all 200ms ease 600ms",
+    flex: 3,
   },
   input: {
     width: "100%",

@@ -24,8 +24,14 @@ class EntryAdd extends PureComponent {
         {},
         this.props.entry,
         {value: this.state.value}
-      )
+      ),
+      this.reset
     )
+  }
+
+  reset = () => {
+    this.setState({value: ""})
+    this.handleResize()
   }
 
   handleChange = (e) => {
@@ -48,7 +54,7 @@ class EntryAdd extends PureComponent {
         onSubmit={this.handleSubmit}
         style={[
           style.wrap,
-          style.isActive,
+          this.props.isActive && style.isActive,
         ]}
       >
         <div style={style.level1}>

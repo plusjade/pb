@@ -11,6 +11,7 @@ import colors from 'app/colors'
 
 const style = {
   wrap: {
+    paddingBottom: 10,
     // flex: 1,
     // display: "flex",
     // flexDirection: "column",

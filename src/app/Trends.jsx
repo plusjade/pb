@@ -80,7 +80,7 @@ class Trend extends Component {
     this.setState({showAddEntry: body})
   }
 
-  persistReally = (body) => {
+  persistReally = (body, callback) => {
     if (!body.ordinal) {
       body.ordinal = this.state.today.ordinal
     }
@@ -93,6 +93,9 @@ class Trend extends Component {
     this.props.persist(body).then(() => {
       this.closeAddEntry()
       this.refreshData()
+      if (typeof callback === "function") {
+        callback()
+      }
     })
   }
 
@@ -215,6 +218,7 @@ class Trend extends Component {
           <EntryAdd
             persistReally={this.persistReally}
             entry={this.state.showAddEntry}
+            isActive={!this.state.shouldShowDetail}
           />
         </div>
         </div>
