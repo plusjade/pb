@@ -63,7 +63,7 @@ class Trend extends Component {
   state = {
     feed: [],
     shouldShowVizIndex: true,
-    shouldShowDetail: false,
+    activeCategory: false,
     maxHealth: 0,
     categories: [],
   }
@@ -127,22 +127,22 @@ class Trend extends Component {
     })
   }
 
-  showDetail = (categoryName) => {
+  activateCategory = (categoryName) => {
     if (categoryName == "Home") {
       categoryName = false
     }
     this.setState({
-      shouldShowDetail: categoryName,
+      activeCategory: categoryName,
       shouldShowCategoryList: false,
     })
   }
 
   getCategoryDetail = () => (
-    this.state.categories.find(d => (this.state.shouldShowDetail === d.name))
+    this.state.categories.find(d => (this.state.activeCategory === d.name))
   )
 
   shouldShowSlidePosition =() => (
-    !this.state.shouldShowDetail
+    !this.state.activeCategory
   )
 
   render() {
@@ -156,9 +156,9 @@ class Trend extends Component {
         >
           <div style={style.secondary}>
             <CategoryList
-              activeCategoryName={this.state.shouldShowDetail}
+              activeCategoryName={this.state.activeCategory}
               categories={[{name: "Home"}].concat(this.state.categories || [])}
-              onTap={this.showDetail}
+              onTap={this.activateCategory}
               onSwipe={this.toggleCategoryList}
             />
           </div>
@@ -174,7 +174,7 @@ class Trend extends Component {
             <Visualization
               data={this.state.categories}
               maxHealth={this.state.maxHealth}
-              showDetail={this.showDetail}
+              activateCategory={this.activateCategory}
               showVizIndex={this.showVizIndex}
               persist={this.persist}
             />
@@ -192,9 +192,9 @@ class Trend extends Component {
             showAddEntry={this.state.showAddEntry}
             showVizIndex={this.showVizIndex}
             isSlid={false}
-            showDetail={this.showDetail}
+            activateCategory={this.activateCategory}
             closeAddEntry={this.closeAddEntry}
-            shouldShowDetail={this.state.shouldShowDetail}
+            activeCategory={this.state.activeCategory}
             onSwipeRight={this.toggleCategoryList}
             data={this.getCategoryDetail()}
           />
@@ -218,7 +218,7 @@ class Trend extends Component {
           <EntryAdd
             persistReally={this.persistReally}
             entry={this.state.showAddEntry}
-            isActive={!this.state.shouldShowDetail}
+            isActive={!this.state.activeCategory}
           />
         </div>
         </div>

@@ -13,7 +13,7 @@ import style from './style'
 class Feed extends Component {
   static propTypes = {
     feed: PropTypes.array,
-    shouldShowDetail: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
+    activeCategory: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     persist: PropTypes.func,
     isActive: PropTypes.bool,
     onSwipeRight: PropTypes.func,
@@ -26,7 +26,7 @@ class Feed extends Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.feed.length > prevProps.feed.length
-      || this.props.shouldShowDetail !== prevProps.shouldShowDetail
+      || this.props.activeCategory !== prevProps.activeCategory
     ) {
       this.scrollBottom()
     }
@@ -60,9 +60,9 @@ class Feed extends Component {
     .map((unit, index) => {
       if (unit.type === "day") {
         let foundIndex = - 1
-        if (this.props.shouldShowDetail) {
+        if (this.props.activeCategory) {
           this.props.feed.find((day, i) => {
-            if (day.type === "day" && day.categories.hasOwnProperty(this.props.shouldShowDetail)) {
+            if (day.type === "day" && day.categories.hasOwnProperty(this.props.activeCategory)) {
               foundIndex = i
               return true
             } else {
@@ -70,10 +70,10 @@ class Feed extends Component {
             }
           })
         }
-        unit.hasEntries = this.props.shouldShowDetail
-                ? unit.categories.hasOwnProperty(this.props.shouldShowDetail)
+        unit.hasEntries = this.props.activeCategory
+                ? unit.categories.hasOwnProperty(this.props.activeCategory)
                 : Object.keys(unit.categories).length > 0
-        unit.isVisible = this.props.shouldShowDetail
+        unit.isVisible = this.props.activeCategory
                 ? index >= foundIndex
                 : true
 
@@ -161,10 +161,10 @@ class Feed extends Component {
                       minorValue={unit.day}
                       style={{color: unit.color}}
                       isVisible={
-                        !this.props.shouldShowDetail || this.props.shouldShowDetail === unit.category
+                        !this.props.activeCategory || this.props.activeCategory === unit.category
                       }
                       tag={`#${unit.category.substring(0, 3).toUpperCase()}`}
-                      onTagTap={this.props.showDetail}
+                      onTagTap={this.props.activateCategory}
                       actionData={unit.category}
                     />
                   )

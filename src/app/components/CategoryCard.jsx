@@ -27,7 +27,7 @@ class CategoryCard extends PureComponent {
   }
 
   handleSelect = () => {
-    this.props.showDetail(this.props.name)
+    this.props.activateCategory(this.props.name)
   }
 
   render() {
