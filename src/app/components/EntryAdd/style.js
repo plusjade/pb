@@ -7,7 +7,6 @@ export default {
     zIndex: 2,
     transition: "all 200ms ease",
     transform: "translateY(100%)",
-    paddingBottom: 20,
     borderTop: `1px solid ${colors.secondaryBorder}`,
     backgroundColor: colors.secondaryBackground,
   },

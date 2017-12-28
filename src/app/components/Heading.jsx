@@ -10,7 +10,7 @@ const style = {
     zIndex: 2,
     backgroundColor: colors.secondaryBackground,
     textAlign: "center",
-    lineHeight: "50px",
+    lineHeight: "46px",
     fontSize: 20,
     borderBottom: `1px solid ${colors.secondaryBorder}`,
   },

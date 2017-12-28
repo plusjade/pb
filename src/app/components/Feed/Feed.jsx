@@ -6,6 +6,7 @@ import Hammer from 'react-hammerjs'
 import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
 import BuddyMessage from 'app/components/BuddyMessage'
+import CategoryDetail from 'app/components/CategoryDetail'
 
 import style from './style'
 
@@ -113,7 +114,6 @@ class Feed extends Component {
         ref={this.getRefNode}
         style={[
           style.default,
-          this.props.isSlid && style.isSlid,
         ]}
       >
         <Hammer
@@ -180,6 +180,12 @@ class Feed extends Component {
                 isVisible={true}
               />
             )}
+            {this.props.data && (
+              <CategoryDetail
+                data={this.props.data}
+              />
+            )}
+
           </div>
         </Hammer>
       </div>

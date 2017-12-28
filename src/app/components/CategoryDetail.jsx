@@ -11,22 +11,18 @@ import colors from 'app/colors'
 
 const style = {
   wrap: {
-    position: "fixed",
-    display: "flex",
-    flexDirection: "column",
-    top: 32, // height of the Header
-    left: 0,
-    right: 0,
-    paddingTop: 15,
-    backgroundColor: colors.primaryBackground,
-    zIndex: 4,
-    transition: "all 200ms ease",
-    transform: "translateY(-84%)",
-    color: "rgba(33,33,33, 0.5)"
+    // flex: 1,
+    // display: "flex",
+    // flexDirection: "column",
+    // backgroundColor: colors.primaryBackground,
+    // zIndex: 4,
+    // transition: "all 200ms ease",
+    // transform: "translateY(-84%)",
+    // color: "rgba(33,33,33, 0.5)"
   },
   isExpanded: {
-    transform: "translateY(0)",
-    color: "inherit",
+    // transform: "translateY(0)",
+    // color: "inherit",
   },
   placeholder: {
     // transition: "all 900ms ease",
@@ -71,38 +67,32 @@ class CategoryDetail extends Component {
 
   render() {
     return (
-      <div>
-        <div style={style.placeholder} />
-        <Hammer
-          onTap={this.handleTap}
-          onSwipe={this.handleTap}
-          direction={"DIRECTION_UP"}
-        >
           <div style={[
             style.wrap,
             this.state.isExpanded && style.isExpanded
           ]}>
             <div>
-              <Chart
-                key={this.props.data.category}
-                ratio={2}
-                data={this.props.data.data}
-                maxHealth={20}
-                index={0}
-                name={this.props.data.category}
-                showAxis={true}
-                showPoints={true}
-              />
-
-              <CategoryStats
-                occurrences={this.props.data.occurrences || 0}
-                days_since_last={this.props.data.days_since_last || 0}
-                maxHealth={this.props.data.maxHealth || 0}
-              />
+              {true && (
+                <Chart
+                  key={this.props.data.name}
+                  ratio={2}
+                  data={this.props.data.data}
+                  maxHealth={20}
+                  index={0}
+                  name={this.props.data.name}
+                  showAxis={false}
+                  showPoints={true}
+                />
+              )}
+              {false && (
+                <CategoryStats
+                  entries={this.props.data.entries || 0}
+                  days_since_last={this.props.data.days_since_last || 0}
+                  maxHealth={this.props.data.maxHealth || 0}
+                />
+              )}
             </div>
           </div>
-        </Hammer>
-      </div>
     )
   }
 }

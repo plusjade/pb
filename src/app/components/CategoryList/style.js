@@ -4,10 +4,21 @@ export default {
     flex: 1,
     overflow: "auto",
     backgroundColor: colors.secondaryBackground,
-    padding: "20px 0",
+    padding: "50px 0 20px",
   },
-  category: {
-    padding: "10px 20px",
-    fontSize: 30,
+  nameWrap: {
+    padding: "15px 20px",
+    fontSize: 20,
+    lineHeight: "20px",
+  },
+  isActive: {
+    borderLeft: `3px solid ${colors.text}`,
+  },
+  name: {
+    color: colors.text,
+  },
+  emoji: {
+    float: "right",
+    marginRight: 60,
   },
 }

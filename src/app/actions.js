@@ -24,11 +24,10 @@ export const getPayload = () => (
   .then(checkStatus)
   .then(parseJSON)
   .then((rsp) => {
-    const aggregrate = rsp.trends.reduce((memo, d) => (memo.concat(d.data)),[])
+    const aggregrate = rsp.categories.reduce((memo, d) => (memo.concat(d.data)),[])
     return ({
       today: rsp.today,
       feed: rsp.feed,
-      trends: rsp.trends,
       categories: rsp.categories,
       maxHealth: max(aggregrate, d => (d.health))
     })

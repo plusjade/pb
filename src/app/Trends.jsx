@@ -24,26 +24,29 @@ const style = {
     flexDirection: "column",
     overflow: "hidden",
     transition: "all 200ms ease",
-    boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
+    // boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
   },
   primary: {
-    width: 375,
+    minWidth: 375,
     flex: 1,
     display: "flex",
     flexDirection: "column",
+  },
+  primaryWrapIsInactive: {
+    borderLeft: "1px solid #E0E0E0",
   },
   secondaryWrap: {
     flex: 0,
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    transition: "all 200ms ease",
+    transition: "flex 200ms ease",
   },
   secondaryIsActive: {
     flex: 8,
   },
   secondary: {
-    width: 375,
+    minWidth: 375,
     flex: 1,
     display: "flex",
     flexDirection: "column",
@@ -62,7 +65,7 @@ class Trend extends Component {
     shouldShowVizIndex: true,
     shouldShowDetail: false,
     maxHealth: 0,
-    trends: [],
+    categories: [],
   }
 
   componentWillMount() {
@@ -122,7 +125,7 @@ class Trend extends Component {
   }
 
   showDetail = (categoryName) => {
-    if (categoryName == "All") {
+    if (categoryName == "Home") {
       categoryName = false
     }
     this.setState({
@@ -132,7 +135,7 @@ class Trend extends Component {
   }
 
   getCategoryDetail = () => (
-    this.state.trends.find(d => (this.state.shouldShowDetail === d.category))
+    this.state.categories.find(d => (this.state.shouldShowDetail === d.name))
   )
 
   shouldShowSlidePosition =() => (
@@ -150,18 +153,23 @@ class Trend extends Component {
         >
           <div style={style.secondary}>
             <CategoryList
-              categories={["All"].concat(this.state.categories || [])}
+              activeCategoryName={this.state.shouldShowDetail}
+              categories={[{name: "Home"}].concat(this.state.categories || [])}
               onTap={this.showDetail}
               onSwipe={this.toggleCategoryList}
             />
           </div>
         </div>
-        <div style={style.primaryWrap}>
+        <div
+          style={[
+            style.primaryWrap,
+            this.state.shouldShowCategoryList && style.primaryWrapIsInactive
+          ]}
+        >
           <div style={style.primary}>
           {!this.state.shouldShowVizIndex && (
             <Visualization
-              data={this.state.trends}
-              categories={this.state.categories}
+              data={this.state.categories}
               maxHealth={this.state.maxHealth}
               showDetail={this.showDetail}
               showVizIndex={this.showVizIndex}
@@ -170,19 +178,9 @@ class Trend extends Component {
           )}
 
           <Heading
-            value={this.getCategoryDetail() && this.getCategoryDetail().category}
+            value={this.getCategoryDetail() && this.getCategoryDetail().name}
             onTap={this.toggleCategoryList}
           />
-
-          {false && (
-            <CategoryDetail
-              data={this.getCategoryDetail()}
-              onSwipeRight={this.toggleCategoryList}
-              persist={this.persist}
-              showAddEntry={this.state.showAddEntry}
-              closeAddEntry={this.closeAddEntry}
-            />
-          )}
 
           <Feed
             feed={this.state.feed}
@@ -195,7 +193,18 @@ class Trend extends Component {
             closeAddEntry={this.closeAddEntry}
             shouldShowDetail={this.state.shouldShowDetail}
             onSwipeRight={this.toggleCategoryList}
+            data={this.getCategoryDetail()}
           />
+
+          {false && (
+            <CategoryDetail
+              data={this.getCategoryDetail()}
+              onSwipeRight={this.toggleCategoryList}
+              persist={this.persist}
+              showAddEntry={this.state.showAddEntry}
+              closeAddEntry={this.closeAddEntry}
+            />
+          )}
 
           {false && this.shouldShowSlidePosition() && (
             <SlidePosition

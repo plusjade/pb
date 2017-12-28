@@ -69,9 +69,9 @@ class Visualization extends PureComponent {
               </div>
               {this.props.data.map(d => (
                 <CategoryCard
-                  key={d.category}
-                  name={d.category}
-                  occurrences={d.occurrences}
+                  key={d.name}
+                  name={d.name}
+                  entries={d.entries}
                   data={d.data}
                   maxHealth={this.props.maxHealth}
                   showDetail={this.props.showDetail}

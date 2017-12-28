@@ -23,13 +23,34 @@ class CategoryList extends Component {
         >
 
         <div style={style.wrap}>
-          {this.props.categories.map((name) => (
+          {this.props.categories.map((category) => (
             <Hammer
-              key={name}
-              onTap={this.handleTap.bind(this, name)}
+              key={category.name}
+              onTap={this.handleTap.bind(this, category.name)}
             >
-              <div style={style.category} >
-                {`${name}`}
+              <div
+                style={[
+                  style.nameWrap,
+                  this.props.activeCategoryName === category.name
+                    ? style.isActive
+                    : !this.props.activeCategoryName && category.name === "Home" && style.isActive,
+                ]}
+              >
+                <div style={style.name}>
+                  <span>
+                    {category.name.toUpperCase()}
+                  </span>
+                  {category.emoji && (
+                    <span style={style.emoji}>
+                      {category.emoji}
+                    </span>
+                  )}
+                </div>
+                {category.summary && (
+                  <div style={style.daysAgo}>
+                    {category.summary}
+                  </div>
+                )}
               </div>
             </Hammer>
           ))}

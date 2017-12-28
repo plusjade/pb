@@ -5,7 +5,7 @@ import style from './style'
 
 class CategoryStats extends Component {
   static propTypes = {
-    occurrences: PropTypes.number,
+    entries: PropTypes.number,
     days_since_last: PropTypes.number,
     maxHealth: PropTypes.number,
   }
@@ -15,7 +15,7 @@ class CategoryStats extends Component {
       <div style={style.wrap}>
         <div style={style.default}>
           <div style={style.panel}>
-            <h2>{this.props.occurrences || 0}</h2>
+            <h2>{this.props.entries || 0}</h2>
             <h5>entries</h5>
           </div>
           <div style={style.panel}>
