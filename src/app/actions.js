@@ -70,3 +70,63 @@ export const persist = (body) => {
     })
   )
 }
+
+export const parseFeed = (feed, categoryFilter) => {
+  let emptyDaysBatch = 0
+  let emptyDaysBatchTotal = 0
+  feed
+  .slice(0)
+  .reverse()
+  .map((unit, index) => {
+    if (unit.type === "day") {
+      let foundIndex = - 1
+      if (categoryFilter) {
+        feed.find((day, i) => {
+          if (day.type === "day" && day.categories.hasOwnProperty(categoryFilter)) {
+            foundIndex = i
+            return true
+          } else {
+            return false
+          }
+        })
+      }
+      unit.hasEntries = categoryFilter
+              ? unit.categories.hasOwnProperty(categoryFilter)
+              : Object.keys(unit.categories).length > 0
+      unit.isVisible = categoryFilter
+              ? index >= foundIndex
+              : true
+
+      if (unit.hasEntries) {
+        emptyDaysBatch = 0
+      } else {
+        emptyDaysBatch += 1
+      }
+
+      unit.emptyDaysBatch = emptyDaysBatch
+    }
+
+    return unit
+  })
+  .reverse()
+  .map((unit) => {
+    if (unit.type === "day") {
+      if (unit.emptyDaysBatch > 0) {
+        if (emptyDaysBatchTotal < unit.emptyDaysBatch) {
+          emptyDaysBatchTotal = unit.emptyDaysBatch
+        }
+        unit.emptyDaysBatchTotal = emptyDaysBatchTotal
+      } else {
+        emptyDaysBatchTotal = 0
+      }
+
+      if (emptyDaysBatchTotal > 3) {
+        unit.isVisible = false
+      }
+    }
+
+    return unit
+  })
+
+  return feed
+}

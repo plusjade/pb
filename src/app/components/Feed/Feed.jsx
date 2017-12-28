@@ -5,7 +5,6 @@ import Hammer from 'react-hammerjs'
 
 import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
-import CategoryDetail from 'app/components/CategoryDetail'
 
 import style from './style'
 
@@ -50,63 +49,6 @@ class Feed extends Component {
   }
 
   render() {
-    let emptyDaysBatch = 0
-    let emptyDaysBatchTotal = 0
-    const feed = this.props
-    .feed
-    .slice(0)
-    .reverse()
-    .map((unit, index) => {
-      if (unit.type === "day") {
-        let foundIndex = - 1
-        if (this.props.activeCategory) {
-          this.props.feed.find((day, i) => {
-            if (day.type === "day" && day.categories.hasOwnProperty(this.props.activeCategory)) {
-              foundIndex = i
-              return true
-            } else {
-              return false
-            }
-          })
-        }
-        unit.hasEntries = this.props.activeCategory
-                ? unit.categories.hasOwnProperty(this.props.activeCategory)
-                : Object.keys(unit.categories).length > 0
-        unit.isVisible = this.props.activeCategory
-                ? index >= foundIndex
-                : true
-
-        if (unit.hasEntries) {
-          emptyDaysBatch = 0
-        } else {
-          emptyDaysBatch += 1
-        }
-
-        unit.emptyDaysBatch = emptyDaysBatch
-      }
-
-      return unit
-    })
-    .reverse()
-    .map((unit) => {
-      if (unit.type === "day") {
-        if (unit.emptyDaysBatch > 0) {
-          if (emptyDaysBatchTotal < unit.emptyDaysBatch) {
-            emptyDaysBatchTotal = unit.emptyDaysBatch
-          }
-          unit.emptyDaysBatchTotal = emptyDaysBatchTotal
-        } else {
-          emptyDaysBatchTotal = 0
-        }
-
-        if (emptyDaysBatchTotal > 3) {
-          unit.isVisible = false
-        }
-      }
-
-      return unit
-    })
-
     return (
       <div
         id="FEED"
@@ -120,7 +62,7 @@ class Feed extends Component {
           direction={"DIRECTION_HORIZONTAL"}
         >
           <div>
-            {feed.map((unit, index) => {
+            {this.props.feed.map((unit, index) => {
               switch (unit.type) {
                 case "banner": {
                   return (
@@ -211,12 +153,7 @@ class Feed extends Component {
               </Entry>
             ))}
 
-            {this.props.data && (
-              <CategoryDetail
-                data={this.props.data}
-              />
-            )}
-
+            {React.Children.map(this.props.children, (c) => (c))}
           </div>
         </Hammer>
       </div>
