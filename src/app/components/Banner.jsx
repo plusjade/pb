@@ -27,12 +27,10 @@ class Banner extends PureComponent {
       <div
         style={[
           style.default,
-          {
-            backgroundColor: this.props.color,
-          }
+          {backgroundColor: this.props.color}
         ]}
       >
-        {this.props.value.substring(0,3).toUpperCase()}
+        {this.props.value}
       </div>
     )
   }
