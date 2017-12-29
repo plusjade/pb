@@ -75,31 +75,50 @@ class Feed extends Component {
                   )
                 }
                 case "day": {
-                  return ([
-                      unit.emptyDaysBatchTotal > 3 && unit.emptyDaysBatch === unit.emptyDaysBatchTotal && (
-                        <div style={{paddingTop: (5 * unit.emptyDaysBatchTotal), paddingBottom: (5 * unit.emptyDaysBatchTotal), paddingLeft: 20}}>
-                          <h2 style={{color: "#9E9E9E", fontSize: 16, width: 36, textAlign: "center"}}>
-                            {`${unit.emptyDaysBatchTotal} days`}
-                          </h2>
-                        </div>
-                      ),
-                      <Entry
-                        key={unit.ordinal}
-                        minorValue={unit.value}
-                        style={{color: "#9E9E9E"}}
-                        styleMajor={{backgroundColor: "transparent"}}
-                        isVisible={unit.isVisible && !unit.hasEntries}
-                        onMinorTap={this.onMinorTap}
-                        actionData={unit.ordinal}
-                      />
-                  ])
+                  const isBatch = unit.emptyDaysBatchTotal > 3
+                  const isFirst = unit.emptyDaysBatch === unit.emptyDaysBatchTotal
+                  if (unit.hasEntries || (!isBatch && isFirst)) {
+                    return (
+                      <div
+                        style={{
+                          fontSize: 12,
+                          padding: "3px 20px 3px",
+                          textAlign: "right",
+                          color: unit.hasEntries ? unit.color : "#9E9E9E",
+                          opacity: unit.hasEntries ? 1 : 0,
+                        }}
+                      >
+                        {unit.value}
+                      </div>
+                    )
+                  } else if (isBatch && isFirst) {
+                    return (
+                      <div
+                        style={{
+                          paddingTop: (4 * unit.emptyDaysBatchTotal),
+                          paddingBottom: (4 * unit.emptyDaysBatchTotal),
+                          paddingRight: 20,
+                          textAlign: "right",
+                        }}
+                      >
+                        <h2
+                          style={{
+                            color: "#9E9E9E",
+                            fontSize: 16,
+                          }}
+                        >
+                          {`${unit.emptyDaysBatchTotal} days`}
+                        </h2>
+                      </div>
+                    )
+                  } else {
+                    return (null)
+                  }
                 }
                 case "entry": {
                   return (
                     <Entry
                       key={unit.id}
-                      minorValue={unit.day}
-                      style={{color: unit.color}}
                       isVisible={
                         !this.props.activeCategory || this.props.activeCategory === unit.category
                       }
