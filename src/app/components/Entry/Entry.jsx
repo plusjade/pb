@@ -9,7 +9,7 @@ class Entry extends Component {
   static propTypes = {
     actionData: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
     isVisible: PropTypes.bool,
-    minorValue: PropTypes.string,
+    minorValue: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     onTagTap: PropTypes.func,
     onMinorTap: PropTypes.func,
     style: PropTypes.object,

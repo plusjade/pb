@@ -14,4 +14,7 @@ export default {
     display: "flex",
     flexDirection: "column-reverse",
   },
+  botEmoji: {
+    fontSize: 26,
+  },
 }

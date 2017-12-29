@@ -130,37 +130,31 @@ class Feed extends Component {
                     </Entry>
                   )
                 }
+                case "botEntry": {
+                  const content = Array.isArray(unit.value) ? unit.value : [unit.value]
+                  return (
+                    <Entry
+                      minorValue={unit.emoji && (
+                        <span style={style.botEmoji}>
+                          {unit.emoji}
+                        </span>
+                      )}
+                      isVisible={unit.isVisible}
+                      reverse={true}
+                    >
+                      {content.map((line) => (
+                        <span>{`${line} `}</span>
+                      ))}
+                    </Entry>
+                  )
+                }
                 default: {
                   return (null)
                 }
               }
             })}
 
-            {[
-              <span>{"Hello there!"}</span>,
-              <span>
-                {
-                  "Every day I'm going to ask you 'What did you do today?' \
-                  I'll keep track of all your answers and help you build positive habits."
-                }
-              </span>,
-              <div>
-                <strong>{"Here are some example answers:"}</strong>
-                <ul>
-                  <li>{"I read a book"}</li>
-                  <li>{"went to the gym"}</li>
-                  <li>{"hung out with my friends"}</li>
-                  <li>{"called my mom family"}</li>
-                </ul>
-              </div>,
-              <span>{"I'm still training, so you'll have to help me group your answers by using hashtags."}</span>,
-              <span>
-                {"I'm not yet smart enough to give you advice on how to achieve specific goals. \
-                  But there's one thing I know everyone has to do if they want to get better at anything."}
-              </span>,
-              <span>{"show up"}</span>,
-              <span>{"Achieving anything is applying sustained effort over time. The more you show up, the more progress you'll make."}</span>
-            ].map((content, i) => (
+            {[].map((content, i) => (
               <Entry
                 minorValue={i === 0 && (
                   <span style={{fontSize: 26}}>{"🤖"}</span>

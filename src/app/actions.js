@@ -123,6 +123,8 @@ export const parseFeed = (feed, categoryFilter) => {
       if (emptyDaysBatchTotal > 3) {
         unit.isVisible = false
       }
+    } else if (unit.type === "botEntry") {
+      unit.isVisible = !categoryFilter
     }
 
     return unit
