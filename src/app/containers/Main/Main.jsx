@@ -12,25 +12,37 @@ import style from './style'
 
 class Main extends Component {
   static propTypes = {
-    getPayload: PropTypes.func.isRequired,
+    getCategories: PropTypes.func.isRequired,
+    getFeed: PropTypes.func.isRequired,
     persist: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
   }
 
   state = {
+    categories: [],
     feed: [],
     shouldShowVizIndex: true,
     activeCategory: false,
     maxHealth: 0,
-    categories: [],
   }
 
   componentWillMount() {
     this.refreshData()
+    this.getFeed("home")
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.activeCategory !== this.state.activeCategory) {
+      this.getFeed(this.state.activeCategory || "home")
+    }
+  }
+
+  getFeed = (categoryName) => {
+    this.props.getFeed(categoryName).then((rsp) => { this.setState(rsp) })
   }
 
   refreshData() {
-    this.props.getPayload().then((rsp) => { this.setState(rsp) })
+    this.props.getCategories().then((rsp) => { this.setState(rsp) })
   }
 
   persist = (body) => {
@@ -94,6 +106,9 @@ class Main extends Component {
   shouldShowSlidePosition =() => (
     !this.state.activeCategory
   )
+  feed = () => (
+    this.props.parseFeed(this.state.feed, this.state.activeCategory)
+  )
 
   render() {
     const activeCategory = this.getCategoryDetail()
@@ -130,13 +145,13 @@ class Main extends Component {
             />
 
             <Feed
-              feed={this.props.parseFeed(this.state.feed, this.state.activeCategory)}
+              feed={this.feed()}
               persist={this.persist}
               activateCategory={this.activateCategory}
               activeCategory={this.state.activeCategory}
               onSwipeRight={this.toggleCategoryList}
             >
-              {activeCategory && (
+              {false && activeCategory && (
                 <CategoryDetail
                   data={activeCategory}
                 />

@@ -50,16 +50,17 @@ class Feed extends Component {
 
   render() {
     return (
-      <div
-        id="FEED"
-        ref={this.getRefNode}
-        style={[
-          style.default,
-        ]}
+      <Hammer
+        onSwipe={this.props.onSwipeRight}
+        direction={"DIRECTION_HORIZONTAL"}
       >
-        <Hammer
-          onSwipe={this.props.onSwipeRight}
-          direction={"DIRECTION_HORIZONTAL"}
+
+        <div
+          id="FEED"
+          ref={this.getRefNode}
+          style={[
+            style.default,
+          ]}
         >
           <div>
             {this.props.feed.map((unit, index) => {
@@ -142,8 +143,8 @@ class Feed extends Component {
                       isVisible={unit.isVisible}
                       reverse={true}
                     >
-                      {content.map((line) => (
-                        <span>{`${line} `}</span>
+                      {content.map((line, i) => (
+                        <span key={i}>{`${line} `}</span>
                       ))}
                     </Entry>
                   )
@@ -168,8 +169,8 @@ class Feed extends Component {
 
             {React.Children.map(this.props.children, (c) => (c))}
           </div>
-        </Hammer>
-      </div>
+        </div>
+      </Hammer>
     )
   }
 }

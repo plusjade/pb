@@ -5,8 +5,8 @@ import Radium from 'radium'
 const style = {
   default: {
     color: "#FFF",
-    margin: "10px 0",
-    padding: "0 15px",
+    marginTop: 10,
+    padding: "5px 5px 0 5px",
     lineHeight: "26px",
     fontSize: 14,
     textAlign: "center",
@@ -27,7 +27,12 @@ class Banner extends PureComponent {
       <div
         style={[
           style.default,
-          {backgroundColor: this.props.color}
+          {
+            color: this.props.color,
+            borderTop: `1px solid ${this.props.color}`,
+            // borderLeft: `1px solid ${this.props.color}`,
+            borderRadius: 0,
+          },
         ]}
       >
         {this.props.value}

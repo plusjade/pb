@@ -17,25 +17,35 @@ function checkStatus(response) {
 const parseJSON = response => (response.json())
 const buildUrl = path => (`${API_ENDPOINT}${path}`)
 
-export const getPayload = () => (
+export const getCategories = () => (
   window.fetch(buildUrl("/trends"), {
     method: 'GET'
   })
   .then(checkStatus)
   .then(parseJSON)
-  .then((rsp) => {
-    const aggregrate = rsp.categories.reduce((memo, d) => (memo.concat(d.data)),[])
-    return ({
-      today: rsp.today,
-      feed: rsp.feed,
-      categories: rsp.categories,
-      maxHealth: max(aggregrate, d => (d.health))
-    })
-  })
+  .then((rsp) => ({
+    categories: rsp.categories
+  }))
   .catch((error) => {
     console.log('request failed', error)
   })
 )
+
+export const getFeed = (categoryName) => {
+  return (
+    window.fetch(buildUrl(`/feeds/${categoryName}`), {
+      method: 'GET',
+    })
+    .then(checkStatus)
+    .then(parseJSON)
+    .then((rsp) => ({
+      feed: rsp.feed
+    }))
+    .catch((error) => {
+      console.log('request failed', error)
+    })
+  )
+}
 
 export const remove = id => (
   window.fetch(buildUrl(`/entries/${id}`), {
