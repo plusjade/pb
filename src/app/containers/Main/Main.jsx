@@ -38,15 +38,8 @@ class Main extends Component {
   }
 
   persistReally = (body, callback) => {
-    if (!body.ordinal) {
-      body.ordinal = this.state.today.ordinal
-    }
-    if (
-      !body.ordinal
-      || body.ordinal.trim() === ""
-      || !body.value
-      || !body.value.trim() === ""
-    ) { return }
+    if (!body.value || !body.value.trim() === "") { return }
+
     this.props.persist(body).then(() => {
       this.closeAddEntry()
       this.refreshData()

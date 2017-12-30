@@ -52,7 +52,9 @@ export const remove = id => (
 
 export const persist = (body) => {
   const fdata = new FormData()
-  fdata.append("ordinal", body.ordinal)
+  if (body.ordinal) {
+    fdata.append("ordinal", body.ordinal)
+  }
   fdata.append("value", body.value)
   fdata.append("category", body.category)
 
