@@ -155,18 +155,6 @@ class Feed extends Component {
               }
             })}
 
-            {[].map((content, i) => (
-              <Entry
-                minorValue={i === 0 && (
-                  <span style={{fontSize: 26}}>{"🤖"}</span>
-                )}
-                isVisible={true}
-                reverse={true}
-              >
-                {content}
-              </Entry>
-            ))}
-
             {React.Children.map(this.props.children, (c) => (c))}
           </div>
         </div>
