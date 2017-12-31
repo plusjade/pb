@@ -55,8 +55,8 @@ export default {
     fontSize: 15,
   },
   majorReverse: {
-    backgroundColor: "#C5E1A5",
-    // border: "1px solid #E0E0E0",
+    backgroundColor: colors.botBackground,
+    border: "1px solid #F5F5F5",
   },
   spacer: {
     flex: 1,

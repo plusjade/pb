@@ -4,9 +4,9 @@ import Radium from 'radium'
 const style = {
   default: {
     display: "inline-block",
-    height: "8px",
-    width: "8px",
-    borderRadius: "8px",
+    height: 8,
+    width: 8,
+    borderRadius: 8,
     backgroundColor: "#CCC",
     margin: "0 2px",
     WebkitAnimation: "sk-flow 800ms infinite ease-in-out both",

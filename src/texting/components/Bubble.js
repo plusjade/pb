@@ -10,14 +10,13 @@ const bubble = {
     display: "inline-block",
     boxSixing: "border-box",
     textAlign: "left",
+    border: "1px solid #F5F5F5",
   },
   mine: {
-    backgroundColor: "rgba(69, 144, 243, 1)",
     color: "#FFF",
     float: "right",
   },
   theirs: {
-    backgroundColor: "rgba(229, 231, 234, 1)",
     color: "#000",
     float: "left",
   },
@@ -54,7 +53,7 @@ function Bubble(props) {
   }
 
   return (
-    <div style={[style, {backgroundColor: "#C5E1A5"}]}>
+    <div style={[style]}>
       <div style={{padding: "6px 10px"}}>
         {React.Children.only(props.children)}
       </div>

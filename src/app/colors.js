@@ -6,6 +6,7 @@ export default {
   borderColor: "#222",
   primaryBackground: "#FFF",
   secondaryBackground: "#F5F5F5",
+  botBackground: "#FFF",
   secondaryBorder: "#E0E0E0",
   text: "#424242",
   graphLine: "#555",
