@@ -1,12 +1,12 @@
 import React    from 'react'
+import Radium from 'radium'
 
 const bubble = {
   default: {
-    fontFamily: '"HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif',
     fontWeight: 300,
     WebkitFontSmoothing: "antialiased",
     MozOsxFontSmoothing: "grayscale",
-    borderRadius: "20px",
+    borderRadius: 20,
     display: "inline-block",
     boxSixing: "border-box",
     textAlign: "left",
@@ -54,7 +54,7 @@ function Bubble(props) {
   }
 
   return (
-    <div style={style}>
+    <div style={[style, {backgroundColor: "#C5E1A5"}]}>
       <div style={{padding: "6px 10px"}}>
         {React.Children.only(props.children)}
       </div>
@@ -62,4 +62,4 @@ function Bubble(props) {
   )
 }
 
-export default Bubble
+export default Radium(Bubble)

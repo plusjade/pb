@@ -1,14 +1,23 @@
-import React                from 'react'
-import Bubble               from './Bubble'
-import TypingCircles        from './TypingCircles'
+import React, {PureComponent} from 'react'
+import PropTypes from 'prop-types'
+import Radium from 'radium'
+import Bubble from './Bubble'
+import TypingCircles from './TypingCircles'
 
-const message = {
+const style = {
   default: {
     position: "absolute",
-    bottom: "5px",
+    bottom: 0,
     left: 0,
     right: 0,
+    height: 45,
     overflow: "auto",
+    display: "flex",
+    alignItems: "center",
+  },
+  inner: {
+    flex: 1,
+    paddingLeft: 15,
   },
   enter: {
     transition: "all 300ms ease-out",
@@ -24,27 +33,31 @@ const message = {
   }
 }
 
-// Todo: Consolidate with <Message/>
-const Typing = (props) => {
-  const messageStyle = Object.assign(
-      {},
-      message.default,
-      (props.status === "loading" ? message.end : message.enter),
-    )
+class Typing extends PureComponent {
+  static propTypes = {
+    status: PropTypes.string,
+  }
 
-  return (
-    <div style={messageStyle}>
-      <div style={{padding: "4px 10px"}}>
-        <Bubble
-          type="theirs"
-          status={props.status}
-          animate={true}
-        >
-          <TypingCircles />
-        </Bubble>
+  render() {
+    return (
+      <div
+        style={[
+          style.default,
+          (this.props.status === "loading") ? style.end : style.enter,
+        ]}
+      >
+        <div style={style.inner}>
+          <Bubble
+            type="theirs"
+            status={this.props.status}
+            animate={true}
+          >
+            <TypingCircles />
+          </Bubble>
+        </div>
       </div>
-    </div>
-  )
+    )
+  }
 }
 
-export default Typing
+export default Radium(Typing)

@@ -7,8 +7,10 @@ import CategoryList from 'app/components/CategoryList/CategoryList'
 import EntryAdd from 'app/components/EntryAdd/EntryAdd'
 import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
+import FeedItemRenderer from 'app/components/FeedItemRenderer'
 
 import Phone from 'texting/components/Phone'
+import Typing from 'texting/components/Typing'
 
 import style from './style'
 
@@ -202,23 +204,27 @@ class Main extends Component {
             />
 
             <Feed
-              feed={this.feed()}
-              persist={this.persist}
               activateCategory={this.activateCategory}
               activeCategory={this.state.activeCategory}
               onSwipeRight={this.toggleCategoryList}
             >
-              {false && activeCategory && (
-                <CategoryDetail
-                  data={activeCategory}
+              {this.state.activeCategory ? (
+                this.feed().map((unit, index) => (
+                  <FeedItemRenderer
+                    key={index}
+                    unit={unit}
+                  />
+                ))
+              ) : (
+                <Phone
+                  chatsIndex={this.state.chatsIndex}
+                  chatsObjects={this.state.chatsObjects}
+                  chatsIncomingObjectId={this.state.chatsIncomingObjectId}
+                  chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
                 />
               )}
-
-              <Phone
-                chatsIndex={this.state.chatsIndex}
-                chatsObjects={this.state.chatsObjects}
-                chatsIncomingObjectId={this.state.chatsIncomingObjectId}
-                chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
+              <Typing
+                status={!this.state.activeCategory && this.state.chatsIncomingObjectStatus}
               />
             </Feed>
 

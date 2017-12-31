@@ -33,7 +33,9 @@ class Entry extends Component {
       <div
         style={[
           style.wrap,
-          this.props.isVisible && style.isVisible
+          this.props.isVisible && style.isVisible,
+          this.props.status === "loading" && style.loading,
+          this.props.status === "loaded" && style.end,
       ]}>
         <div
           style={[

@@ -1,33 +1,8 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
-import Bubble               from './Bubble'
-import Message              from './Message'
-import Typing               from './Typing'
 
-const phone = {
-  default: {
-    backgroundColor: "#FFF",
-    flexGrow: 1,
-    height: "100%",
-    maxWidth: "375px",
-    position: "relative",
-    margin: "auto",
-    display: "flex",
-    justifyContent: "center",
-    boxSizing: "border-box",
-    border: 0,
-  },
-}
-
-const texting = {
-  default: {
-    position: "absolute",
-    bottom: "5px",
-    left: 0,
-    right: 0,
-  },
-}
+import Entry from 'app/components/Entry/Entry'
 
 class Phone extends Component {
   static propTypes = {
@@ -39,9 +14,8 @@ class Phone extends Component {
 
   render() {
     return (
-      <div style={phone.default}>
-        <div style={texting.default}>
-        {this.props.chatsIndex.map((id) => {
+      <div>
+        {this.props.chatsIndex.map((id, index) => {
           const object = this.props.chatsObjects[id]
           let status = "loaded"
           if (id === this.props.chatsIncomingObjectId) {
@@ -49,18 +23,20 @@ class Phone extends Component {
           }
 
           return (
-            <Message status={status} key={id}>
-              <Bubble type={object.type}>
-                <span>{object.value}</span>
-              </Bubble>
-            </Message>
+            <Entry
+              minorValue={index === 0 && (
+                <span style={{fontSize: 26}}>
+                  {"🤖"}
+                </span>
+              )}
+              isVisible={false}
+              status={status}
+              reverse={true}
+            >
+              <span>{object.value}</span>
+            </Entry>
           )
         })}
-        </div>
-
-        <Typing
-          status={this.props.chatsIncomingObjectStatus}
-        />
       </div>
     )
   }

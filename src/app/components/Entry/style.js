@@ -2,19 +2,44 @@ import colors from 'app/colors'
 
 export default {
   wrap: {
-    overflow: "hidden",
-    transition: "opacity 900ms ease, max-height 900ms ease",
+    overflow: "auto",
+    transition: "all 300ms ease-out",
     maxHeight: 0,
     opacity: 0,
+    transform: "scaleY(0.5)"
   },
   isVisible: {
     maxHeight: 1000,
     opacity: 1,
+    transform: "scaleY(1)"
   },
+
+  default: {
+    overflow: "auto",
+    position: "relative",
+    transition: "all 300ms ease-out",
+    maxHeight: 300,
+  },
+  enter: { // message has to exist for a time in order to animate properly
+    maxHeight: 0,
+    opacity: 0,
+    transform: "scaleY(0.9)"
+  },
+  loading: { // invisible but animates the space for the bouncing dots
+    maxHeight: 50,
+    opacity: 0,
+    transform: "scaleY(0.9)"
+  },
+  end: { // becomes visible with appropriate height
+    maxHeight: 300,
+    opacity: 1,
+    transform: "scaleY(1)"
+  },
+
   inner: {
     display: "flex",
     alignItems: "end",
-    margin: "10px 15px",
+    margin: "5px 15px",
   },
   reverse: {
     flexDirection: "row-reverse",

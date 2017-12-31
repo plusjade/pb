@@ -1,6 +1,7 @@
 import React    from 'react'
+import Radium from 'radium'
 
-const message = {
+const style = {
   default: {
     overflow: "auto",
     position: "relative",
@@ -28,13 +29,13 @@ function Message(props) {
   function computeStyle() {
     switch (props.status) {
       case "loading": {
-        return Object.assign({}, message.default, message.loading)
+        return [style.default, style.loading]
       }
       case "loaded": {
-        return Object.assign({}, message.default, message.end)
+        return [style.default, style.end]
       }
       default: {
-        return Object.assign({}, message.default, message.enter)
+        return [style.default, style.enter]
       }
     }
   }
@@ -48,4 +49,4 @@ function Message(props) {
   )
 }
 
-export default Message
+export default Radium(Message)
