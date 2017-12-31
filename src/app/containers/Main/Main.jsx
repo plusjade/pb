@@ -42,9 +42,10 @@ class Main extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.activeCategory !== this.state.activeCategory) {
-      this.getFeed(this.state.activeCategory || "home")
+    if (this.state.activeCategory && prevState.activeCategory !== this.state.activeCategory) {
+      this.getFeed(this.state.activeCategory)
     }
+
     if (!prevState.chatsCommands && this.state.chatsCommands) {
       this.chatsRunCommands(this.state.chatsCommands)
     }

@@ -18,7 +18,7 @@ const parseJSON = response => (response.json())
 const buildUrl = path => (`${API_ENDPOINT}${path}`)
 
 export const getCategories = () => (
-  window.fetch(buildUrl("/trends"), {
+  window.fetch(buildUrl("/categories"), {
     method: 'GET'
   })
   .then(checkStatus)
