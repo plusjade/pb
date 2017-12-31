@@ -13,6 +13,7 @@ export default {
     // scroll to bottom on initial page load
     display: "flex",
     flexDirection: "column-reverse",
+    position: "relative",
   },
   botEmoji: {
     fontSize: 26,

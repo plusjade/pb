@@ -31,6 +31,17 @@ export const getCategories = () => (
   })
 )
 
+export const getChats = () => (
+  window.fetch(buildUrl("/chats"), {
+    method: 'GET'
+  })
+  .then(checkStatus)
+  .then(parseJSON)
+  .then(rsp => (rsp))
+  .catch((error) => {
+    console.log('request failed', error)
+  })
+)
 export const getFeed = (categoryName) => {
   return (
     window.fetch(buildUrl(`/feeds/${categoryName}`), {

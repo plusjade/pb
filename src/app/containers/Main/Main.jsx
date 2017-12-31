@@ -8,11 +8,14 @@ import EntryAdd from 'app/components/EntryAdd/EntryAdd'
 import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
 
+import Phone from 'texting/components/Phone'
+
 import style from './style'
 
 class Main extends Component {
   static propTypes = {
     getCategories: PropTypes.func.isRequired,
+    getChats: PropTypes.func.isRequired,
     getFeed: PropTypes.func.isRequired,
     persist: PropTypes.func.isRequired,
     remove: PropTypes.func.isRequired,
@@ -23,25 +26,79 @@ class Main extends Component {
     feed: [],
     shouldShowVizIndex: true,
     activeCategory: false,
-    maxHealth: 0,
+    chatsIndex: [],
+    chatsObjects: {},
+    chatsCommands: undefined,
+    // status: null, loading, loaded
+    chatsIncomingObjectId: undefined,
+    chatsIncomingObjectStatus: undefined,
   }
 
   componentWillMount() {
-    this.refreshData()
-    this.getFeed("home")
+    this.getCategories()
+    this.getChats()
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (prevState.activeCategory !== this.state.activeCategory) {
       this.getFeed(this.state.activeCategory || "home")
     }
+    if (!prevState.chatsCommands && this.state.chatsCommands) {
+      this.chatsRunCommands(this.state.chatsCommands)
+    }
+  }
+
+  chatsRunCommands = (commands) => (
+    commands.reduce((memo, command) => (
+      memo.then(() => (this.chatsRunCommand(command)))
+    ), Promise.resolve())
+  )
+
+  chatsRunCommand = ({id, duration=800, delay=300}) => (
+    new Promise((resolve, reject) => {
+      const chatsIndex = this.state.chatsIndex.slice(0)
+      chatsIndex.push(id)
+      this.setState({
+        chatsIndex: chatsIndex,
+        chatsIncomingObjectId: id,
+        chatsIncomingObjectStatus: undefined,
+      }, () => {
+        setTimeout(() => {
+          this.chatsSetIncomingObject(id, "loading", () => {
+            setTimeout(() => {
+              this.chatsSetIncomingObject(id, "loaded", () => {
+                resolve("Success!")
+              })
+            }, duration)
+          })
+        }, delay)
+      })
+    })
+  )
+
+  chatsSetIncomingObject = (id, status, callback) => {
+    this.setState((prevState) => ({
+      chatsIncomingObjectId: id,
+      chatsIncomingObjectStatus: status,
+    }), callback)
   }
 
   getFeed = (categoryName) => {
     this.props.getFeed(categoryName).then((rsp) => { this.setState(rsp) })
   }
 
-  refreshData() {
+  getChats() {
+    this.props.getChats().then((rsp) => {
+      this.setState((prevState) => {
+        // accumulate chat objects in the app
+        // TODO: manage memory footprint/cache-sclearing
+        const mergedChatsObjects = {...prevState.chatsObjects, ...rsp.chatsObjects}
+        return ({...rsp, chatsObjects: mergedChatsObjects})
+      })
+    })
+  }
+
+  getCategories() {
     this.props.getCategories().then((rsp) => { this.setState(rsp) })
   }
 
@@ -54,7 +111,7 @@ class Main extends Component {
 
     this.props.persist(body).then(() => {
       this.closeAddEntry()
-      this.refreshData()
+      this.getCategories()
       if (typeof callback === "function") {
         callback()
       }
@@ -67,7 +124,7 @@ class Main extends Component {
 
   remove = (id) => {
     this.props.remove(id).then(() => {
-      this.refreshData()
+      this.getCategories()
     })
   }
 
@@ -156,6 +213,13 @@ class Main extends Component {
                   data={activeCategory}
                 />
               )}
+
+              <Phone
+                chatsIndex={this.state.chatsIndex}
+                chatsObjects={this.state.chatsObjects}
+                chatsIncomingObjectId={this.state.chatsIncomingObjectId}
+                chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
+              />
             </Feed>
 
             <EntryAdd
