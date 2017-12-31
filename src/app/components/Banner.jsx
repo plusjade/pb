@@ -4,14 +4,16 @@ import Radium from 'radium'
 
 const style = {
   default: {
-    color: "#FFF",
     marginTop: 10,
+    zIndex: 2,
+  },
+  inner: {
     padding: "5px 5px 0 5px",
     lineHeight: "26px",
     fontSize: 12,
-    textAlign: "center",
-    zIndex: 2,
     display: "inline-block",
+    textAlign: "center",
+    color: "#616161",
   }
 }
 
@@ -23,16 +25,15 @@ class Banner extends PureComponent {
 
   render() {
     return (
-      <div
-        style={[
-          style.default,
-          {
-            color: "#616161",
-            borderTop: `1px solid ${"#BDBDBD"}`,
-          },
-        ]}
-      >
-        {this.props.value}
+      <div style={style.default}>
+        <div
+          style={[
+            style.inner,
+            {borderTop: `1px solid ${"#BDBDBD"}`},
+          ]}
+        >
+          {this.props.value}
+        </div>
       </div>
     )
   }
