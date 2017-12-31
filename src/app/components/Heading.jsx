@@ -5,7 +5,7 @@ import Hammer from 'react-hammerjs'
 import colors from 'app/colors'
 
 const style = {
-  topHeading: {
+  default: {
     flex: 1,
     zIndex: 2,
     backgroundColor: colors.secondaryBackground,
@@ -24,11 +24,8 @@ class Heading extends Component {
   render() {
     return (
       <Hammer onTap={this.props.onTap}>
-        <h2 style={style.topHeading}>
-          {this.props.value
-              ? this.props.value.toUpperCase()
-              : "HOME"
-          }
+        <h2 style={[style.default, this.props.style]}>
+          {this.props.value}
         </h2>
       </Hammer>
     )

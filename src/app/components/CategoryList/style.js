@@ -1,10 +1,10 @@
 import colors from 'app/colors'
 export default {
   wrap: {
-    flex: 1,
+    flex: 20,
     overflow: "auto",
     backgroundColor: colors.secondaryBackground,
-    padding: "50px 0 20px",
+    padding: "20px 0 20px",
   },
   nameWrap: {
     padding: "15px 20px",

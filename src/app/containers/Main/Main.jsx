@@ -158,6 +158,10 @@ class Main extends Component {
     })
   }
 
+  goHome = () => {
+    this.activateCategory("Home")
+  }
+
   getCategoryDetail = () => (
     this.state.categories.find(d => (this.state.activeCategory === d.name))
   )
@@ -180,9 +184,15 @@ class Main extends Component {
           ]}
         >
           <div style={style.secondary}>
+            <Heading
+              value={"🤖 →"}
+              onTap={this.goHome}
+              style={{textAlign: "left", paddingLeft: 20}}
+            />
+
             <CategoryList
               activeCategoryName={this.state.activeCategory}
-              categories={[{name: "Home"}].concat(this.state.categories || [])}
+              categories={this.state.categories || []}
               onTap={this.activateCategory}
               onSwipe={this.toggleCategoryList}
             />
@@ -198,7 +208,9 @@ class Main extends Component {
           <div style={style.primary}>
             <Heading
               value={
-                this.getCategoryDetail() && this.getCategoryDetail().name
+                this.getCategoryDetail()
+                  ? this.getCategoryDetail().name.toUpperCase()
+                  : "🤖"
               }
               onTap={this.toggleCategoryList}
             />
