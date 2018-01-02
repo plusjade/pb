@@ -188,8 +188,9 @@ class Main extends Component {
   render() {
     const activeCategory = this.getCategoryDetail()
     return(
-      <div id="Main" style={style.container}>
+      <div id="Container" style={style.container}>
         <div
+          id="SecondaryWrap"
           style={[
             style.secondaryWrap,
             this.state.shouldShowCategoryList && style.secondaryIsActive
@@ -212,6 +213,7 @@ class Main extends Component {
         </div>
 
         <div
+          id="PrimaryWrap"
           style={[
             style.primaryWrap,
             this.state.shouldShowCategoryList && style.primaryWrapIsInactive
