@@ -36,7 +36,16 @@ class CategoryList extends Component {
                     : !this.props.activeCategoryName && category.name === "Home" && style.isActive,
                 ]}
               >
-                <div style={style.name}>
+                <div
+                  style={[
+                    style.name,
+                    category.daysAgo === 0 && ({
+                      borderLeft: "3px solid #4CAF50",
+                      paddingLeft: 8,
+                      marginLeft: -13,
+                    })
+                  ]}
+                >
                   <span>
                     {category.name.toUpperCase()}
                   </span>

@@ -19,6 +19,7 @@ export default {
     flex: 1,
     display: "flex",
     flexDirection: "column",
+    position: "relative",
   },
   primaryWrapIsInactive: {
     borderLeft: "1px solid #E0E0E0",

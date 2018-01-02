@@ -8,6 +8,7 @@ import EntryAdd from 'app/components/EntryAdd/EntryAdd'
 import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
+import AddIcon from 'app/components/AddIcon/AddIcon'
 
 import Phone from 'texting/components/Phone'
 import Typing from 'texting/components/Typing'
@@ -37,13 +38,16 @@ class Main extends Component {
   }
 
   componentWillMount() {
-    this.getCategories()
     this.getChats()
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.activeCategory && prevState.activeCategory !== this.state.activeCategory) {
-      this.getFeed(this.state.activeCategory)
+    // if (this.state.activeCategory && prevState.activeCategory !== this.state.activeCategory) {
+    //   this.getFeed(this.state.activeCategory)
+    // }
+
+    if (!prevState.shouldShowCategoryList && this.state.shouldShowCategoryList) {
+      this.getCategories()
     }
 
     if (!prevState.chatsCommands && this.state.chatsCommands) {
@@ -112,9 +116,10 @@ class Main extends Component {
   persistReally = (body, callback) => {
     if (!body.value || !body.value.trim() === "") { return }
 
-    this.props.persist(body).then(() => {
+    this.props.persist(body).then((rsp) => {
       this.closeAddEntry()
-      this.getCategories()
+      this.activateCategory(rsp.category)
+      this.setState({isEntryAddActive: false})
       if (typeof callback === "function") {
         callback()
       }
@@ -152,6 +157,8 @@ class Main extends Component {
   activateCategory = (categoryName) => {
     if (categoryName == "Home") {
       categoryName = false
+    } else {
+      this.getFeed(categoryName)
     }
     this.setState({
       activeCategory: categoryName,
@@ -173,6 +180,10 @@ class Main extends Component {
   feed = () => (
     this.props.parseFeed(this.state.feed, this.state.activeCategory)
   )
+
+  handleToggleEntryAdd = () => {
+    this.setState({isEntryAddActive: !this.state.isEntryAddActive})
+  }
 
   render() {
     const activeCategory = this.getCategoryDetail()
@@ -244,8 +255,15 @@ class Main extends Component {
             <EntryAdd
               persistReally={this.persistReally}
               entry={this.state.showAddEntry}
-              isActive={!this.state.activeCategory}
-            />
+              isActive={this.state.isEntryAddActive}
+              activeCategory={this.state.activeCategory}
+            >
+              <AddIcon
+                onTap={this.handleToggleEntryAdd}
+                isActive={this.state.isEntryAddActive}
+                isVisible={this.state.activeCategory}
+              />
+            </EntryAdd>
           </div>
         </div>
       </div>

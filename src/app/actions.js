@@ -64,8 +64,9 @@ export const remove = id => (
   })
   .then(checkStatus)
   .then(parseJSON)
-  .then((data) => {
-    console.log('request succeeded with JSON response', data)
+  .then((rsp) => {
+    console.log('request succeeded with JSON response', rsp)
+    return (rsp)
   }).catch((error) => {
     console.log('request failed', error)
   })
@@ -86,8 +87,9 @@ export const persist = (body) => {
     })
     .then(checkStatus)
     .then(parseJSON)
-    .then((data) => {
-      console.log('request succeeded with JSON response', data)
+    .then((rsp) => {
+      console.log('request succeeded with JSON response', rsp)
+      return (rsp)
     }).catch((error) => {
       console.log('request failed', error)
     })
