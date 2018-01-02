@@ -1,5 +1,8 @@
 import { max } from "d3-array"
+import QueryParams from 'lib/QueryParams'
 
+const QParams = QueryParams()
+const userId = parseInt(QParams.get("userId")) || parseInt((Math.random() + "").substring(2,10))
 const API_ENDPOINT = (
   process.env.NODE_ENV === 'production'
     ? "https://www.getdamon.com"
@@ -15,7 +18,7 @@ function checkStatus(response) {
   }
 }
 const parseJSON = response => (response.json())
-const buildUrl = path => (`${API_ENDPOINT}${path}`)
+const buildUrl = path => (`${API_ENDPOINT}/v1/users/${userId}${path}`)
 
 export const getCategories = () => (
   window.fetch(buildUrl("/categories"), {
@@ -40,6 +43,7 @@ export const getChats = () => (
   .then(rsp => (rsp))
   .catch((error) => {
     console.log('request failed', error)
+    return ({})
   })
 )
 export const getFeed = (categoryName) => {
@@ -54,6 +58,7 @@ export const getFeed = (categoryName) => {
     }))
     .catch((error) => {
       console.log('request failed', error)
+      return ({})
     })
   )
 }
@@ -69,6 +74,7 @@ export const remove = id => (
     return (rsp)
   }).catch((error) => {
     console.log('request failed', error)
+    return ({})
   })
 )
 
@@ -92,6 +98,7 @@ export const persist = (body) => {
       return (rsp)
     }).catch((error) => {
       console.log('request failed', error)
+      return ({})
     })
   )
 }
