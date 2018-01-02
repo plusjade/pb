@@ -9,6 +9,7 @@ import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
 import AddIcon from 'app/components/AddIcon/AddIcon'
+import OpacityMask from 'app/components/OpacityMask/OpacityMask'
 
 import Phone from 'texting/components/Phone'
 import Typing from 'texting/components/Typing'
@@ -185,6 +186,14 @@ class Main extends Component {
     this.setState({isEntryAddActive: !this.state.isEntryAddActive})
   }
 
+  handleOpacityMaskTap = () => {
+    if (this.state.isEntryAddActive) {
+      this.handleToggleEntryAdd()
+    } else if (this.state.shouldShowCategoryList) {
+      this.toggleCategoryList()
+    }
+  }
+
   render() {
     const activeCategory = this.getCategoryDetail()
     return(
@@ -219,6 +228,11 @@ class Main extends Component {
             this.state.shouldShowCategoryList && style.primaryWrapIsInactive
           ]}
         >
+          <OpacityMask
+            isActive={this.state.isEntryAddActive || this.state.shouldShowCategoryList}
+            onTap={this.handleOpacityMaskTap}
+          />
+
           <div style={style.primary}>
             <Heading
               value={

@@ -12,7 +12,7 @@ export default {
     flexDirection: "column",
     overflow: "hidden",
     transition: "all 200ms ease",
-    // boxShadow: "rgba(33, 33, 33, 0.2) 1px 1px 10px",
+    position: "relative",
   },
   primary: {
     minWidth: 375,

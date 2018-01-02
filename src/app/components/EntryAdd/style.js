@@ -6,10 +6,10 @@ export default {
     bottom: 0,
     left: 0,
     right: 0,
-    zIndex: 2,
+    zIndex: 3,
     transition: "all 300ms ease",
-    borderTop: `1px solid ${colors.secondaryBorder}`,
     backgroundColor: colors.secondaryBackground,
+    borderRadius: "15px 15px 0 0",
     transform: "translateY(100%)",
   },
   isActive: {

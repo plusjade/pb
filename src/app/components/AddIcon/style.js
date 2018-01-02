@@ -1,4 +1,7 @@
+import colors from 'app/colors'
+
 const dimension = 50
+
 export default {
   wrap: {
     position: "absolute",
@@ -25,8 +28,7 @@ export default {
   },
   isActive: {
     transform: "rotate(45deg)", // X
-    backgroundColor: "#FFF",
-    color: "#F44336",
-    border: "1px solid #F44336",
+    backgroundColor: colors.secondaryBackground,
+    color: "#212121",
   },
 }

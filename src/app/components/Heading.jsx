@@ -7,7 +7,6 @@ import colors from 'app/colors'
 const style = {
   default: {
     flex: 1,
-    zIndex: 2,
     backgroundColor: colors.secondaryBackground,
     textAlign: "center",
     lineHeight: "46px",

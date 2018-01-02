@@ -22,7 +22,7 @@ class EntryAdd extends PureComponent {
       this.setState({value: `#${nextProps.activeCategory} `})
     }
     if (nextProps.isActive && !this.props.isActive) {
-      this.inputRef && this.inputRef.focus()
+      // this.inputRef && this.inputRef.focus()
     }
   }
 
