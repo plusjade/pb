@@ -14,7 +14,7 @@ export default {
     textAlign: "center",
     boxShadow: "rgba(33, 33, 33, 0.1) 1px 1px 10px",
 
-    transition: "all 300ms ease 300ms",
+    transition: "all 300ms ease",
     transform: "rotate(0)",
     backgroundColor: "#8BC34A",
     color: "#FFF",

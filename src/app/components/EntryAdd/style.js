@@ -2,18 +2,19 @@ import colors from 'app/colors'
 
 export default {
   wrap: {
-    flex: 0,
-    position: "relative",
+    position: "fixed",
+    bottom: 0,
+    left: 0,
+    right: 0,
     zIndex: 2,
-    transition: "max-height 1600ms ease, flex 1600ms ease",
+    transition: "all 300ms ease",
     borderTop: `1px solid ${colors.secondaryBorder}`,
     backgroundColor: colors.secondaryBackground,
-    maxHeight: 0,
+    transform: "translateY(100%)",
   },
   isActive: {
-    transition: "maxHeight 1600ms ease, flex 1600ms ease",
-    flex: 3,
-    maxHeight: 1000,
+    transition: "all 300ms ease",
+    transform: "translateY(0)",
   },
   input: {
     width: "100%",
