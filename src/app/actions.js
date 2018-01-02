@@ -1,8 +1,7 @@
-import { max } from "d3-array"
 import QueryParams from 'lib/QueryParams'
 
 const QParams = QueryParams()
-const userId = parseInt(QParams.get("userId")) || parseInt((Math.random() + "").substring(2,10))
+const userId = parseInt(QParams.get("userId"), 10) || parseInt((Math.random() + "").substring(2,10), 10)
 const API_ENDPOINT = (
   process.env.NODE_ENV === 'production'
     ? "https://www.getdamon.com"

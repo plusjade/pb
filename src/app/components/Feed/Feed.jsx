@@ -3,9 +3,6 @@ import PropTypes from 'prop-types'
 import Radium from 'radium'
 import Hammer from 'react-hammerjs'
 
-import Banner from 'app/components/Banner'
-import FeedItemRenderer from 'app/components/FeedItemRenderer'
-
 import style from './style'
 
 class Feed extends Component {

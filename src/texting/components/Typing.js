@@ -35,7 +35,7 @@ const style = {
 
 class Typing extends PureComponent {
   static propTypes = {
-    status: PropTypes.string,
+    status: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   }
 
   render() {

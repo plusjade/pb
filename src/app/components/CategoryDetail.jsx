@@ -1,7 +1,6 @@
 import React, { Component }   from 'react'
 import PropTypes                from 'prop-types'
 import Radium from 'radium'
-import Hammer             from 'react-hammerjs'
 
 import Chart                from 'app/components/Chart'
 import CategoryStats        from 'app/components/CategoryStats/CategoryStats'

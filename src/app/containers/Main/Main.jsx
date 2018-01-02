@@ -2,7 +2,6 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
 
-import CategoryDetail from 'app/components/CategoryDetail'
 import CategoryList from 'app/components/CategoryList/CategoryList'
 import EntryAdd from 'app/components/EntryAdd/EntryAdd'
 import Feed from 'app/components/Feed/Feed'
@@ -156,7 +155,7 @@ class Main extends Component {
   }
 
   activateCategory = (categoryName) => {
-    if (categoryName == "Home") {
+    if (categoryName === "Home") {
       categoryName = false
     } else {
       this.getFeed(categoryName)
@@ -195,7 +194,6 @@ class Main extends Component {
   }
 
   render() {
-    const activeCategory = this.getCategoryDetail()
     return(
       <div id="Container" style={style.container}>
         <div
@@ -276,8 +274,8 @@ class Main extends Component {
             >
               <AddIcon
                 onTap={this.handleToggleEntryAdd}
-                isActive={this.state.isEntryAddActive}
-                isVisible={this.state.activeCategory}
+                isActive={!!this.state.isEntryAddActive}
+                isVisible={!!this.state.activeCategory}
               />
             </EntryAdd>
           </div>

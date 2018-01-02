@@ -24,6 +24,7 @@ class Phone extends Component {
 
           return (
             <Entry
+              key={id}
               minorValue={index === 0 && (
                 <span style={{fontSize: 26}}>
                   {"🤖"}
