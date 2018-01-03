@@ -5,8 +5,7 @@ export default {
     flex: 20,
     overflow: "auto",
     width: "100%",
-    // transition: "all 200ms ease",
-    // transform: "translateX(0)",
+    paddingBottom: 20,
     backgroundColor: colors.primaryBackground,
     WebkitOverflowScrolling: "touch",
 
