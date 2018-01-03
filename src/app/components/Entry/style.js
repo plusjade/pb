@@ -46,17 +46,18 @@ export default {
   },
   major: {
     flex: 12,
-    padding: "12px 55px 12px 20px",
+    padding: "8px 14px",
     boxSizing: "border-box",
-    borderRadius: 10,
-    backgroundColor: "#F5F5F5",
-    color: colors.text,
+    borderRadius: 20,
+    backgroundColor: colors.myBackground,
+    color: colors.myText,
     position: "relative",
     fontSize: 15,
+    lineHeight: "22px",
   },
   majorReverse: {
     backgroundColor: colors.botBackground,
-    border: "1px solid #F5F5F5",
+    color: colors.botText,
   },
   spacer: {
     flex: 1,

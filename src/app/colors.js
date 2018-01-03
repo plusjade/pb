@@ -6,7 +6,10 @@ export default {
   borderColor: "#222",
   primaryBackground: "#FFF",
   secondaryBackground: "#F5F5F5",
-  botBackground: "#FFF",
+  myBackground: "rgba(69, 144, 243, 1)", // imessage blue
+  myText: "#FFF",
+  botBackground: "rgba(229, 231, 234, 1)",
+  botText: "#000",
   secondaryBorder: "#E0E0E0",
   text: "#424242",
   graphLine: "#555",

@@ -1,6 +1,8 @@
 import React    from 'react'
 import Radium from 'radium'
 
+import colors from 'app/colors'
+
 const bubble = {
   default: {
     fontWeight: 300,
@@ -10,7 +12,7 @@ const bubble = {
     display: "inline-block",
     boxSixing: "border-box",
     textAlign: "left",
-    border: "1px solid #F5F5F5",
+    backgroundColor: colors.botBackground,
   },
   mine: {
     color: "#FFF",
