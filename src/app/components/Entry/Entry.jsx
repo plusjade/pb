@@ -14,11 +14,9 @@ class Entry extends Component {
       PropTypes.string,
       PropTypes.element,
     ]),
-    onTagTap: PropTypes.func,
     onMinorTap: PropTypes.func,
     style: PropTypes.object,
     styleMajor: PropTypes.object,
-    tag: PropTypes.string,
     value: PropTypes.string,
   }
 
@@ -65,13 +63,6 @@ class Entry extends Component {
               this.props.styleMajor
             ]}
           >
-            {this.props.tag && (
-              <Hammer onTap={this.handleTagTap}>
-                <div style={style.tag}>
-                  {this.props.tag}
-                </div>
-              </Hammer>
-            )}
             {React.Children.map(this.props.children, (c) => (c))}
           </div>
         </div>

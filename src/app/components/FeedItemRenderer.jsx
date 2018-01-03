@@ -85,8 +85,6 @@ class FeedItemRenderer extends Component {
             isVisible={
               !this.props.activeCategory || this.props.activeCategory === unit.category
             }
-            tag={`#${unit.category.substring(0, 3).toUpperCase()}`}
-            onTagTap={this.props.activateCategory}
             actionData={unit.category}
           >
             <span>{unit.value}</span>

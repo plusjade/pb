@@ -70,14 +70,4 @@ export default {
     textAlign: "center",
     paddingTop: 4,
   },
-  tag: {
-    padding: "5px 10px",
-    borderRadius: "0 10px 0",
-    textAlign: "center",
-    fontSize: 11,
-    backgroundColor: "#EEE",
-    position: "absolute",
-    top: 0,
-    right: 0,
-  }
 }
