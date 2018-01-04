@@ -48,20 +48,6 @@ class CategoryDetail extends Component {
     isExpanded: false,
   }
 
-  handleAdd = () => {
-    if (this.props.showAddEntry) {
-      this.props.closeAddEntry()
-    } else {
-      this.props.persist({
-        category: this.props.data.category,
-      })
-    }
-  }
-
-  handleTap = () => {
-    this.setState({isExpanded: !this.state.isExpanded})
-  }
-
   render() {
     return (
           <div style={[

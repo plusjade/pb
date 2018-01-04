@@ -16,15 +16,12 @@ import style from './style'
 class Main extends Component {
   static propTypes = {
     getCategories: PropTypes.func.isRequired,
-    getChats: PropTypes.func.isRequired,
     getFeed: PropTypes.func.isRequired,
     persist: PropTypes.func.isRequired,
-    remove: PropTypes.func.isRequired,
   }
 
   state = {
     categories: [],
-    shouldShowVizIndex: true,
     activeCategory: false,
     chatsIndex: [],
     chatsObjects: {},
@@ -32,6 +29,8 @@ class Main extends Component {
     // status: null, loading, loaded
     chatsIncomingObjectId: undefined,
     chatsIncomingObjectStatus: undefined,
+    shouldShowCategoryList: false,
+    shouldShowEntryAdd: false,
   }
 
   componentWillMount() {
@@ -45,10 +44,6 @@ class Main extends Component {
         this.activateCategory(this.state.categories[0].name)
       }
     }
-
-    // if (this.state.activeCategory && prevState.activeCategory !== this.state.activeCategory) {
-    //   this.getFeed(this.state.activeCategory)
-    // }
 
     if (!prevState.shouldShowCategoryList && this.state.shouldShowCategoryList) {
       this.getCategories()
@@ -98,58 +93,19 @@ class Main extends Component {
     this.props.getFeed(categoryName).then((rsp) => { this.setState(rsp) })
   }
 
-  getChats() {
-    this.props.getChats().then((rsp) => {
-      this.setState((prevState) => {
-        // accumulate chat objects in the app
-        // TODO: manage memory footprint/cache-sclearing
-        const mergedChatsObjects = {...prevState.chatsObjects, ...rsp.chatsObjects}
-        return ({...rsp, chatsObjects: mergedChatsObjects})
-      })
-    })
-  }
-
   getCategories() {
     this.props.getCategories().then((rsp) => { this.setState(rsp) })
   }
 
-  persist = (body) => {
-    this.setState({showAddEntry: body})
-  }
-
-  persistReally = (body, callback) => {
+  persist = (body, callback) => {
     if (!body.value || !body.value.trim() === "") { return }
 
     this.props.persist(body).then((rsp) => {
-      this.closeAddEntry()
       this.activateCategory(rsp.category)
-      this.setState({isEntryAddActive: false})
       if (typeof callback === "function") {
         callback()
       }
     })
-  }
-
-  closeAddEntry = () => {
-    this.setState({showAddEntry: false})
-  }
-
-  remove = (id) => {
-    this.props.remove(id).then(() => {
-      this.getCategories()
-    })
-  }
-
-  showVizIndex = () => {
-    // window.scroll(0,0)
-    console.log("showVizIndex")
-    this.setState({
-      shouldShowVizIndex: !this.state.shouldShowVizIndex,
-    })
-  }
-
-  showAddEntry = (ordinal) => {
-    this.setState({showAddEntry: ordinal})
   }
 
   toggleCategoryList = () => {
@@ -159,36 +115,22 @@ class Main extends Component {
   }
 
   activateCategory = (categoryName) => {
-    if (categoryName === "Home") {
-      categoryName = false
-    } else {
-      this.getFeed(categoryName)
-    }
+    // todo: this belongs in the componentDidUpdate
+    this.getFeed(categoryName)
     this.setState({
       activeCategory: categoryName,
       shouldShowCategoryList: false,
+      shouldShowEntryAdd: false,
     })
   }
 
-  goHome = () => {
-    this.activateCategory("Home")
-  }
-
-  getCategoryDetail = () => (
-    this.state.categories.find(d => (this.state.activeCategory === d.name))
-  )
-
-  shouldShowSlidePosition =() => (
-    !this.state.activeCategory
-  )
-
-  handleToggleEntryAdd = () => {
-    this.setState({isEntryAddActive: !this.state.isEntryAddActive})
+  toggleEntryAdd = () => {
+    this.setState({shouldShowEntryAdd: !this.state.shouldShowEntryAdd})
   }
 
   handleOpacityMaskTap = () => {
-    if (this.state.isEntryAddActive) {
-      this.handleToggleEntryAdd()
+    if (this.state.shouldShowEntryAdd) {
+      this.toggleEntryAdd()
     } else if (this.state.shouldShowCategoryList) {
       this.toggleCategoryList()
     }
@@ -207,7 +149,6 @@ class Main extends Component {
           <div style={style.secondary}>
             <Heading
               value={"CATEGORIES"}
-              onTap={this.goHome}
             />
 
             <CategoryList
@@ -227,7 +168,7 @@ class Main extends Component {
           ]}
         >
           <OpacityMask
-            isActive={this.state.isEntryAddActive || this.state.shouldShowCategoryList}
+            isActive={this.state.shouldShowEntryAdd || this.state.shouldShowCategoryList}
             onTap={this.handleOpacityMaskTap}
           />
 
@@ -259,14 +200,13 @@ class Main extends Component {
             </Feed>
 
             <EntryAdd
-              persistReally={this.persistReally}
-              entry={this.state.showAddEntry}
-              isActive={this.state.isEntryAddActive}
+              persist={this.persist}
+              isActive={this.state.shouldShowEntryAdd}
               activeCategory={this.state.activeCategory}
             >
               <AddIcon
-                onTap={this.handleToggleEntryAdd}
-                isActive={!!this.state.isEntryAddActive}
+                onTap={this.toggleEntryAdd}
+                isActive={!!this.state.shouldShowEntryAdd}
                 isVisible={!this.state.shouldShowCategoryList}
               />
             </EntryAdd>

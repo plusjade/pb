@@ -9,8 +9,7 @@ const MAX_HEIGHT = 200
 
 class EntryAdd extends PureComponent {
   static propTypes = {
-    persistReally: PropTypes.func,
-    entry: PropTypes.oneOfType([PropTypes.bool, PropTypes.object]),
+    persist: PropTypes.func,
   }
 
   state = {
@@ -28,12 +27,8 @@ class EntryAdd extends PureComponent {
 
   handleSubmit = () => {
     if (!this.state.value) { return }
-    this.props.persistReally(
-      Object.assign(
-        {},
-        this.props.entry,
-        {value: this.state.value}
-      ),
+    this.props.persist(
+      {value: this.state.value},
       this.reset
     )
   }

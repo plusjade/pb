@@ -8,11 +8,6 @@ export default {
     opacity: 0,
     transform: "scaleY(0.5)"
   },
-  isVisible: {
-    maxHeight: 1000,
-    opacity: 1,
-    transform: "scaleY(1)"
-  },
 
   default: {
     overflow: "auto",

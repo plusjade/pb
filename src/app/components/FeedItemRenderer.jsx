@@ -88,8 +88,6 @@ class FeedItemRenderer extends Component {
           <Entry
             key={unit.id}
             actionData={unit.category}
-
-            isVisible={false}
             status={status}
           >
             <span>{unit.value}</span>
@@ -105,10 +103,7 @@ class FeedItemRenderer extends Component {
                 {unit.emoji}
               </span>
             )}
-
             reverse={true}
-
-            isVisible={false}
             status={status}
           >
             {content.map((line, i) => (

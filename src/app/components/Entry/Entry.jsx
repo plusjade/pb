@@ -8,7 +8,6 @@ import style from './style'
 class Entry extends Component {
   static propTypes = {
     actionData: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-    isVisible: PropTypes.bool,
     minorValue: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.string,
@@ -35,7 +34,6 @@ class Entry extends Component {
       <div
         style={[
           style.wrap,
-          this.props.isVisible && style.isVisible,
           this.props.status === "loading" && style.loading,
           this.props.status === "loaded" && style.end,
       ]}>
