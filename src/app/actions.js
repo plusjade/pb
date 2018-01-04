@@ -52,9 +52,7 @@ export const getFeed = (categoryName) => {
     })
     .then(checkStatus)
     .then(parseJSON)
-    .then((rsp) => ({
-      feed: rsp.feed
-    }))
+    .then((rsp) => (rsp))
     .catch((error) => {
       console.log('request failed', error)
       return ({})

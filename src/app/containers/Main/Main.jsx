@@ -9,8 +9,6 @@ import Heading from 'app/components/Heading'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
 import AddIcon from 'app/components/AddIcon/AddIcon'
 import OpacityMask from 'app/components/OpacityMask/OpacityMask'
-
-import Phone from 'texting/components/Phone'
 import Typing from 'texting/components/Typing'
 
 import style from './style'
@@ -26,7 +24,6 @@ class Main extends Component {
 
   state = {
     categories: [],
-    feed: [],
     shouldShowVizIndex: true,
     activeCategory: false,
     chatsIndex: [],
@@ -38,10 +35,17 @@ class Main extends Component {
   }
 
   componentWillMount() {
-    this.getChats()
+    this.getCategories()
   }
 
   componentDidUpdate(prevProps, prevState) {
+    if (!this.state.activeCategory && this.state.categories.length > 0 && prevState.categories.length === 0) {
+      // load first category on initial bootstrap
+      if (this.state.categories[0]) {
+        this.activateCategory(this.state.categories[0].name)
+      }
+    }
+
     // if (this.state.activeCategory && prevState.activeCategory !== this.state.activeCategory) {
     //   this.getFeed(this.state.activeCategory)
     // }
@@ -177,9 +181,6 @@ class Main extends Component {
   shouldShowSlidePosition =() => (
     !this.state.activeCategory
   )
-  feed = () => (
-    this.props.parseFeed(this.state.feed, this.state.activeCategory)
-  )
 
   handleToggleEntryAdd = () => {
     this.setState({isEntryAddActive: !this.state.isEntryAddActive})
@@ -205,9 +206,8 @@ class Main extends Component {
         >
           <div style={style.secondary}>
             <Heading
-              value={"🤖 →"}
+              value={"CATEGORIES"}
               onTap={this.goHome}
-              style={{textAlign: "left", paddingLeft: 20}}
             />
 
             <CategoryList
@@ -233,11 +233,7 @@ class Main extends Component {
 
           <div style={style.primary}>
             <Heading
-              value={
-                this.getCategoryDetail()
-                  ? this.getCategoryDetail().name.toUpperCase()
-                  : "🤖"
-              }
+              value={this.state.activeCategory && this.state.activeCategory.toUpperCase()}
               onTap={this.toggleCategoryList}
             />
 
@@ -246,23 +242,19 @@ class Main extends Component {
               activeCategory={this.state.activeCategory}
               onSwipeRight={this.toggleCategoryList}
             >
-              {this.state.activeCategory ? (
-                this.feed().map((unit, index) => (
+              {this.state.activeCategory && (
+                this.state.chatsIndex.map((id) => (
                   <FeedItemRenderer
-                    key={index}
-                    unit={unit}
+                    key={id}
+                    unit={this.state.chatsObjects[id]}
+                    chatsIncomingObjectId={this.state.chatsIncomingObjectId}
+                    chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
                   />
                 ))
-              ) : (
-                <Phone
-                  chatsIndex={this.state.chatsIndex}
-                  chatsObjects={this.state.chatsObjects}
-                  chatsIncomingObjectId={this.state.chatsIncomingObjectId}
-                  chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
-                />
               )}
+
               <Typing
-                status={!this.state.activeCategory && this.state.chatsIncomingObjectStatus}
+                status={this.state.chatsIncomingObjectStatus}
               />
             </Feed>
 
@@ -275,7 +267,7 @@ class Main extends Component {
               <AddIcon
                 onTap={this.handleToggleEntryAdd}
                 isActive={!!this.state.isEntryAddActive}
-                isVisible={!!this.state.activeCategory}
+                isVisible={!this.state.shouldShowCategoryList}
               />
             </EntryAdd>
           </div>

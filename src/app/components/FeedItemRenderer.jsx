@@ -26,6 +26,11 @@ class FeedItemRenderer extends Component {
 
   render() {
     const unit = this.props.unit
+    let status = "loaded"
+    if (this.props.unit.id === this.props.chatsIncomingObjectId) {
+      status = this.props.chatsIncomingObjectStatus
+    }
+
     switch (unit.type) {
       case "banner": {
         return (
@@ -82,10 +87,10 @@ class FeedItemRenderer extends Component {
         return (
           <Entry
             key={unit.id}
-            isVisible={
-              !this.props.activeCategory || this.props.activeCategory === unit.category
-            }
             actionData={unit.category}
+
+            isVisible={false}
+            status={status}
           >
             <span>{unit.value}</span>
           </Entry>
@@ -100,8 +105,11 @@ class FeedItemRenderer extends Component {
                 {unit.emoji}
               </span>
             )}
-            isVisible={unit.isVisible}
+
             reverse={true}
+
+            isVisible={false}
+            status={status}
           >
             {content.map((line, i) => (
               <span key={i}>{`${line} `}</span>
