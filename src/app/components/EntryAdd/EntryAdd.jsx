@@ -22,10 +22,18 @@ class EntryAdd extends PureComponent {
     }
   }
 
-  handleSubmit = () => {
+  handleToday = () => {
     if (!this.state.value) { return }
     this.props.persist(
       {value: this.state.value},
+      this.reset
+    )
+  }
+
+  handleYesterday = () => {
+    if (!this.state.value) { return }
+    this.props.persist(
+      {value: this.state.value, ordinal: "yesterday"},
       this.reset
     )
   }
@@ -59,17 +67,10 @@ class EntryAdd extends PureComponent {
       >
         {React.Children.map(this.props.children, (c) => (c))}
         <div>
-          <div style={{padding: 10}}>
+          <div style={{padding: 10, textAlign: "center"}}>
             <div style={{fontWeight: 600}}>
-              {`Entry for #${this.props.activeCategory}:`}
+              {`Entry for #${this.props.activeCategory}`}
             </div>
-            <ul>
-              <li>went to the gym</li>
-              <li>hung out with friends</li>
-              <li>had dinner with my family</li>
-              <li>went to work</li>
-              <li>read a book</li>
-            </ul>
           </div>
           <div style={style.level1}>
             <textarea
@@ -83,7 +84,7 @@ class EntryAdd extends PureComponent {
           </div>
           <div style={style.buttonsWrap}>
             <div style={{flex: 1, textAlign: "left"}}>
-            <Hammer onTap={this.handleSubmit}>
+            <Hammer onTap={this.handleYesterday}>
                 <button
                   style={[
                     style.day,
@@ -96,7 +97,7 @@ class EntryAdd extends PureComponent {
               </Hammer>
             </div>
             <div style={{flex: 1, textAlign: "right"}}>
-              <Hammer onTap={this.handleSubmit}>
+              <Hammer onTap={this.handleToday}>
                 <button
                   style={[
                     style.day,
