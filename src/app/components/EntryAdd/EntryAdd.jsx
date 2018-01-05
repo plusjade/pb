@@ -17,9 +17,6 @@ class EntryAdd extends PureComponent {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.activeCategory && nextProps.activeCategory !== this.props.activeCategory) {
-      this.setState({value: `#${nextProps.activeCategory} `})
-    }
     if (nextProps.isActive && !this.props.isActive) {
       // this.inputRef && this.inputRef.focus()
     }
@@ -63,7 +60,9 @@ class EntryAdd extends PureComponent {
         {React.Children.map(this.props.children, (c) => (c))}
         <div>
           <div style={{padding: 10}}>
-            <div>What did you do today?</div>
+            <div style={{fontWeight: 600}}>
+              {`Entry for #${this.props.activeCategory}:`}
+            </div>
             <ul>
               <li>went to the gym</li>
               <li>hung out with friends</li>

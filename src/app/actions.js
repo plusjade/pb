@@ -68,8 +68,12 @@ export const persist = (body) => {
   if (body.ordinal) {
     fdata.append("ordinal", body.ordinal)
   }
-  fdata.append("value", body.value)
-  fdata.append("category", body.category)
+  if (body.value) {
+    fdata.append("value", body.value)
+  }
+  if (body.category) {
+    fdata.append("category", body.category)
+  }
 
   return (
     window.fetch(buildUrl("/entries"), {

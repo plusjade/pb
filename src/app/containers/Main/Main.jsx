@@ -99,8 +99,13 @@ class Main extends Component {
 
   persist = (body, callback) => {
     if (!body.value || !body.value.trim() === "") { return }
+    if (!this.state.activeCategory) {
+      throw new Error("no activeCategory")
+    }
 
-    this.props.persist(body).then((rsp) => {
+    const payload = {...body, category: this.state.activeCategory}
+
+    this.props.persist(payload).then((rsp) => {
       this.activateCategory(rsp.category)
       if (typeof callback === "function") {
         callback()
