@@ -13,20 +13,19 @@ class CategoryStats extends Component {
   render() {
     return (
       <div style={style.wrap}>
-        <div style={style.default}>
-          <div style={style.panel}>
-            <h2>{this.props.entries || 0}</h2>
-            <h5>entries</h5>
-          </div>
-          <div style={style.panel}>
-            <h2>{this.props.days_since_last || 0}</h2>
-            <h5>since last</h5>
-          </div>
-          <div style={style.panel}>
-            <h2>{this.props.maxHealth || 0}</h2>
-            <h5>best health</h5>
-          </div>
+
+        <div style={style.emoji}>
+          {this.props.category.emoji}
         </div>
+
+        {this.props.category.summaries && this.props.category.summaries.map((line, i)=> (
+          <div
+            key={i}
+            style={style.box}
+          >
+            <span>{line}</span>
+          </div>
+        ))}
       </div>
     )
   }

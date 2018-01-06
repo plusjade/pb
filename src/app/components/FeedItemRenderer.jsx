@@ -11,17 +11,9 @@ const style = {
   },
 }
 
-// Todo: Support CategoryDetail as just another feed type
-// {false && activeCategory && (
-//   <CategoryDetail
-//     data={activeCategory}
-//   />
-// )}
-
 class FeedItemRenderer extends Component {
   static propTypes = {
     unit: PropTypes.object.isRequired,
-    activeCategory: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
   }
 
   render() {

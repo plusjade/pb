@@ -21,8 +21,9 @@ class Main extends Component {
   }
 
   state = {
-    categories: [],
-    activeCategory: false,
+    activeCategoryName: false,
+    categoriesIndex: [],
+    categoriesObjects: {},
     chatsIndex: [],
     chatsObjects: {},
     chatsCommands: undefined,
@@ -38,10 +39,10 @@ class Main extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!this.state.activeCategory && this.state.categories.length > 0 && prevState.categories.length === 0) {
+    if (!this.state.activeCategoryName && this.state.categoriesIndex.length > 0 && prevState.categoriesIndex.length === 0) {
       // load first category on initial bootstrap
-      if (this.state.categories[0]) {
-        this.activateCategory(this.state.categories[0].name)
+      if (this.state.categoriesIndex[0]) {
+        this.activateCategory(this.state.categoriesIndex[0])
       }
     }
 
@@ -97,13 +98,17 @@ class Main extends Component {
     this.props.getCategories().then((rsp) => { this.setState(rsp) })
   }
 
+  getCategory = (name) => (
+    this.state.categoriesObjects[name]
+  )
+
   persist = (body, callback) => {
     if (!body.value || !body.value.trim() === "") { return }
-    if (!this.state.activeCategory) {
+    if (!this.state.activeCategoryName) {
       throw new Error("no activeCategory")
     }
 
-    const payload = {...body, category: this.state.activeCategory}
+    const payload = {...body, category: this.state.activeCategoryName}
 
     this.props.persist(payload).then((rsp) => {
       this.activateCategory(rsp.category)
@@ -123,7 +128,7 @@ class Main extends Component {
     // todo: this belongs in the componentDidUpdate
     this.getFeed(categoryName)
     this.setState({
-      activeCategory: categoryName,
+      activeCategoryName: categoryName,
       shouldShowCategoryList: false,
       shouldShowEntryAdd: false,
     })
@@ -157,8 +162,9 @@ class Main extends Component {
             />
 
             <CategoryList
-              activeCategoryName={this.state.activeCategory}
-              categories={this.state.categories || []}
+              activeCategoryName={this.state.activeCategoryName}
+              categoriesIndex={this.state.categoriesIndex || []}
+              getCategory={this.getCategory}
               onTap={this.activateCategory}
               onSwipe={this.toggleCategoryList}
             />
@@ -179,16 +185,16 @@ class Main extends Component {
 
           <div style={style.primary}>
             <Heading
-              value={this.state.activeCategory && this.state.activeCategory.toUpperCase()}
+              value={this.state.activeCategoryName && this.state.activeCategoryName.toUpperCase()}
               onTap={this.toggleCategoryList}
             />
 
             <Feed
               activateCategory={this.activateCategory}
-              activeCategory={this.state.activeCategory}
+              activeCategoryName={this.state.activeCategoryName}
               onSwipeRight={this.toggleCategoryList}
             >
-              {this.state.activeCategory && (
+              {this.state.activeCategoryName && (
                 this.state.chatsIndex.map((id) => (
                   <FeedItemRenderer
                     key={id}
@@ -207,7 +213,7 @@ class Main extends Component {
             <EntryAdd
               persist={this.persist}
               isActive={this.state.shouldShowEntryAdd}
-              activeCategory={this.state.activeCategory}
+              activeCategory={this.state.activeCategoryName}
             >
               <AddIcon
                 onTap={this.toggleEntryAdd}

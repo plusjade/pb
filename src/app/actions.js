@@ -25,9 +25,7 @@ export const getCategories = () => (
   })
   .then(checkStatus)
   .then(parseJSON)
-  .then((rsp) => ({
-    categories: rsp.categories
-  }))
+  .then(rsp => (rsp))
   .catch((error) => {
     console.log('request failed', error)
   })
