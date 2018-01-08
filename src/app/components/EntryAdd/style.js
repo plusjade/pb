@@ -7,13 +7,12 @@ export default {
     left: 0,
     right: 0,
     zIndex: 3,
-    transition: "all 300ms ease",
     backgroundColor: colors.secondaryBackground,
     borderRadius: "15px 15px 0 0",
     transform: "translateY(100%)",
   },
   isActive: {
-    transition: "all 300ms ease",
+    transition: "all 300ms ease 600ms",
     transform: "translateY(0)",
   },
   input: {
@@ -21,22 +20,22 @@ export default {
     backgroundColor: "#FFF",
     borderStyle: "none",
     borderColor: "Transparent",
-    borderRadius: 10,
     fontSize: 16,
     fontFamily: "inherit",
-    padding: "10px",
+    padding: "20px 90px 20px 10px",
     boxSizing: "border-box",
-    margin: 0,
+    margin: "0 0 -5px 0",
     resize: "none",
     outline: "none",
   },
   buttonsWrap: {
     display: "flex",
     flexDirection: "row",
-    padding: "0 10px",
+    padding: "10px",
     marginBottom: 10,
     justifyContent: "center",
     alignItems: "center",
+    display: "none",
   },
   buttonInner: {
     flex: 1,
@@ -59,7 +58,6 @@ export default {
   },
   level1: {
     position: "relative",
-    margin: "0 10px",
   },
   day: {
     display: "inline-block",
@@ -81,6 +79,25 @@ export default {
   },
   dayIsActive: {
     backgroundColor: "#8BC34A",
+    color: "#FFF",
+  },
+
+
+  inputButton: {
+    position: "absolute",
+    bottom: 15,
+    right: 10,
+    padding: "10px 15px",
+    display: "block",
+    fontSize: 14,
+    textAlign: "center",
+    border: 0,
+    borderRadius: 5,
+    backgroundColor: "#F5F5F5",
+    color: "#9E9E9E",
+  },
+  inputButtonActive: {
+    backgroundColor: "#4CAF50",
     color: "#FFF",
   },
 }

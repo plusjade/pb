@@ -4,9 +4,10 @@ const dimension = 50
 
 export default {
   wrap: {
-    position: "absolute",
-    top: 0,
-    right: 10,
+    position: "fixed",
+    bottom: -55,
+    right: "45%",
+    zIndex: 3,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -24,11 +25,14 @@ export default {
     border: 0,
   },
   isVisible: {
-    top: -60,
+    // top: -55,
+    bottom: 5,
   },
   isActive: {
     transform: "rotate(45deg)", // X
     backgroundColor: colors.secondaryBackground,
     color: "#212121",
+    bottom: -55,
+    opacity: 0,
   },
 }

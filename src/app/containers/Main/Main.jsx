@@ -32,6 +32,12 @@ class Main extends Component {
     chatsIncomingObjectStatus: undefined,
     shouldShowCategoryList: false,
     shouldShowEntryAdd: false,
+
+    promptsIndex: [],
+    promptsObjects: {},
+
+    promptsActiveIndex: - 1,
+    responsesObjects: {},
   }
 
   componentWillMount() {
@@ -53,7 +59,86 @@ class Main extends Component {
     if (!prevState.chatsCommands && this.state.chatsCommands) {
       this.chatsRunCommands(this.state.chatsCommands)
     }
+
+    if (!prevState.promptsIsComplete && this.state.promptsIsComplete === true) {
+      if (this.state.responsesObjects.when === "Yesterday") {
+        this.promptsHandleYesterday()
+      } else {
+        this.promptsHandleToday()
+      }
+    }
   }
+
+  onPromptAction = (data) => {
+    console.log("onPromptAction data", data)
+    const tag = data && data.tag
+    const nextIndex = this.state.promptsIndex.indexOf(tag) + 1
+    if (data) {
+      const newData = {...this.state.responsesObjects, [data.tag]: data.value}
+      this.setState({responsesObjects: newData})
+    }
+
+    // this.toggleEntryAdd()
+    this.setState({shouldShowEntryAdd: true})
+
+    if (nextIndex >= 0 && nextIndex > this.state.promptsActiveIndex) {
+      if (nextIndex > (this.state.promptsIndex.length - 1)) {
+        this.setState({promptsIsComplete: true})
+      } else {
+        const chatsIndex = this.state.chatsIndex.slice(0)
+        const nextChatId = this.state.promptsIndex[nextIndex]
+        if (nextChatId) {
+          chatsIndex.push(nextChatId)
+          this.setState({chatsIndex})
+        }
+        this.setState({promptsActiveIndex: nextIndex})
+      }
+    }
+  }
+
+  promptsGetActive = () => (
+    this.state.chatsObjects[this.state.promptsIndex[this.state.promptsActiveIndex]]
+  )
+
+  promptsGetValues = () => {
+    const keys = Object.keys(this.state.responsesObjects).filter((key) => (key !== "when"))
+    return (
+      keys.map((key) => (
+        `${key}: ${this.state.responsesObjects[key]}`
+      )).join("\n")
+    )
+  }
+
+  promptsHandleToday = () => {
+    if (!this.promptsIsValid()) { return }
+    console.log("promptsHandleToday", this.state.responsesObjects)
+
+    this.persist(
+      {value: this.promptsGetValues()},
+      this.promptsReset
+    )
+  }
+
+  promptsHandleYesterday = () => {
+    if (!this.promptsIsValid()) { return }
+
+    this.persist(
+      {value: this.promptsGetValues(), ordinal: "yesterday"},
+      this.promptsReset
+    )
+  }
+
+  promptsReset = () => {
+    this.setState({
+      responsesObjects: {},
+      promptsActiveIndex: - 1,
+      promptsIsComplete: false,
+    })
+  }
+
+  promptsIsValid = () => (
+    Object.keys(this.state.responsesObjects).length > 0
+  )
 
   chatsRunCommands = (commands) => (
     commands.reduce((memo, command) => (
@@ -91,11 +176,20 @@ class Main extends Component {
   }
 
   getFeed = (categoryName) => {
-    this.props.getFeed(categoryName).then((rsp) => { this.setState(rsp) })
+    this.props.getFeed(categoryName).then((rsp) => {
+      const chatsObjects = {...this.state.chatsObjects, ...rsp.chatsObjects}
+      this.setState({...rsp, chatsObjects: chatsObjects})
+    })
   }
 
   getCategories() {
-    this.props.getCategories().then((rsp) => { this.setState(rsp) })
+    this.props.getCategories().then((rsp) => {
+      if (!rsp.promptsObjects) {
+        rsp.promptsObjects = {}
+      }
+      const chatsObjects = {...this.state.chatsObjects, ...rsp.promptsObjects}
+      this.setState({...rsp, chatsObjects: chatsObjects})
+    })
   }
 
   getCategory = (name) => (
@@ -132,6 +226,7 @@ class Main extends Component {
       shouldShowCategoryList: false,
       shouldShowEntryAdd: false,
     })
+    this.promptsReset()
   }
 
   toggleEntryAdd = () => {
@@ -179,7 +274,7 @@ class Main extends Component {
           ]}
         >
           <OpacityMask
-            isActive={this.state.shouldShowEntryAdd || this.state.shouldShowCategoryList}
+            isActive={this.state.shouldShowCategoryList}
             onTap={this.handleOpacityMaskTap}
           />
 
@@ -201,6 +296,7 @@ class Main extends Component {
                     unit={this.state.chatsObjects[id]}
                     chatsIncomingObjectId={this.state.chatsIncomingObjectId}
                     chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
+                    onPromptAction={this.onPromptAction}
                   />
                 ))
               )}
@@ -210,17 +306,31 @@ class Main extends Component {
               />
             </Feed>
 
+            <div style={{flex: 2, backgroundColor: "#FFF"}} />
+
             <EntryAdd
+              promptsIndex={this.state.promptsIndex}
+              promptsObjects={this.state.promptsObjects}
+              onSubmit={(value) => {
+                this.onPromptAction({
+                  tag: this.promptsGetActive().tag,
+                  value: value,
+                })
+              }}
               persist={this.persist}
-              isActive={this.state.shouldShowEntryAdd}
-              activeCategory={this.state.activeCategoryName}
-            >
-              <AddIcon
-                onTap={this.toggleEntryAdd}
-                isActive={!!this.state.shouldShowEntryAdd}
-                isVisible={!this.state.shouldShowCategoryList}
-              />
-            </EntryAdd>
+              isActive={!this.state.shouldShowCategoryList && this.state.shouldShowEntryAdd}
+              placeholder={
+                this.state.shouldShowEntryAdd
+                ? (this.promptsGetActive() || {}).customPrompt || "Write something..."
+                : "Write something..."
+              }
+            />
+
+            <AddIcon
+              onTap={() => { this.onPromptAction() }}
+              isActive={!!this.state.shouldShowEntryAdd}
+              isVisible={!this.state.shouldShowCategoryList}
+            />
           </div>
         </div>
       </div>

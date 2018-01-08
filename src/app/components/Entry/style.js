@@ -49,6 +49,7 @@ export default {
     position: "relative",
     fontSize: 15,
     lineHeight: "22px",
+    whiteSpace: "pre-line",
   },
   majorReverse: {
     backgroundColor: colors.botBackground,

@@ -4,6 +4,7 @@ import Radium from 'radium'
 
 import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
+import Prompt from 'app/components/Prompt/Prompt'
 
 const style = {
   botEmoji: {
@@ -31,6 +32,14 @@ class FeedItemRenderer extends Component {
             color={unit.color}
             value={unit.value}
             isVisible={true}
+          />
+        )
+      }
+      case "prompt": {
+        return (
+          <Prompt
+            {...unit}
+            onSelect={this.props.onPromptAction}
           />
         )
       }
