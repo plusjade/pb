@@ -6,26 +6,66 @@ import colors from 'app/colors'
 
 const style = {
   default: {
-    flex: 1,
+    flex: 2,
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.secondaryBackground,
-    textAlign: "center",
+    borderBottom: `1px solid ${colors.secondaryBorder}`,
+    height: "100%",
+  },
+  textStyle: {
     lineHeight: "46px",
     fontSize: 18,
-    borderBottom: `1px solid ${colors.secondaryBorder}`,
+    textAlign: "center",
   },
+  cell: {
+    flex: 1,
+    display: "flex",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  cellInner: {
+    flex: 1,
+  },
+  avatar: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+  }
 }
+
 
 class Heading extends Component {
   static propTypes = {
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.element]),
+    toggleAccount: PropTypes.func,
   }
 
   render() {
     return (
       <Hammer onTap={this.props.onTap}>
-        <h2 style={[style.default, this.props.style]}>
-          {this.props.value}
-        </h2>
+        <div style={[style.default, this.props.style]}>
+          <div style={style.cell} />
+          <div style={[style.cell, {fontSize: 26}]}>
+            <h2 style={style.textStyle}>
+              {this.props.value}
+            </h2>
+          </div>
+
+          <Hammer onTap={this.props.toggleAccount}>
+            <div style={[style.cell, {fontSize: 26}]}>
+              {this.props.userImageUrl
+              ? (
+                <img src={this.props.userImageUrl} style={style.avatar} />
+              ) : (
+                "🤠"
+              )
+             }
+            </div>
+          </Hammer>
+        </div>
       </Hammer>
     )
   }

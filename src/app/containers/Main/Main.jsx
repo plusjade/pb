@@ -9,6 +9,7 @@ import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
 import Footing from 'app/components/Footing'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
+import GoogleSignIn from 'app/components/GoogleSignIn'
 
 import OpacityMask from 'app/components/OpacityMask/OpacityMask'
 import Typing from 'texting/components/Typing'
@@ -17,9 +18,7 @@ import style from './style'
 
 class Main extends Component {
   static propTypes = {
-    getCategories: PropTypes.func.isRequired,
-    getFeed: PropTypes.func.isRequired,
-    persist: PropTypes.func.isRequired,
+    user: PropTypes.object,
   }
 
   state = {
@@ -40,8 +39,10 @@ class Main extends Component {
     promptsResponsesObjects: {},
   }
 
-  componentWillMount() {
-    this.getCategories()
+  componentWillReceiveProps(nextProps) {
+    if (!this.props.user && nextProps.user) {
+      this.getCategories(nextProps.user)
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -189,14 +190,17 @@ class Main extends Component {
   }
 
   getFeed = (categoryName) => {
-    this.props.getFeed(categoryName).then((rsp) => {
+    this.props.user.getFeed(categoryName).then((rsp) => {
       const chatsObjects = {...this.state.chatsObjects, ...rsp.chatsObjects}
       this.setState({...rsp, chatsObjects: chatsObjects})
     })
   }
 
-  getCategories() {
-    this.props.getCategories().then((rsp) => {
+  getCategories(user) {
+    if (!user) {
+      user = this.props.user
+    }
+    user.getCategories().then((rsp) => {
       this.setState(rsp)
     })
   }
@@ -213,7 +217,7 @@ class Main extends Component {
 
     const payload = {...body, category: this.state.activeCategoryName}
 
-    this.props.persist(payload).then((rsp) => {
+    this.props.user.persist(payload).then((rsp) => {
       this.activateCategory(rsp.category)
       if (typeof callback === "function") {
         callback()
@@ -294,14 +298,19 @@ class Main extends Component {
 
           <div style={style.primary}>
             <Heading
-              value={this.state.activeCategoryName && this.state.activeCategoryName.toUpperCase()}
+              value={this.state.activeCategoryName ? this.state.activeCategoryName.toUpperCase() : ""}
+              toggleAccount={() => {console.log("meep")}}
+              userImageUrl={this.props.userImageUrl}
             />
-
             <Feed
               activateCategory={this.activateCategory}
               activeCategoryName={this.state.activeCategoryName}
               onSwipeRight={this.toggleCategoryList}
             >
+              {!this.props.user && (
+                <GoogleSignIn />
+              )}
+
               {this.state.activeCategoryName && (
                 this.state.chatsIndex.map((id) => (
                   <FeedItemRenderer
@@ -325,6 +334,7 @@ class Main extends Component {
               addIconIsActive={this.state.promptsActiveIndex >= 0}
               addIconIsVisible={!this.state.shouldShowCategoryList && !this.state.shouldShowEntryAdd}
               toggleCategoryList={this.toggleCategoryList}
+              isLoggedIn={!!this.props.user}
             />
 
             <EntryAdd

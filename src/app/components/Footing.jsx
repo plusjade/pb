@@ -41,23 +41,29 @@ class Footing extends Component {
   render() {
     return (
       <div style={style.default}>
-        <Hammer onTap={this.props.toggleCategoryList}>
-          <div style={[style.cell, {fontSize: 26}]}>
-            {"#️️"}
+        {this.props.isLoggedIn && (
+          <Hammer onTap={this.props.toggleCategoryList}>
+            <div style={[style.cell, {fontSize: 26}]}>
+              {"#️️"}
+            </div>
+          </Hammer>
+        )}
+        {this.props.isLoggedIn && (
+          <div style={style.cell}>
+            <AddIcon
+              onTap={this.props.addIconOnTap}
+              isActive={this.props.addIconIsActive}
+              isVisible={this.props.addIconIsVisible}
+            />
           </div>
-        </Hammer>
-        <div style={style.cell}>
-          <AddIcon
-            onTap={this.props.addIconOnTap}
-            isActive={this.props.addIconIsActive}
-            isVisible={this.props.addIconIsVisible}
-          />
-        </div>
-        <Hammer onTap={this.props.toggleShowRightPanel}>
-          <div style={[style.cell, {fontSize: 26}]}>
-            {"📈"}
-          </div>
-        </Hammer>
+        )}
+        {this.props.isLoggedIn && (
+          <Hammer onTap={this.props.toggleShowRightPanel}>
+            <div style={[style.cell, {fontSize: 26}]}>
+              {"📈"}
+            </div>
+          </Hammer>
+        )}
       </div>
     )
   }
