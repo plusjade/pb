@@ -1,12 +1,9 @@
 import colors from 'app/colors'
 
-const dimension = 50
+const dimension = 45
 
 export default {
   wrap: {
-    position: "absolute",
-    top: 0,
-    right: 10,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -24,11 +21,13 @@ export default {
     border: 0,
   },
   isVisible: {
-    top: -60,
+    bottom: 5,
   },
   isActive: {
     transform: "rotate(45deg)", // X
     backgroundColor: colors.secondaryBackground,
     color: "#212121",
+    bottom: -55,
+    opacity: 0,
   },
 }

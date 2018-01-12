@@ -1,13 +1,15 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
+import Hammer from 'react-hammerjs'
 
 import CategoryList from 'app/components/CategoryList/CategoryList'
 import EntryAdd from 'app/components/EntryAdd/EntryAdd'
 import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
+import Footing from 'app/components/Footing'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
-import AddIcon from 'app/components/AddIcon/AddIcon'
+
 import OpacityMask from 'app/components/OpacityMask/OpacityMask'
 import Typing from 'texting/components/Typing'
 
@@ -32,6 +34,10 @@ class Main extends Component {
     chatsIncomingObjectStatus: undefined,
     shouldShowCategoryList: false,
     shouldShowEntryAdd: false,
+
+    promptsIndex: [],
+    promptsActiveIndex: - 1,
+    promptsResponsesObjects: {},
   }
 
   componentWillMount() {
@@ -53,7 +59,99 @@ class Main extends Component {
     if (!prevState.chatsCommands && this.state.chatsCommands) {
       this.chatsRunCommands(this.state.chatsCommands)
     }
+
+    if (!prevState.promptsIsComplete && this.state.promptsIsComplete === true) {
+      if (this.state.promptsResponsesObjects.when === "Yesterday") {
+        this.promptsHandleYesterday()
+      } else {
+        this.promptsHandleToday()
+      }
+    }
   }
+
+  promptsAddResponse = (data) => {
+    console.log("promptsAddResponse data", data)
+
+    if (!data && this.state.promptsIndex.length === 0) {
+      this.setState({shouldShowEntryAdd: "custom"})
+    } else if (data && data.value === "|custom|") {
+      this.setState({shouldShowEntryAdd: data.key})
+    } else {
+      const key = data && data.key
+      const nextIndex = this.state.promptsIndex.indexOf(key) + 1
+      if (data) {
+        const newData = {...this.state.promptsResponsesObjects, [data.key]: data.value}
+        this.setState({promptsResponsesObjects: newData})
+      }
+
+      this.setState({shouldShowEntryAdd: false})
+
+      if (nextIndex >= 0 && nextIndex > this.state.promptsActiveIndex) {
+        if (nextIndex > (this.state.promptsIndex.length - 1)) {
+          this.setState({promptsIsComplete: true})
+        } else {
+          const chatsIndex = this.state.chatsIndex.slice(0)
+          const nextChatId = this.state.promptsIndex[nextIndex]
+          if (nextChatId) {
+            chatsIndex.push(nextChatId)
+            this.setState({chatsIndex})
+          }
+          this.setState({promptsActiveIndex: nextIndex})
+        }
+      }
+    }
+  }
+
+  promptsGetActive = () => (
+    this.state.chatsObjects[this.state.shouldShowEntryAdd] || {key: "custom"}
+  )
+
+  promptsGetValues = () => {
+    const keys = Object.keys(this.state.promptsResponsesObjects).filter((key) => (
+                  key !== "when" && this.state.promptsResponsesObjects[key]
+                ))
+    return (
+      keys.map((key) => {
+        let value
+        if (key === "custom") {
+          value = this.state.promptsResponsesObjects[key]
+        } else {
+          value = `${key}: ${this.state.promptsResponsesObjects[key]}`
+        }
+
+        return value
+      }).join("\n")
+    )
+  }
+
+  promptsHandleToday = () => {
+    if (!this.promptsIsValid()) { return }
+    this.persist(
+      {value: this.promptsGetValues()},
+      this.promptsReset
+    )
+  }
+
+  promptsHandleYesterday = () => {
+    if (!this.promptsIsValid()) { return }
+
+    this.persist(
+      {value: this.promptsGetValues(), ordinal: "yesterday"},
+      this.promptsReset
+    )
+  }
+
+  promptsReset = () => {
+    this.setState({
+      promptsResponsesObjects: {},
+      promptsActiveIndex: - 1,
+      promptsIsComplete: false,
+    })
+  }
+
+  promptsIsValid = () => (
+    Object.keys(this.state.promptsResponsesObjects).length > 0
+  )
 
   chatsRunCommands = (commands) => (
     commands.reduce((memo, command) => (
@@ -91,11 +189,16 @@ class Main extends Component {
   }
 
   getFeed = (categoryName) => {
-    this.props.getFeed(categoryName).then((rsp) => { this.setState(rsp) })
+    this.props.getFeed(categoryName).then((rsp) => {
+      const chatsObjects = {...this.state.chatsObjects, ...rsp.chatsObjects}
+      this.setState({...rsp, chatsObjects: chatsObjects})
+    })
   }
 
   getCategories() {
-    this.props.getCategories().then((rsp) => { this.setState(rsp) })
+    this.props.getCategories().then((rsp) => {
+      this.setState(rsp)
+    })
   }
 
   getCategory = (name) => (
@@ -132,6 +235,7 @@ class Main extends Component {
       shouldShowCategoryList: false,
       shouldShowEntryAdd: false,
     })
+    this.promptsReset()
   }
 
   toggleEntryAdd = () => {
@@ -144,6 +248,10 @@ class Main extends Component {
     } else if (this.state.shouldShowCategoryList) {
       this.toggleCategoryList()
     }
+  }
+
+  toggleShowRightPanel = () => {
+    this.setState({shouldShowRightPanel: !this.state.shouldShowRightPanel})
   }
 
   render() {
@@ -175,7 +283,8 @@ class Main extends Component {
           id="PrimaryWrap"
           style={[
             style.primaryWrap,
-            this.state.shouldShowCategoryList && style.primaryWrapIsInactive
+            this.state.shouldShowCategoryList && style.primaryWrapIsInactive,
+            this.state.shouldShowRightPanel && style.primaryWrapWhenRightPanel,
           ]}
         >
           <OpacityMask
@@ -186,7 +295,6 @@ class Main extends Component {
           <div style={style.primary}>
             <Heading
               value={this.state.activeCategoryName && this.state.activeCategoryName.toUpperCase()}
-              onTap={this.toggleCategoryList}
             />
 
             <Feed
@@ -201,6 +309,7 @@ class Main extends Component {
                     unit={this.state.chatsObjects[id]}
                     chatsIncomingObjectId={this.state.chatsIncomingObjectId}
                     chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
+                    promptsAddResponse={this.promptsAddResponse}
                   />
                 ))
               )}
@@ -210,17 +319,47 @@ class Main extends Component {
               />
             </Feed>
 
+            <Footing
+              toggleShowRightPanel={this.toggleShowRightPanel}
+              addIconOnTap={() => { this.promptsAddResponse() }}
+              addIconIsActive={this.state.promptsActiveIndex >= 0}
+              addIconIsVisible={!this.state.shouldShowCategoryList && !this.state.shouldShowEntryAdd}
+              toggleCategoryList={this.toggleCategoryList}
+            />
+
             <EntryAdd
+              onSubmit={(value) => {
+                this.promptsAddResponse({
+                  key: this.promptsGetActive().key,
+                  value: value,
+                })
+              }}
               persist={this.persist}
-              isActive={this.state.shouldShowEntryAdd}
-              activeCategory={this.state.activeCategoryName}
-            >
-              <AddIcon
-                onTap={this.toggleEntryAdd}
-                isActive={!!this.state.shouldShowEntryAdd}
-                isVisible={!this.state.shouldShowCategoryList}
-              />
-            </EntryAdd>
+              isActive={!this.state.shouldShowCategoryList && this.state.shouldShowEntryAdd}
+              placeholder={
+                this.state.shouldShowEntryAdd
+                ? (this.promptsGetActive() || {}).customPrompt || "Write something..."
+                : "Write something..."
+              }
+            />
+          </div>
+        </div>
+
+        <div
+          id="RightPanelWrap"
+          style={[
+            style.rightPanelWrap,
+            this.state.shouldShowRightPanel && style.rightPanelIsActive
+          ]}
+        >
+          <div style={style.rightPanel}>
+            <Heading
+              value={
+                <Hammer onTap={this.toggleShowRightPanel}>
+                  <div>{"GRAPH"}</div>
+                </Hammer>
+              }
+            />
           </div>
         </div>
       </div>

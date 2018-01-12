@@ -36,10 +36,6 @@ class Feed extends Component {
 
   render() {
     return (
-      <Hammer
-        onSwipe={this.props.onSwipeRight}
-        direction={"DIRECTION_HORIZONTAL"}
-      >
         <div
           id="FEED"
           ref={this.getRefNode}
@@ -49,7 +45,6 @@ class Feed extends Component {
             {React.Children.map(this.props.children, (c) => (c))}
           </div>
         </div>
-      </Hammer>
     )
   }
 }

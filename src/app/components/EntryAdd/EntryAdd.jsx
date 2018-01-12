@@ -9,33 +9,19 @@ const MAX_HEIGHT = 200
 
 class EntryAdd extends PureComponent {
   static propTypes = {
-    persist: PropTypes.func,
+    onSubmit: PropTypes.func,
+    placeholder: PropTypes.string,
+    isActive: PropTypes.bool,
   }
 
   state = {
-    value: ""
+    value: "",
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isActive && !this.props.isActive) {
       // this.inputRef && this.inputRef.focus()
     }
-  }
-
-  handleToday = () => {
-    if (!this.state.value) { return }
-    this.props.persist(
-      {value: this.state.value},
-      this.reset
-    )
-  }
-
-  handleYesterday = () => {
-    if (!this.state.value) { return }
-    this.props.persist(
-      {value: this.state.value, ordinal: "yesterday"},
-      this.reset
-    )
   }
 
   reset = () => {
@@ -57,6 +43,11 @@ class EntryAdd extends PureComponent {
     if (node) { this.inputRef = node}
   }
 
+  handleSubmitCustom = () => {
+    this.props.onSubmit(this.state.value)
+    this.setState({value: ""})
+  }
+
   render() {
     return (
       <div
@@ -65,51 +56,25 @@ class EntryAdd extends PureComponent {
           this.props.isActive && style.isActive,
         ]}
       >
-        {React.Children.map(this.props.children, (c) => (c))}
-        <div>
-          <div style={{padding: 10, textAlign: "center"}}>
-            <div style={{fontWeight: 600}}>
-              {`Entry for #${this.props.activeCategory}`}
-            </div>
-          </div>
-          <div style={style.level1}>
-            <textarea
-              style={style.input}
-              rows={1}
-              value={this.state.value}
-              placeholder={`Write about your activity...`}
-              onChange={this.handleChange}
-              ref={this.refInput}
-            />
-          </div>
-          <div style={style.buttonsWrap}>
-            <div style={{flex: 1, textAlign: "left"}}>
-            <Hammer onTap={this.handleYesterday}>
-                <button
-                  style={[
-                    style.day,
-                    style.yesterday,
-                    this.state.value && style.dayIsActive,
-                  ]}
-                >
-                  {"Add to yesterday"}
-                </button>
-              </Hammer>
-            </div>
-            <div style={{flex: 1, textAlign: "right"}}>
-              <Hammer onTap={this.handleToday}>
-                <button
-                  style={[
-                    style.day,
-                    style.today,
-                    this.state.value && style.dayIsActive,
-                  ]}
-                >
-                  {"Add to today"}
-                </button>
-              </Hammer>
-            </div>
-          </div>
+        <div style={style.level1}>
+          <textarea
+            style={style.input}
+            rows={1}
+            value={this.state.value}
+            placeholder={this.props.placeholder}
+            onChange={this.handleChange}
+            ref={this.refInput}
+          />
+          <Hammer onTap={this.handleSubmitCustom}>
+            <button
+              style={[
+                style.inputButton,
+                this.state.value && style.inputButtonActive,
+              ]}
+            >
+              {"Add"}
+            </button>
+          </Hammer>
         </div>
       </div>
     )

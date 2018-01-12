@@ -40,4 +40,25 @@ export default {
     display: "flex",
     flexDirection: "column",
   },
+
+
+  rightPanelWrap: {
+    flex: 0,
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    transition: "flex 200ms ease",
+  },
+  rightPanelIsActive: {
+    flex: 8,
+  },
+  rightPanel: {
+    minWidth: 375,
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+  },
+  primaryWrapWhenRightPanel: {
+    flex: 0,
+  },
 }
