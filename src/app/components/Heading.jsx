@@ -56,9 +56,9 @@ class Heading extends Component {
 
           <Hammer onTap={this.props.toggleAccount}>
             <div style={[style.cell, {fontSize: 26}]}>
-              {this.props.userImageUrl
+              {this.props.userAvatarUrl
               ? (
-                <img src={this.props.userImageUrl} style={style.avatar} />
+                <img src={this.props.userAvatarUrl} style={style.avatar} />
               ) : (
                 "🤠"
               )

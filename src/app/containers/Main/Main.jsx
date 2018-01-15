@@ -39,6 +39,12 @@ class Main extends Component {
     promptsResponsesObjects: {},
   }
 
+  componentDidMount() {
+    if (this.props.user) {
+      this.getCategories(this.props.user)
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       this.getCategories(nextProps.user)
@@ -190,6 +196,7 @@ class Main extends Component {
   }
 
   getFeed = (categoryName) => {
+    this.setState({chatsIndex: []})
     this.props.user.getFeed(categoryName).then((rsp) => {
       const chatsObjects = {...this.state.chatsObjects, ...rsp.chatsObjects}
       this.setState({...rsp, chatsObjects: chatsObjects})
@@ -258,6 +265,10 @@ class Main extends Component {
     this.setState({shouldShowRightPanel: !this.state.shouldShowRightPanel})
   }
 
+  addIconOnTap = () => {
+    this.promptsAddResponse()
+  }
+
   render() {
     return(
       <div id="Container" style={style.container}>
@@ -300,19 +311,11 @@ class Main extends Component {
             <Heading
               value={this.state.activeCategoryName ? this.state.activeCategoryName.toUpperCase() : ""}
               toggleAccount={() => {console.log("meep")}}
-              userImageUrl={this.props.userImageUrl}
+              userAvatarUrl={this.props.userAvatarUrl}
             />
-            <Feed
-              activateCategory={this.activateCategory}
-              activeCategoryName={this.state.activeCategoryName}
-              onSwipeRight={this.toggleCategoryList}
-            >
-              {!this.props.user && (
-                <GoogleSignIn />
-              )}
-
-              {this.state.activeCategoryName && (
-                this.state.chatsIndex.map((id) => (
+            <Feed>
+              {(this.state.chatsIndex.length > 0) ?
+                (this.state.chatsIndex.map((id) => (
                   <FeedItemRenderer
                     key={id}
                     unit={this.state.chatsObjects[id]}
@@ -321,6 +324,14 @@ class Main extends Component {
                     promptsAddResponse={this.promptsAddResponse}
                   />
                 ))
+              ) : (
+                this.props.user ? (
+                  <div style={style.loading}>
+                    {"Loading"}
+                  </div>
+                ) : (
+                  <GoogleSignIn />
+                )
               )}
 
               <Typing
@@ -330,7 +341,7 @@ class Main extends Component {
 
             <Footing
               toggleShowRightPanel={this.toggleShowRightPanel}
-              addIconOnTap={() => { this.promptsAddResponse() }}
+              addIconOnTap={this.addIconOnTap}
               addIconIsActive={this.state.promptsActiveIndex >= 0}
               addIconIsVisible={!this.state.shouldShowCategoryList && !this.state.shouldShowEntryAdd}
               toggleCategoryList={this.toggleCategoryList}

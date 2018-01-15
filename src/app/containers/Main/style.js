@@ -61,4 +61,9 @@ export default {
   primaryWrapWhenRightPanel: {
     flex: 0,
   },
+  loading: {
+    textAlign: "center",
+    fontSize: 24,
+    marginBottom: "6vh"
+  },
 }
