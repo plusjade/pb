@@ -89,6 +89,7 @@ class FeedItemRenderer extends PureComponent {
         return (
           <Entry
             key={unit.id}
+            minorValue={unit.day}
             actionData={unit.category}
             status={status}
           >
