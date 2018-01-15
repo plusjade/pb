@@ -1,9 +1,11 @@
 import colors from 'app/colors'
 
-const dimension = 45
+const dimension = 55
 
 export default {
   wrap: {
+    position: "relative",
+    top: -5,
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
