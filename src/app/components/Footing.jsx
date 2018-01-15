@@ -1,4 +1,4 @@
-import React, { Component }   from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
 import Hammer from 'react-hammerjs'
@@ -33,7 +33,7 @@ const style = {
   }
 }
 
-class Footing extends Component {
+class Footing extends PureComponent {
   static propTypes = {
     value: PropTypes.string,
   }

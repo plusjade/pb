@@ -1,25 +1,14 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
 import Hammer from 'react-hammerjs'
 
 import style from './style'
 
-class Feed extends Component {
+class Feed extends PureComponent {
   static propTypes = {
-    feed: PropTypes.array,
     activeCategory: PropTypes.oneOfType([PropTypes.bool, PropTypes.string]),
     onSwipeRight: PropTypes.func,
-  }
-
-  componentDidMount() {
-    // this.scrollBottom()
-  }
-
-  componentDidUpdate(prevProps) {
-    if (this.props.activeCategory !== prevProps.activeCategory) {
-      this.scrollBottom()
-    }
   }
 
   getRefNode = (node) => {

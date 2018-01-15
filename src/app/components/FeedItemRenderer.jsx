@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
 import Radium from 'radium'
 
@@ -12,7 +12,7 @@ const style = {
   },
 }
 
-class FeedItemRenderer extends Component {
+class FeedItemRenderer extends PureComponent {
   static propTypes = {
     unit: PropTypes.object.isRequired,
   }
