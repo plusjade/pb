@@ -14,7 +14,7 @@ const style = {
     transform: "scaleY(0.9)"
   },
   loading: { // invisible but animates the space for the bouncing dots
-    maxHeight: "35px",
+    maxHeight: 55,
     opacity: 0,
     transform: "scaleY(0.9)"
   },

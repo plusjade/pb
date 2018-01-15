@@ -5,6 +5,7 @@ import Radium from 'radium'
 import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
 import Prompt from 'app/components/Prompt/Prompt'
+import GoogleSignIn from 'app/components/GoogleSignIn'
 
 const style = {
   botEmoji: {
@@ -112,6 +113,18 @@ class FeedItemRenderer extends PureComponent {
             {content.map((line, i) => (
               <span key={i}>{`${line} `}</span>
             ))}
+          </Entry>
+        )
+      }
+      case "googleSignIn": {
+        return (
+          <Entry
+            reverse={true}
+            status={status}
+          >
+            <GoogleSignIn
+              initializeWithGoogleToken={this.props.initializeWithGoogleToken}
+            />
           </Entry>
         )
       }

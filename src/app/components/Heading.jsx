@@ -60,7 +60,7 @@ class Heading extends Component {
               ? (
                 <img src={this.props.userAvatarUrl} style={style.avatar} />
               ) : (
-                "🤠"
+                ""
               )
              }
             </div>

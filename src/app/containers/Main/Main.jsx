@@ -9,7 +9,6 @@ import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
 import Footing from 'app/components/Footing'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
-import GoogleSignIn from 'app/components/GoogleSignIn'
 
 import OpacityMask from 'app/components/OpacityMask/OpacityMask'
 import Typing from 'texting/components/Typing'
@@ -48,6 +47,10 @@ class Main extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.user && nextProps.user) {
       this.getCategories(nextProps.user)
+    } else if (!this.props.user && nextProps.newUser) {
+      nextProps.newUser.getChats().then((rsp) => {
+        this.setState(rsp)
+      })
     }
   }
 
@@ -322,15 +325,13 @@ class Main extends Component {
                     chatsIncomingObjectId={this.state.chatsIncomingObjectId}
                     chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
                     promptsAddResponse={this.promptsAddResponse}
+                    initializeWithGoogleToken={this.props.initializeWithGoogleToken}
                   />
                 ))
-              ) : (
-                this.props.user ? (
+              ) : (this.props.user && (
                   <div style={style.loading}>
                     {"Loading"}
                   </div>
-                ) : (
-                  <GoogleSignIn />
                 )
               )}
 
