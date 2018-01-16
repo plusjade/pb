@@ -6,6 +6,7 @@ import Banner from 'app/components/Banner'
 import Entry from 'app/components/Entry/Entry'
 import Prompt from 'app/components/Prompt/Prompt'
 import GoogleSignIn from 'app/components/GoogleSignIn'
+import TextFormat from 'app/components/TextFormat'
 
 const style = {
   botEmoji: {
@@ -99,7 +100,7 @@ class FeedItemRenderer extends PureComponent {
         )
       }
       case "botEntry": {
-        const content = Array.isArray(unit.value) ? unit.value : [unit.value]
+        const content = Array.isArray(unit.value) ? unit.value : [{value: unit.value}]
         return (
           <Entry
             minorValue={unit.emoji && (
@@ -111,7 +112,7 @@ class FeedItemRenderer extends PureComponent {
             status={status}
           >
             {content.map((line, i) => (
-              <span key={i}>{`${line} `}</span>
+              <TextFormat {...line} key={i} />
             ))}
           </Entry>
         )

@@ -16,7 +16,6 @@ class Entry extends Component {
     onMinorTap: PropTypes.func,
     style: PropTypes.object,
     styleMajor: PropTypes.object,
-    value: PropTypes.string,
   }
 
   handleMinorTap = () => {

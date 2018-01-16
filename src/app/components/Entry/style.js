@@ -48,7 +48,6 @@ export default {
     color: colors.myText,
     position: "relative",
     fontSize: 15,
-    lineHeight: "22px",
     whiteSpace: "pre-line",
   },
   majorReverse: {
