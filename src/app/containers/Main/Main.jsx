@@ -315,6 +315,7 @@ class Main extends Component {
               value={this.state.activeCategoryName ? this.state.activeCategoryName.toUpperCase() : ""}
               toggleAccount={() => {console.log("meep")}}
               userAvatarUrl={this.props.userAvatarUrl}
+              onTap={this.toggleCategoryList}
             />
             <Feed>
               {(this.state.chatsIndex.length > 0) ?
