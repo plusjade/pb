@@ -4,11 +4,12 @@ import Radium from 'radium'
 import Hammer from 'react-hammerjs'
 
 import CategoryList from 'app/components/CategoryList/CategoryList'
-import EntryAdd from 'app/components/EntryAdd/EntryAdd'
+import EnterText from 'app/components/EnterText/EnterText'
 import Feed from 'app/components/Feed/Feed'
 import Heading from 'app/components/Heading'
 import Footing from 'app/components/Footing'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
+import CategoryChooser from 'app/components/CategoryChooser'
 
 import BottomPanel from 'app/components/BottomPanel'
 import OpacityMask from 'app/components/OpacityMask/OpacityMask'
@@ -382,46 +383,36 @@ class Main extends Component {
                 && (this.state.shouldShowEntryAdd || this.state.entryUpdateId)
               }
             >
-              {this.state.entryUpdateId ? (
-                <div style={{maxHeight: 500, overflow: "auto", padding: 10}}>
-                  {this.state.categoriesIndex.map((name) => {
-                    const category = this.getCategory(name)
-                    return (
-                      <Hammer
-                        onTap={() => {
-                          this.entryUpdate(category.name, this.toggleEntryUpdate)
-                        }}
-                      >
-                        <div
-                          style={{
-                            padding: "10px 20px",
-                            fontSize: 20,
-                            color: "#E0E0E0",
-                            margin: 5,
-                            backgroundColor: "#424242",
-                            borderRadius: 8,
-                            display: "inline-block",
-                          }}
-                        >
-                          {category.name}
-                        </div>
-                      </Hammer>
-                    )
-                  })}
-                </div>
-              ) : (
-                <EntryAdd
-                  onSubmit={(value) => {
-                    this.promptsAddResponse({
-                      key: this.promptsGetActive().key,
-                      value: value,
-                    })
+              {this.state.entryUpdateId && !this.state.shouldShowEntryAdd ? (
+                <CategoryChooser
+                  categoriesIndex={this.state.categoriesIndex}
+                  getCategory={this.getCategory}
+                  onTap={(categoryName) => {
+                    if (categoryName === "custom") {
+                      this.toggleEntryAdd()
+                    } else {
+                      this.entryUpdate(categoryName, this.toggleEntryUpdate)
+                    }
                   }}
-                  persist={this.persist}
+                />
+              ) : (
+                <EnterText
+                  onSubmit={(value) => {
+                    if (this.state.entryUpdateId) {
+                      this.entryUpdate(value, this.toggleEntryUpdate)
+                    } else {
+                      this.promptsAddResponse({
+                        key: this.promptsGetActive().key,
+                        value: value,
+                      })
+                    }
+                  }}
                   placeholder={
-                    this.state.shouldShowEntryAdd
-                    ? (this.promptsGetActive() || {}).customPrompt || "Write something..."
-                    : "Write something..."
+                    this.state.entryUpdateId
+                      ? "Add a new category"
+                      : this.state.shouldShowEntryAdd
+                          ? (this.promptsGetActive() || {}).customPrompt || "Write something..."
+                          :  "Write something..."
                   }
                 />
               )}

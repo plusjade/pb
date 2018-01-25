@@ -7,7 +7,7 @@ import style from './style'
 
 const MAX_HEIGHT = 200
 
-class EntryAdd extends PureComponent {
+class EnterText extends PureComponent {
   static propTypes = {
     onSubmit: PropTypes.func,
     placeholder: PropTypes.string,
@@ -67,4 +67,4 @@ class EntryAdd extends PureComponent {
   }
 }
 
-export default Radium(EntryAdd)
+export default Radium(EnterText)
