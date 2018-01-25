@@ -94,9 +94,28 @@ class FeedItemRenderer extends PureComponent {
         return (
           <Entry
             key={unit.id}
-            minorValue={unit.day}
+            minorValue={unit.minorValue}
+            actionData={unit.id}
+            onMinorTap={this.props.toggleEntryUpdate}
+            status={status}
+          >
+            <span>{unit.value}</span>
+          </Entry>
+        )
+      }
+      case "entryPlaceholder": {
+        return (
+          <Entry
+            key={unit.id}
+            derp={unit.day}
             actionData={unit.category}
             status={status}
+            styleMajor={{
+              backgroundColor: "transparent",
+              fontSize: 30,
+              color: "black",
+              textAlign: "right",
+            }}
           >
             <span>{unit.value}</span>
           </Entry>

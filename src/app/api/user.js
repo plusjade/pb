@@ -80,11 +80,42 @@ export const user = (TOKEN) => {
     )
   }
 
+  const update = (id, body) => {
+    const fdata = new FormData()
+    if (body.ordinal) {
+      fdata.append("ordinal", body.ordinal)
+    }
+    if (body.value) {
+      fdata.append("value", body.value)
+    }
+    if (body.category) {
+      fdata.append("category", body.category)
+    }
+
+    return (
+      window.fetch(util.buildUrl(`/entries/${id}`), {
+        method: 'PUT',
+        body: fdata,
+        headers: HEADERS,
+      })
+      .then(util.checkStatus)
+      .then(util.parseJSON)
+      .then((rsp) => {
+        console.log('request succeeded with JSON response', rsp)
+        return (rsp)
+      }).catch((error) => {
+        console.log('request failed', error)
+        return ({})
+      })
+    )
+  }
+
   return ({
     getCategories,
     getFeed,
     remove,
     persist,
+    update,
   })
 }
 

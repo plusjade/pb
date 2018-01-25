@@ -41,7 +41,7 @@ class Footing extends PureComponent {
   render() {
     return (
       <div style={style.default}>
-        {false && this.props.isLoggedIn && (
+        {this.props.isLoggedIn && (
           <Hammer onTap={this.props.toggleCategoryList}>
             <div style={[style.cell, {fontSize: 26}]}>
               {"#️️"}
@@ -57,6 +57,10 @@ class Footing extends PureComponent {
             />
           </div>
         )}
+        <div style={[style.cell, {fontSize: 26}]}>
+          {""}
+        </div>
+
         {false && this.props.isLoggedIn && (
           <Hammer onTap={this.props.toggleShowRightPanel}>
             <div style={[style.cell, {fontSize: 26}]}>

@@ -11,17 +11,10 @@ class EntryAdd extends PureComponent {
   static propTypes = {
     onSubmit: PropTypes.func,
     placeholder: PropTypes.string,
-    isActive: PropTypes.bool,
   }
 
   state = {
     value: "",
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.isActive && !this.props.isActive) {
-      // this.inputRef && this.inputRef.focus()
-    }
   }
 
   reset = () => {
@@ -50,32 +43,25 @@ class EntryAdd extends PureComponent {
 
   render() {
     return (
-      <div
-        style={[
-          style.wrap,
-          this.props.isActive && style.isActive,
-        ]}
-      >
-        <div style={style.level1}>
-          <textarea
-            style={style.input}
-            rows={1}
-            value={this.state.value}
-            placeholder={this.props.placeholder}
-            onChange={this.handleChange}
-            ref={this.refInput}
-          />
-          <Hammer onTap={this.handleSubmitCustom}>
-            <button
-              style={[
-                style.inputButton,
-                this.state.value && style.inputButtonActive,
-              ]}
-            >
-              {"Add"}
-            </button>
-          </Hammer>
-        </div>
+      <div style={style.level1}>
+        <textarea
+          style={style.input}
+          rows={1}
+          value={this.state.value}
+          placeholder={this.props.placeholder}
+          onChange={this.handleChange}
+          ref={this.refInput}
+        />
+        <Hammer onTap={this.handleSubmitCustom}>
+          <button
+            style={[
+              style.inputButton,
+              this.state.value && style.inputButtonActive,
+            ]}
+          >
+            {"Add"}
+          </button>
+        </Hammer>
       </div>
     )
   }

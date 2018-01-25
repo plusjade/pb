@@ -46,7 +46,7 @@ export default {
     flex: 0,
     display: "flex",
     flexDirection: "column",
-    overflow: "hidden",
+    overflow: "auto",
     transition: "flex 200ms ease",
   },
   rightPanelIsActive: {

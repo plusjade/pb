@@ -10,6 +10,7 @@ import Heading from 'app/components/Heading'
 import Footing from 'app/components/Footing'
 import FeedItemRenderer from 'app/components/FeedItemRenderer'
 
+import BottomPanel from 'app/components/BottomPanel'
 import OpacityMask from 'app/components/OpacityMask/OpacityMask'
 import Typing from 'texting/components/Typing'
 
@@ -58,7 +59,7 @@ class Main extends Component {
     if (!this.state.activeCategoryName && this.state.categoriesIndex.length > 0 && prevState.categoriesIndex.length === 0) {
       // load first category on initial bootstrap
       if (this.state.categoriesIndex[0]) {
-        this.activateCategory(this.state.categoriesIndex[0])
+        this.activateCategory("all")
       }
     }
 
@@ -228,7 +229,7 @@ class Main extends Component {
     const payload = {...body, category: this.state.activeCategoryName}
 
     this.props.user.persist(payload).then((rsp) => {
-      this.activateCategory(rsp.category)
+      this.activateCategory(this.state.activeCategoryName)
       if (typeof callback === "function") {
         callback()
       }
@@ -261,6 +262,8 @@ class Main extends Component {
       this.toggleEntryAdd()
     } else if (this.state.shouldShowCategoryList) {
       this.toggleCategoryList()
+    } else if (this.state.entryUpdateId) {
+      this.toggleEntryUpdate()
     }
   }
 
@@ -272,7 +275,30 @@ class Main extends Component {
     this.promptsAddResponse()
   }
 
+  toggleEntryUpdate = (id) => {
+    console.log("hai!", id)
+    this.setState({entryUpdateId: id})
+  }
+
+  entryUpdate = (categoryName, callback) => {
+    if (!categoryName || !this.state.entryUpdateId) {
+      throw new Error("bad data")
+    }
+
+    this.props.user.update(this.state.entryUpdateId, {category: categoryName}).then((rsp) => {
+      this.activateCategory(this.state.activeCategoryName)
+      if (typeof callback === "function") {
+        callback()
+      }
+    })
+  }
+
   render() {
+    let mainHeading = ""
+    if (this.state.activeCategoryName && this.state.activeCategoryName !== "all") {
+      mainHeading = this.state.activeCategoryName.toUpperCase()
+    }
+
     return(
       <div id="Container" style={style.container}>
         <div
@@ -285,6 +311,8 @@ class Main extends Component {
           <div style={style.secondary}>
             <Heading
               value={"CATEGORIES"}
+              toggleAccount={() => {console.log("meep")}}
+              userAvatarUrl={this.props.userAvatarUrl}
             />
 
             <CategoryList
@@ -306,17 +334,15 @@ class Main extends Component {
           ]}
         >
           <OpacityMask
-            isActive={this.state.shouldShowEntryAdd || this.state.shouldShowCategoryList}
+            isActive={
+              this.state.shouldShowEntryAdd
+              || this.state.shouldShowCategoryList
+              || this.state.entryUpdateId
+            }
             onTap={this.handleOpacityMaskTap}
           />
 
           <div style={style.primary}>
-            <Heading
-              value={this.state.activeCategoryName ? this.state.activeCategoryName.toUpperCase() : ""}
-              toggleAccount={() => {console.log("meep")}}
-              userAvatarUrl={this.props.userAvatarUrl}
-              onTap={this.toggleCategoryList}
-            />
             <Feed>
               {(this.state.chatsIndex.length > 0) ?
                 (this.state.chatsIndex.map((id) => (
@@ -327,6 +353,7 @@ class Main extends Component {
                     chatsIncomingObjectStatus={this.state.chatsIncomingObjectStatus}
                     promptsAddResponse={this.promptsAddResponse}
                     initializeWithGoogleToken={this.props.initializeWithGoogleToken}
+                    toggleEntryUpdate={this.toggleEntryUpdate}
                   />
                 ))
               ) : (this.props.user && (
@@ -350,21 +377,57 @@ class Main extends Component {
               isLoggedIn={!!this.props.user}
             />
 
-            <EntryAdd
-              onSubmit={(value) => {
-                this.promptsAddResponse({
-                  key: this.promptsGetActive().key,
-                  value: value,
-                })
-              }}
-              persist={this.persist}
-              isActive={!this.state.shouldShowCategoryList && this.state.shouldShowEntryAdd}
-              placeholder={
-                this.state.shouldShowEntryAdd
-                ? (this.promptsGetActive() || {}).customPrompt || "Write something..."
-                : "Write something..."
+            <BottomPanel
+              isActive={
+                !this.state.shouldShowCategoryList
+                && (this.state.shouldShowEntryAdd || this.state.entryUpdateId)
               }
-            />
+            >
+              {this.state.entryUpdateId ? (
+                <div style={{maxHeight: 500, overflow: "auto", padding: 10}}>
+                  {this.state.categoriesIndex.map((name) => {
+                    const category = this.getCategory(name)
+                    return (
+                      <Hammer
+                        onTap={() => {
+                          this.entryUpdate(category.name, this.toggleEntryUpdate)
+                        }}
+                      >
+                        <div
+                          style={{
+                            padding: "10px 20px",
+                            fontSize: 20,
+                            color: "#E0E0E0",
+                            margin: 5,
+                            backgroundColor: "#424242",
+                            borderRadius: 8,
+                            display: "inline-block",
+                          }}
+                        >
+                          {category.name}
+                        </div>
+                      </Hammer>
+                    )
+                  })}
+                </div>
+              ) : (
+                <EntryAdd
+                  onSubmit={(value) => {
+                    this.promptsAddResponse({
+                      key: this.promptsGetActive().key,
+                      value: value,
+                    })
+                  }}
+                  persist={this.persist}
+                  placeholder={
+                    this.state.shouldShowEntryAdd
+                    ? (this.promptsGetActive() || {}).customPrompt || "Write something..."
+                    : "Write something..."
+                  }
+                />
+              )}
+
+            </BottomPanel>
           </div>
         </div>
 
@@ -379,7 +442,7 @@ class Main extends Component {
             <Heading
               value={
                 <Hammer onTap={this.toggleShowRightPanel}>
-                  <div>{"GRAPH"}</div>
+                  <div>{"X"}</div>
                 </Hammer>
               }
             />

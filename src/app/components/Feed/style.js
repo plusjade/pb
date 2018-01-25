@@ -2,7 +2,7 @@ import colors from 'app/colors'
 
 export default {
   default: {
-    flex: 20,
+    flex: 22,
     overflow: "auto",
     width: "100%",
     backgroundColor: colors.primaryBackground,

@@ -62,9 +62,9 @@ export default {
     // margin: "0 20px",
   },
   date: {
-    fontSize: 12,
+    fontSize: 22,
     textAlign: "left",
-    marginTop: 4,
+    marginTop: 2,
     marginRight: 4,
   },
 }

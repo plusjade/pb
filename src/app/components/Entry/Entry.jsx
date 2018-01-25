@@ -7,7 +7,7 @@ import style from './style'
 
 class Entry extends Component {
   static propTypes = {
-    actionData: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+    actionData: PropTypes.oneOfType([PropTypes.number, PropTypes.string, PropTypes.object]),
     minorValue: PropTypes.oneOfType([
       PropTypes.bool,
       PropTypes.string,
@@ -57,7 +57,7 @@ class Entry extends Component {
             style={[
               style.major,
               this.props.reverse && style.majorReverse,
-              this.props.styleMajor
+              this.props.styleMajor,
             ]}
           >
             {React.Children.map(this.props.children, (c) => (c))}
