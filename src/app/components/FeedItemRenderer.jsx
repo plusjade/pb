@@ -103,7 +103,7 @@ class FeedItemRenderer extends PureComponent {
           </Entry>
         )
       }
-      case "entryPlaceholder": {
+      case "emptyEntry": {
         return (
           <Entry
             key={unit.id}

@@ -49,9 +49,9 @@ class CategoryList extends Component {
                     <span>
                       {category.name.toUpperCase()}
                     </span>
-                    {category.emoji && (
-                      <span style={style.emoji}>
-                        {category.emoji}
+                    {category.health && (
+                      <span style={style.health}>
+                        {category.health}
                       </span>
                     )}
                   </div>

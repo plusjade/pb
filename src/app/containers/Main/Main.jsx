@@ -200,7 +200,6 @@ class Main extends Component {
   }
 
   getFeed = (categoryName) => {
-    this.setState({chatsIndex: []})
     this.props.user.getFeed(categoryName).then((rsp) => {
       const chatsObjects = {...this.state.chatsObjects, ...rsp.chatsObjects}
       this.setState({...rsp, chatsObjects: chatsObjects})

@@ -17,7 +17,7 @@ export default {
   name: {
     color: colors.text,
   },
-  emoji: {
+  health: {
     float: "right",
     marginRight: 60,
   },
