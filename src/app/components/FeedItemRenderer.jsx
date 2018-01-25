@@ -28,13 +28,16 @@ class FeedItemRenderer extends PureComponent {
 
     switch (unit.type) {
       case "banner": {
+        const content = Array.isArray(unit.value) ? unit.value : [{value: unit.value}]
         return (
           <Banner
             key={unit.value}
-            color={unit.color}
-            value={unit.value}
             isVisible={true}
-          />
+          >
+            {content.map((line, i) => (
+              <TextFormat {...line} key={i} />
+            ))}
+          </Banner>
         )
       }
       case "prompt": {
